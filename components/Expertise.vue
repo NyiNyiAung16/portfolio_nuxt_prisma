@@ -21,7 +21,7 @@ const expertises = ref([
         title: 'Mobile App Development',
         content: 'Designing and developing user-friendly mobile applications for iOS and Android.'
     }
-])
+]);
 
 </script>
 

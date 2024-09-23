@@ -14,11 +14,11 @@
                     <h4 class="font-bold text-3xl">Software Developer | Showcasing my projects</h4>
                 </div>
                 <div class="flex items-center gap-2">
-                    <BaseButton>
-                        <NuxtLink href="#footer">Contact Me</NuxtLink>
+                    <BaseButton href="#footer"> 
+                        Contact Me
                     </BaseButton>
-                    <BaseButton class-name="border border-black text-black bg-[#eaeaea]">
-                        <NuxtLink href="#expertise">My expertise</NuxtLink>
+                    <BaseButton class-name="border border-black text-black bg-[#eaeaea]" href="#expertise">
+                        My expertise
                     </BaseButton>
                 </div>
             </div>
