@@ -1,5 +1,11 @@
 <script setup>
 
+const { user, clear, session } = useUserSession();
+
+const logout = async () => {
+    await clear();
+}
+
 </script>
 
 <template>
@@ -11,6 +17,15 @@
             </li>
             <li>
                 <NuxtLink href="/projects">Projects</NuxtLink>
+            </li>
+            <li v-if="!user">
+                <NuxtLink href="/login">Login</NuxtLink>
+            </li>
+            <li v-if="!user">
+                <NuxtLink href="/register">Register</NuxtLink>
+            </li>
+            <li v-if="user"> 
+                <p @click="logout" class="cursor-pointer">Logout</p>
             </li>
         </ul>
     </div>

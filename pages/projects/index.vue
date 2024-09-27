@@ -1,5 +1,4 @@
 <script setup>
-
 const projects = ref([
     {
         id:1,

@@ -1,7 +1,9 @@
+import path from 'path'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
 
   postcss: {
@@ -11,10 +13,19 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@prisma/nuxt",'@vesp/nuxt-fontawesome'],
+  modules: [
+    "@prisma/nuxt",
+    '@vesp/nuxt-fontawesome',
+    '@pinia/nuxt',
+    'nuxt-auth-utils',
+  ],
   fontawesome: {
     icons: {
-      solid: ['trash','arrow-right']
+      solid: ['trash','arrow-right','xmark']
     }
+  },
+
+  imports:{
+    autoImport: true
   }
 })

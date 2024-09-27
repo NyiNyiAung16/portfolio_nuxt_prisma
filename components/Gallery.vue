@@ -36,7 +36,7 @@ const handleClick = (event) => {
         :space-between="30"
         :slides-per-view="isCoverFlow ? 3 : 2"
         :pagination="{ clickable : true}"
-        :navigation="isCoverFlow"
+        :navigation="true"
         :autoplay="{
             delay: 2000,
             disableOnInteraction: false,

@@ -1,0 +1,49 @@
+<script setup>
+definePageMeta({
+    middleware: 'auth'
+});
+
+const auth = useAuth();
+const { error } = storeToRefs(auth);
+
+const username = ref('');
+const email = ref('');
+const password = ref('');
+
+const onSubmit = async () => {
+   const res = await auth.register(username.value, email.value, password.value);
+    if(res){
+        await navigateTo('/');
+    }
+}
+
+</script>
+
+<template>
+    <div class="max-w-xl w-full mx-auto p-5 rounded-md bg-white mt-6 shadow-md">
+        <h1 class="text-3xl text-center font-bold text-[#808080] mb-5">Register Form</h1>
+        <form class="space-y-3" @submit.prevent="onSubmit">
+            <BaseInput
+                type="text"
+                placeholder="Username"
+                v-model="username"
+            />
+            <p v-if="error?.username" class="text-red-500 my-1">{{ error?.username }}</p>
+            <BaseInput
+                type="email"
+                placeholder="Email Address"
+                v-model="email"
+            />
+            <p v-if="error?.email" class="text-red-500 my-1">{{ error?.email }}</p>
+            <BaseInput
+                type="password"
+                placeholder="Password"
+                v-model="password"
+            />
+            <p v-if="error?.password" class="text-red-500 my-1">{{ error?.password }}</p>
+            <BaseButton class-name="text-sm">Register</BaseButton>
+        </form>
+        <p class="mt-3 font-light text-[#929292] tracking-wide">Already have an account? <NuxtLink to="/login" class="hover:underline">Login</NuxtLink></p>
+    </div>
+</template>
+
