@@ -4,7 +4,7 @@ definePageMeta({
 });
 
 const auth = useAuth();
-const { error } = storeToRefs(auth);
+const { error, loading } = storeToRefs(auth);
 
 const username = ref('');
 const email = ref('');
@@ -20,6 +20,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
+    <Toaster/>
     <div class="max-w-xl w-full mx-auto p-5 rounded-md bg-white mt-6 shadow-md">
         <h1 class="text-3xl text-center font-bold text-[#808080] mb-5">Register Form</h1>
         <form class="space-y-3" @submit.prevent="onSubmit">
@@ -28,20 +29,23 @@ const onSubmit = async () => {
                 placeholder="Username"
                 v-model="username"
             />
-            <p v-if="error?.username" class="text-red-500 my-1">{{ error?.username }}</p>
+            <BaseError v-if="error?.username">{{ error?.username }}</BaseError>
             <BaseInput
                 type="email"
                 placeholder="Email Address"
                 v-model="email"
             />
-            <p v-if="error?.email" class="text-red-500 my-1">{{ error?.email }}</p>
+            <BaseError v-if="error?.email">{{ error?.email }}</BaseError>
             <BaseInput
                 type="password"
                 placeholder="Password"
                 v-model="password"
             />
-            <p v-if="error?.password" class="text-red-500 my-1">{{ error?.password }}</p>
-            <BaseButton class-name="text-sm">Register</BaseButton>
+            <BaseError v-if="error?.password">{{ error?.password }}</BaseError>
+            <BaseButton class-name="text-sm">
+                <span v-if="!loading">Register</span>
+                <Loading v-if="loading"/>
+            </BaseButton>
         </form>
         <p class="mt-3 font-light text-[#929292] tracking-wide">Already have an account? <NuxtLink to="/login" class="hover:underline">Login</NuxtLink></p>
     </div>

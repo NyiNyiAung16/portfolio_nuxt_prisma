@@ -4,6 +4,7 @@
 
 <template>
     <div>
+        <Toaster/>
         <Banner/>
         <Expertise/>
         <ProjectsPreview/>

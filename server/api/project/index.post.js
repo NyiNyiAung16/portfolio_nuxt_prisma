@@ -1,5 +1,4 @@
-import path from 'path'
-// import fs, { ReadStream } from 'fs'
+
 
 export default defineEventHandler(async (event) => {
     const formData = await readMultipartFormData(event);
