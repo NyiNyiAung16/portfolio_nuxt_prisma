@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
 
     const { error } = signUpValidation(body);
 
-    if (Object.keys(error).length > 0) {
+    if (error && Object.keys(error).length > 0) {
       throw sendError(
         event,
         createError({

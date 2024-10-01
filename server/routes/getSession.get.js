@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
   }catch(e){
     throw createError({
       statusCode: e.statusCode,
-      statusMessage:  e.statusMessage
+      statusMessage:  e.message
     })
   }
 });

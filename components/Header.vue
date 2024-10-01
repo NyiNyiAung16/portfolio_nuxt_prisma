@@ -1,9 +1,11 @@
 <script setup>
+import { setToast } from "~/componsables/toastHelper.js";
 
-const { user, clear, session } = useUserSession();
+const { loggedIn, clear } = useUserSession();
 
 const logout = async () => {
     await clear();
+    setToast({ title: "Logout Successful🙌🙌", duration: 3000 } );
 }
 
 </script>
@@ -18,13 +20,13 @@ const logout = async () => {
             <li>
                 <NuxtLink href="/projects">Projects</NuxtLink>
             </li>
-            <li v-if="!user">
+            <li v-if="!loggedIn">
                 <NuxtLink href="/login">Login</NuxtLink>
             </li>
-            <li v-if="!user">
+            <li v-if="!loggedIn">
                 <NuxtLink href="/register">Register</NuxtLink>
             </li>
-            <li v-if="user"> 
+            <li v-if="loggedIn"> 
                 <p @click="logout" class="cursor-pointer">Logout</p>
             </li>
         </ul>

@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nuxt-auth-utils',
     'shadcn-nuxt',
+    'nuxt-file-storage',
   ],
   fontawesome: {
     icons: {

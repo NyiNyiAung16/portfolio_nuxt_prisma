@@ -9,8 +9,8 @@
         <div class="grid grid-cols-12 px-4 py-3 h-[88dvh]">
             <div class="col-span-3 flex flex-col gap-y-4">    
                 <NuxtLink href="/admin/dashboard">Dashboard</NuxtLink>
+                <NuxtLink href="/admin/users">Users</NuxtLink>
                 <NuxtLink href="/admin/project/create">Create Project</NuxtLink>
-                <NuxtLink href="/admin/project/overview/create">Create Project Overview</NuxtLink>
             </div>
             <div class="col-span-9 border-l border-zinc-500 px-4">
                 <slot/>

@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     const { error } = signInValidation(body);
 
-    if (Object.keys(error).length > 0) {
+    if (error && Object.keys(error).length > 0) {
       throw sendError(
         event,
         createError({

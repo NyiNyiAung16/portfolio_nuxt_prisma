@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setToast } from "~/componsables/setToast";
+import { setErrorToast, setToast } from "~/componsables/toastHelper.js";
 
 export const useAuth = defineStore("auth", () => {
   const { user, session, loggedIn, fetch, clear } = useUserSession();
@@ -16,24 +16,18 @@ export const useAuth = defineStore("auth", () => {
       await fetch();
 
       loading.value = false;
-      setToast({ title: "Welcome Back🥰🥰", duration: 3000 });
+      setToast({ title: `Welcome Back ${user?.value?.username}🥰🥰`, duration: 3000 });
 
-      if (response.status === 200 && response.statusText == "OK") {
-        return navigateTo("/", { replace: true });
-      }
+      return response;
     } catch (e) {
       loading.value = false;
-      error.value = e.response.data.data;
+      error.value = e.response?.data?.data;
 
       setErrorToast(e);
 
       setTimeout(() => {
         error.value = null;
       }, 3000);
-      throw createError({
-        statusCode: e.response.status,
-        statusMessage: e.response.statusText,
-      });
     }
   }
 
@@ -41,7 +35,7 @@ export const useAuth = defineStore("auth", () => {
     try {
       error.value = null;
       loading.value = true;
-      
+
       const response = await axios.post("/register", {
         username,
         email,
@@ -50,24 +44,22 @@ export const useAuth = defineStore("auth", () => {
       await fetch();
 
       loading.value = false;
-      setToast({ title: "Account Created", description:"Welcome to my website👋👋😍", duration: 3000 });
+      setToast({
+        title: "Account Created",
+        description: `Welcome to ${user?.value?.username}👋👋😍`,
+        duration: 3000,
+      });
 
-      if (response.status === 200 && response.statusText == "OK") {
-        return navigateTo("/", { replace: true });
-      }
+      return response;
     } catch (e) {
       loading.value = false;
-      error.value = e.response.data.data;
+      error.value = e.response?.data?.data;
 
       setErrorToast(e);
 
       setTimeout(() => {
         error.value = null;
       }, 3000);
-      throw createError({
-        statusCode: e.response.status,
-        statusMessage: e.response.statusText,
-      });
     }
   }
 
@@ -84,17 +76,6 @@ export const useAuth = defineStore("auth", () => {
   };
 });
 
-
-function setErrorToast(e){
-  const data = {
-    title: e.message,
-    description: e.response.statusText,
-    duration: 3000,
-    type: "background",
-    variant: "destructive",
-  };
-  setToast(data);
-}
 
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useAuth, import.meta.hot));

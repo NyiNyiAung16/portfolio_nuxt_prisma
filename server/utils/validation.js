@@ -47,6 +47,40 @@ function signInValidation(body) {
   return { error: errorObject, value };
 }
 
+function projectValidation(body) {
+  const schema = Joi.object({
+    title: Joi.string().required().messages({
+      "string.empty": "Title is required.",
+    }),
+    description: Joi.string().required().messages({
+      "string.empty": "Description is required.",
+    }),
+    youtube_link: Joi.string().required().messages({
+      "string.empty": "Youtube link is required.",
+    }),
+    tags: Joi.array().items(Joi.string().required()).required().messages({
+      "array.includesRequiredUnknowns": "Tag must contain at least one value",
+      "array.base": "Tags should be an array of strings",
+    }),
+    images_path: Joi.array()
+      .items(Joi.string().required())
+      .required()
+      .messages({
+        "array.includesRequiredUnknowns":
+          "FIle must contain at least one value",
+        "array.base": "Files should be an array of strings",
+      }),
+  });
+
+  const { error, value } = schema.validate(body, {
+    abortEarly: false,
+  });
+
+  const errorObject = makeErrorObject(error);
+
+  return { error: errorObject, value };
+}
+
 function makeErrorObject(error) {
   const errorMessages = {};
 
@@ -63,4 +97,4 @@ function makeErrorObject(error) {
   return errorMessages;
 }
 
-export { signUpValidation, signInValidation };
+export { signUpValidation, signInValidation, projectValidation };

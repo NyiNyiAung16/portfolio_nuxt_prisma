@@ -30,11 +30,11 @@ model Project {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
-  youtubeLink String
+  youtube_link String
   tags        String[]
   images_path String[]
   user        User      @relation(fields: [userId], references: [id])
-  userId      String    @unique @db.ObjectId
+  userId      String    @db.ObjectId
   comments    Comment[]
   createdAt   DateTime  @default(now())
 }

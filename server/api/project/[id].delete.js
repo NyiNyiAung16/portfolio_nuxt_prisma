@@ -1,14 +1,18 @@
-import prisma from "~/lib/prisma"
-
 export default defineEventHandler(async (event) => {
     try {
-        const users = await prisma.user.findMany();
-        
-        return users;
+        const id = event.context.params.id;
+
+        const project = await prisma.project.delete({
+            where: {
+                id : Number(id) 
+            },
+        });
+
+        return project;
     } catch (error) {
         throw createError({
             statusCode: error.statusCode || 500,
             statusMessage: error.message,
         })
-    }
+    }    
 })

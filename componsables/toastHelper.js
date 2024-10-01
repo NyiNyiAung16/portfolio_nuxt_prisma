@@ -12,3 +12,15 @@ export const setToast = (data) => {
         variant:data.variant || 'default',
     });
 }
+
+
+export function setErrorToast(e) {
+    const data = {
+      title: e.message,
+      description: e.response.statusText,
+      duration: 2000,
+      type: "background",
+      variant: "destructive",
+    };
+    setToast(data);
+}

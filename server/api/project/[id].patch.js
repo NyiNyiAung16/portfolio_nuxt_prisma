@@ -3,6 +3,7 @@ import { projectValidation } from "~/server/utils/validation";
 
 export default defineEventHandler(async (event) => {
     try {
+        const id = event.context.params.id;
         const body = await readBody(event);
         const { error } = projectValidation(body);
 
@@ -16,12 +17,15 @@ export default defineEventHandler(async (event) => {
               })
             );
         }
-        
-        const project = await prisma.project.create({
-            data: {...body,userId: event.context.user.id}
+
+        const project = await prisma.project.update({
+            where: {
+                id : Number(id) 
+            },
+            data: body
         });
-    
-        return project
+
+        return project;
     } catch (error) {
         throw createError({
             statusCode: error.statusCode || 500,
