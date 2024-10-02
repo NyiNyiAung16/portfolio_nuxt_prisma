@@ -1,12 +1,18 @@
 import prisma from "~/lib/prisma";
-import { signUpValidation } from "~/server/utils/validation";
 
 export default defineEventHandler(async (event) => {
   try {
     const id = event.context.params.id;
 
+    if(isValidObjectId(id) === false) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "Invalid ID",
+      })
+    }
+
     const body = await readBody(event);
-    const { error } = signUpValidation(body);
+    const { error } = validation(userSchema,body);
 
     if (error && Object.keys(error).length > 0) {
       throw sendError(
@@ -21,16 +27,18 @@ export default defineEventHandler(async (event) => {
 
     const user = await prisma.user.update({
       where: {
-        id: Number(id),
+        id,
       },
       data: body,
     });
 
     return user;
   } catch (error) {
-    throw createError({
-      statusCode: error.statusCode || 500,
-      statusMessage: error.message,
-    });
+    if(error instanceof Error) {
+      throw createError({
+        statusCode: error.statusCode || 500,
+        statusMessage: error.message,
+      });
+    }
   }
 });

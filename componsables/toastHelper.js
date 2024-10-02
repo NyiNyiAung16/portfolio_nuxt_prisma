@@ -17,7 +17,7 @@ export const setToast = (data) => {
 export function setErrorToast(e) {
     const data = {
       title: e.message,
-      description: e.response.statusText,
+      description: e.response?.statusText || 'Something went wrong',
       duration: 2000,
       type: "background",
       variant: "destructive",

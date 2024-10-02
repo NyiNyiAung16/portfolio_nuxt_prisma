@@ -10,6 +10,10 @@ const { isCoverFlow } = defineProps({
     isCoverFlow: {
         type: Boolean,
         default: true
+    },
+    images: {
+        type: Array,
+        required: true
     }
 });
 
@@ -45,8 +49,8 @@ const handleClick = (event) => {
         :loop="isCoverFlow"
         @click="handleClick"
     >
-        <SwiperSlide v-for="num in 8" :key="num">
-            <img :src="`/photos/${num}.jpg`" class="w-full h-[350px] object-cover rounded-md" alt="image">
+        <SwiperSlide v-for="image in images" :key="image">
+            <img :src="`/project/photos/${image}`" class="w-full h-[350px] object-cover rounded-md" :alt="`image ${image}`">
         </SwiperSlide>
     </Swiper>
 </template>

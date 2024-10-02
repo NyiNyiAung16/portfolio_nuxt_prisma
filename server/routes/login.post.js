@@ -1,12 +1,11 @@
 import prisma from "~/lib/prisma";
 import bcrypt from "bcrypt";
 import createToken from "~/componsables/createToken.js";
-import { signInValidation } from "../utils/validation.js";
 
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
-    const { error } = signInValidation(body);
+    const { error } = validation(signInSchema,body);
 
     if (error && Object.keys(error).length > 0) {
       throw sendError(

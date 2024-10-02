@@ -11,9 +11,11 @@ export default defineEventHandler(async (event) => {
     
         return filesPaths;
     }catch(e){
-        throw createError({
-            statusCode: e.statusCode,
-            statusMessage:  e.message
-        })
+        if(e instanceof Error) {
+            throw createError({
+                statusCode: e.statusCode,
+                statusMessage:  e.message
+            })
+        }
     }
 })

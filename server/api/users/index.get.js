@@ -6,9 +6,11 @@ export default defineEventHandler(async (event) => {
         
         return users;
     } catch (error) {
-        throw createError({
-            statusCode: error.statusCode || 500,
-            statusMessage: error.message,
-        })
+        if(error instanceof Error) {
+            throw createError({
+                statusCode: error.statusCode || 500,
+                statusMessage: error.message,
+            })
+        }
     }
 })

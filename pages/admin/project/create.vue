@@ -48,7 +48,7 @@ const onSubmit = async () => {
     images_path: null,
   };
 
-  const response = await projectsStore.createProject(data, files.value);
+  const response = await projectsStore.create(data, files.value);
 
   if(response.status === 200 && response.statusText == "OK"){
     title.value = '';
@@ -63,7 +63,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <div class="max-w-lg mx-auto">
+  <div class="max-w-xl mx-auto border border-slate-200 rounded-md shadow-md px-6 py-4">
     <h1 class="text-xl font-bold text-center mb-4 text-[#808080]">
       Create Project
     </h1>

@@ -1,10 +1,18 @@
 import prisma from "~/lib/prisma";
-import { projectValidation } from "~/server/utils/validation";
 
 export default defineEventHandler(async (event) => {
     try {
+        const userId = event.context?.user?.id;
+
+        if(userId === undefined){
+            throw createError({
+                statusCode: 401,
+                statusMessage: "Unauthorized",
+            })
+        }
+
         const body = await readBody(event);
-        const { error } = projectValidation(body);
+        const { error } = validation(projectSchema,body);
 
         if (error && Object.keys(error).length > 0) {
             throw sendError(
@@ -23,9 +31,11 @@ export default defineEventHandler(async (event) => {
     
         return project
     } catch (error) {
-        throw createError({
-            statusCode: error.statusCode || 500,
-            statusMessage: error.message,
-        })
+        if(error instanceof Error) {
+            throw createError({
+                statusCode: error.statusCode || 500,
+                statusMessage: error.message,
+            })
+        }
     }
 })

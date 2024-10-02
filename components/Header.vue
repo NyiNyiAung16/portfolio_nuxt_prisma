@@ -1,7 +1,7 @@
 <script setup>
 import { setToast } from "~/componsables/toastHelper.js";
 
-const { loggedIn, clear } = useUserSession();
+const { loggedIn, clear, user } = useUserSession();
 
 const logout = async () => {
     await clear();
@@ -19,6 +19,9 @@ const logout = async () => {
             </li>
             <li>
                 <NuxtLink href="/projects">Projects</NuxtLink>
+            </li>
+            <li v-if="user?.role === 'ADMIN'">
+                <NuxtLink href="/admin/dashboard">Dashboard</NuxtLink>
             </li>
             <li v-if="!loggedIn">
                 <NuxtLink href="/login">Login</NuxtLink>
