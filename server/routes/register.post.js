@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
         event,
         createError({
           statusCode: 400,
-          statusMessage: "Validation failed",
+          statusText: "Validation failed",
           data: error || {},
         })
       );
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
     if (userExists) {
       throw createError({
         statusCode: 400,
-        statusMessage: "User already exists",
+        statusText: "User already exists",
       });
     }
 
@@ -62,7 +62,7 @@ export default defineEventHandler(async (event) => {
     if (error instanceof Error) {
       throw createError({
         statusCode: error.statusCode,
-        statusMessage: error.message,
+        statusText: error.message,
       });
     }
   }

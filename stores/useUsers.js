@@ -2,114 +2,92 @@ import axios from "axios";
 import { setErrorToast, setToast } from "~/componsables/toastHelper";
 
 export const useUsersStore = defineStore("users", () => {
-    const users = ref(null);
-    const user = ref(null);
-    const loading = ref(false);
-    const error = ref(null);
+  const users = ref(null);
+  const user = ref(null);
+  const loading = ref(false);
+  const error = ref(null);
 
-    const get = async function () {
-        try {
-            error.value = null;
-            loading.value = true;
+  const get = async function () {
+    try {
+      error.value = null;
+      loading.value = true;
 
-            const response = await axios.get("/api/users");
+      const response = await axios.get("/api/users");
+      users.value = response.data;
 
-            users.value = response.data;
-            loading.value = false;
-
-            return response;
-        } catch (e) {
-            loading.value = false;
-            error.value = e.response?.data?.data;
-
-            setErrorToast(e);
-
-            setTimeout(() => {
-                error.value = null;
-            }, 3000);
-        }
+      loading.value = false;
+      return response;
+    } catch (e) {
+      loading.value = false;
+      setErrorToast(e);
     }
+  };
 
-    const show = async (id) =>  {
-        try {
-            error.value = null;
-            loading.value = true;
+  const show = async (id) => {
+    try {
+      error.value = null;
+      loading.value = true;
 
-            const response = await axios.get(`/api/users/${id}`);
+      const response = await axios.get(`/api/users/${id}`);
 
-            user.value = response.data;
-            loading.value = false;
+      user.value = response.data;
+      loading.value = false;
 
-            return response;
-        } catch (e) {
-            loading.value = false;
-            error.value = e.response?.data?.data;
-
-            setErrorToast(e);
-
-            setTimeout(() => {
-                error.value = null;
-            }, 3000);
-        }
+      return response;
+    } catch (e) {
+      loading.value = false;
+      setErrorToast(e);
     }
+  };
 
+  const update = async (id, data) => {
+    try {
+      error.value = null;
+      loading.value = true;
 
-    const update = async (id,data) => {
-        try {
-            error.value = null;
-            loading.value = true;
+      const response = await axios.patch(`/api/users/${id}`, data);
 
-            const response = await axios.patch(`/api/users/${id}`,data);
+      await get();
 
-            user.value = response.data;
-            loading.value = false;
+      loading.value = false;
+      return response;
+    } catch (e) {
+      loading.value = false;
+      error.value = e.response?.data?.data;
 
-            return response;
-        } catch (e) {
-            loading.value = false;
-            error.value = e.response?.data?.data;
+      setErrorToast(e);
 
-            setErrorToast(e);
-
-            setTimeout(() => {
-                error.value = null;
-            }, 3000);
-        }
+      setTimeout(() => {
+        error.value = null;
+      }, 3000);
     }
+  };
 
+  const destroy = async (id) => {
+    try {
+      error.value = null;
+      loading.value = true;
 
-    const destroy = async (id) => {
-        try {
-            error.value = null;
-            loading.value = true;
+      const response = await axios.delete(`/api/users/${id}`);
 
-            const response = await axios.delete(`/api/users/${id}`);
+      loading.value = false;
+      setToast({ title: "User deleted successfully👏", duration: 3000 });
 
-            loading.value = false;
-            setToast({ title: "User deleted successfully👏", duration: 3000 });
-
-            return response;
-        } catch (e) {
-            loading.value = false;
-            error.value = e.response?.data?.data;
-
-            setErrorToast(e);
-
-            setTimeout(() => {
-                error.value = null;
-            }, 3000);
-        }
+      return response;
+    } catch (e) {
+      loading.value = false;
+      setErrorToast(e);
     }
+  };
 
-
-    return {
-        users,
-        user,
-        loading,
-        error,
-        get,
-        show,
-        update,
-        destroy
-    }
+  return {
+    users,
+    user,
+    loading,
+    error,
+    get,
+    show,
+    update,
+    destroy,
+  };
 });

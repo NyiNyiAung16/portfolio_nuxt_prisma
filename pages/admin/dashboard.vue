@@ -9,6 +9,10 @@ onMounted(async () => {
     await projectsStore.get();
 });
 
+const deleteProject = async (id) => {
+    await projectsStore.destroy(id);
+}
+
 </script>
 
 
@@ -17,7 +21,7 @@ onMounted(async () => {
         <div v-if="loading">
             <Loading class="mx-auto"/>
         </div>
-        <BaseTable>
+        <BaseTable v-if="projects?.data && !loading">
             <template #header>
                     <thead class="text-xs text-gray-700 uppercase bg-gray-100">
                     <tr>
@@ -38,7 +42,7 @@ onMounted(async () => {
             </template>
             <template #body>
                 <tbody>
-                    <tr v-for="project in projects" :key="project.id" class="bg-white border-b hover:bg-gray-50 ">
+                    <tr v-for="project in projects?.data" :key="project.id" class="bg-white border-b hover:bg-gray-50 ">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {{ project.title }}
                         </th>
@@ -51,13 +55,16 @@ onMounted(async () => {
                             </div>
                         </td>
                         <td class="px-6 py-4 space-x-2">
-                            <a href="#" class="font-medium text-blue-600  hover:underline">Edit</a>
-                            <a href="#" class="font-medium text-red-600  hover:underline">Delete</a>
+                            <EditProjectDialog :project="project"/>
+                            <a href="#" class="font-medium text-red-600  hover:underline" @click="deleteProject(project.id)">Delete</a>
                         </td>
                     </tr>
                 </tbody>
             </template>
         </BaseTable>
+        <div class="flex items-center justify-end px-10" v-if="projects?.data.length > 0">
+            <Pagination :items="projects" @update-page="projectsStore.get($event)"/>
+        </div>
     </div>
 </template>
 

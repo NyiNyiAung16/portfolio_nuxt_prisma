@@ -8,14 +8,14 @@ export default defineEventHandler(async (event) => {
         if(isValidObjectId(id) === false) {
             throw createError({
                 statusCode: 400,
-                statusMessage: "Invalid ID",
+                statusText: "Invalid ID",
             })
         }
 
         if(!userId){
             throw createError({
                 statusCode: 401,
-                statusMessage: "Unauthorized",
+                statusText: "Unauthorized",
             })
         }
         
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
               event,
               createError({
                 statusCode: 400,
-                statusMessage: "Validation failed",
+                statusText: "Validation failed",
                 data: error || {},
               })
             );
@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
         if(error instanceof Error) {
             throw createError({
                 statusCode: error.statusCode || 500,
-                statusMessage: error.message,
+                statusText: error.message,
             })
         }
     }

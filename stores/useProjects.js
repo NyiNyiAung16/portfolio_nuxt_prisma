@@ -7,16 +7,15 @@ export const useProjectsStore = defineStore("projects", () => {
   const loading = ref(false);
   const error = ref(null);
 
-  async function get() {
+  async function get(page) {
     try {
       error.value = null;
       loading.value = true;
 
-      const response = await axios.get("/api/projects");
-
-      loading.value = false;
+      const response = await axios.get(`/api/projects?page=${page}`);
       projects.value = response.data;
       
+      loading.value = false;
       return response;
     } catch (e) {
       loading.value = false;
@@ -60,7 +59,7 @@ export const useProjectsStore = defineStore("projects", () => {
       const filesResponse = await axios.post('/api/files',{ files });
       data.images_path = filesResponse.data;
 
-      const response = await axios.post("/api/project", data);
+      const response = await axios.post("/api/projects", data);
 
       loading.value = false;
       setToast({ title: "Project created successfully👏" , duration: 3000});
@@ -79,6 +78,53 @@ export const useProjectsStore = defineStore("projects", () => {
   }
 
 
+  const update = async (id,data,files) => {
+    try {
+      error.value = null;
+      loading.value = true;
+      
+      if(files) {
+        const filesResponse = await axios.post('/api/files',{ files });
+        data.images_path = filesResponse.data;
+      }
+
+      const response = await axios.patch(`/api/projects/${id}`,data);
+
+      await get();
+
+      loading.value = false;
+      return response;
+    } catch (e) {
+      loading.value = false;
+      error.value = e.response?.data?.data;
+
+      setErrorToast(e);
+
+      setTimeout(() => {
+        error.value = null;
+      }, 3000);
+      return e;
+    }
+  }
+
+
+  const destroy = async (id) => {
+    try {
+      loading.value = true;
+
+      const response = await axios.delete(`/api/projects/${id}`);
+      
+      await get();
+
+      loading.value = false;
+      return response;
+    } catch (e) {
+      console.log(e)
+      loading.value = false;
+      setErrorToast(e);
+    }
+  }
+
   return {
     projects,
     project,
@@ -86,6 +132,8 @@ export const useProjectsStore = defineStore("projects", () => {
     error,
     create,
     get,
-    show
+    show,
+    update,
+    destroy
   };
 });

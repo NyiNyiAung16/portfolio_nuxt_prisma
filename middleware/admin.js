@@ -4,7 +4,7 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
     if(user?.value?.role !== 'ADMIN') {
         throw createError({
             statusCode: 403,    
-            statusMessage: 'Unauthorized'
+            statusText: 'Unauthorized'
         })
     }
 })

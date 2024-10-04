@@ -36,6 +36,7 @@ export const useCommentsStore = defineStore("comments", () => {
 
       return response;
     } catch (e) {
+      console.log(e);
       loading.value = false;
       error.value = e.response?.data?.data;
 

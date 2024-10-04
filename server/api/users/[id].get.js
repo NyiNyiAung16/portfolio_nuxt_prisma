@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
         if(isValidObjectId(id) === false) {
             throw createError({
                 statusCode: 400,    
-                statusMessage: "Invalid ID",
+                statusText: "Invalid ID",
             })
         }
 
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
         if(error instanceof Error) {
             throw createError({
                 statusCode: error.statusCode || 500,
-                statusMessage: error.message,
+                statusText: error.message,
             })
         }
     }    

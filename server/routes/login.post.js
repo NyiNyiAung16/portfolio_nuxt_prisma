@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
         event,
         createError({
           statusCode: 400,
-          statusMessage: "Validation failed",
+          statusText: "Validation failed",
           data: error || {},
         })
       );
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
     if (!user) {
       throw createError({
         statusCode: 400,
-        statusMessage: "User is not exists",
+        statusText: "User is not exists",
       });
     }
 
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
     if (!match) {
       throw createError({
         statusCode: 400,
-        statusMessage: "Password does not match",
+        statusText: "Password does not match",
       });
     }
 
@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
     if (error instanceof Error) {
       throw createError({
         statusCode: error.statusCode,
-        statusMessage: error.message,
+        statusText: error.message,
       });
     }
   }

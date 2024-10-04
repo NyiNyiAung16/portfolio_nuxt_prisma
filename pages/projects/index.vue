@@ -5,19 +5,21 @@ const { projects, loading } = storeToRefs(projectsStore);
 onMounted(async () => {
   await projectsStore.get();
 });
+
+
 </script>
 
 <template>
   <div>
     <div
       class="grid grid-cols-9 gap-5 items-center justify-center px-10 pb-10 mt-7"
-      v-if="projects && projects.length > 0"
+      v-if="projects?.data && projects?.data.length > 0"
     >
        <!-- Skeleton Feature -->
-      <SkeletonCard v-for="project in projects" :key="project.id" v-show="loading"/>
+      <SkeletonCard v-for="project in projects?.data" :key="project.id" v-show="loading && projects?.data"/>
 
       <div
-        v-for="project in projects"
+        v-for="project in projects?.data"
         :key="project.id"
         class="col-span-3 bg-[#eaeaea] rounded"
         v-show="!loading"
@@ -38,6 +40,9 @@ onMounted(async () => {
           </p>
         </div>
       </div>
+    </div>
+    <div class="flex items-center justify-end px-10" v-if="projects?.data">
+      <Pagination :items="projects" @update-page="projectsStore.get($event)"/>
     </div>
   </div>
 </template>

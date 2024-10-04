@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     if (!session) {
       throw createError({
         statusCode: 400,
-        statusMessage: 'Session is invalid'
+        statusText: 'Session is invalid'
       })
     }
 
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
   }catch(e){
     throw createError({
       statusCode: e.statusCode,
-      statusMessage:  e.message
+      statusText:  e.message
     })
   }
 });

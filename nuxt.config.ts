@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   ],
   fontawesome: {
     icons: {
-      solid: ['trash','arrow-right','xmark']
+      solid: ['trash','arrow-right','xmark','arrow-up','arrow-down']
     }
   },
 

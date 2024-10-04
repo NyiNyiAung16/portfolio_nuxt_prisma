@@ -6,7 +6,16 @@ const { users, loading } = storeToRefs(usersStore);
 
 onMounted(async () => {
   await usersStore.get();
-})
+});
+
+
+const deleteUser = async (id) => {
+  let response = await usersStore.destroy(id);
+  if(response) {
+    const deletedUser = response?.data;
+    users.value = users.value.filter((user) => user.id !== deletedUser.id);
+  }
+}
 
 </script>
 
@@ -15,7 +24,7 @@ onMounted(async () => {
     <div v-if="loading">
       <Loading class="mx-auto" />
     </div>
-    <BaseTable>
+    <BaseTable v-if="users && !loading">
       <template #header>
         <thead class="text-xs text-gray-700 uppercase bg-gray-100">
           <tr>
@@ -45,13 +54,11 @@ onMounted(async () => {
             <td class="px-6 py-4 space-x-2">
               {{ user.role }}
             </td>
-            <td class="px-6 py-4 space-x-2">
-              <a href="#" class="font-medium text-blue-600 hover:underline"
-                >Edit</a
-              >
-              <a href="#" class="font-medium text-red-600 hover:underline"
-                >Delete</a
-              >
+            <td class="px-6 py-4 space-x-2 flex">
+            <EditUserDialog :user="user"/>
+              <p class="font-medium text-red-600 hover:underline cursor-pointer" @click="deleteUser(user.id)">
+                Delete
+              </p>
             </td>
           </tr>
         </tbody>

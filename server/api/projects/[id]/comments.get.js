@@ -7,7 +7,7 @@ export default defineEventHandler(async (event)  => {
         if(isValidObjectId(projectId) === false) {
             throw createError({
                 statusCode: 400,    
-                statusMessage: "Invalid ID",
+                statusText: "Invalid ID",
             })
         }
 
@@ -22,6 +22,9 @@ export default defineEventHandler(async (event)  => {
                         email: true
                     }
                 },
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         });
 
@@ -30,7 +33,7 @@ export default defineEventHandler(async (event)  => {
         if(error instanceof Error) {
             throw createError({
                 statusCode: error.statusCode,
-                statusMessage: error?.message
+                statusText: error?.message
             })
         }
     }    
