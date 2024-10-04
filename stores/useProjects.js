@@ -2,10 +2,12 @@ import axios from "axios";
 import { setErrorToast, setToast } from "~/componsables/toastHelper.js";
 
 export const useProjectsStore = defineStore("projects", () => {
-  const projects = ref(null);
+  const pagination = ref(null);
   const project = ref(null);
   const loading = ref(false);
   const error = ref(null);
+
+  const projects = computed(() => pagination.value?.data);
 
   async function get(page) {
     try {
@@ -13,7 +15,7 @@ export const useProjectsStore = defineStore("projects", () => {
       loading.value = true;
 
       const response = await axios.get(`/api/projects?page=${page}`);
-      projects.value = response.data;
+      pagination.value = response.data;
       
       loading.value = false;
       return response;
@@ -130,6 +132,7 @@ export const useProjectsStore = defineStore("projects", () => {
     project,
     loading,
     error,
+    pagination,
     create,
     get,
     show,

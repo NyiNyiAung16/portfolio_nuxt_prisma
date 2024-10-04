@@ -2,18 +2,20 @@ import axios from "axios";
 import { setErrorToast, setToast } from "~/componsables/toastHelper";
 
 export const useUsersStore = defineStore("users", () => {
-  const users = ref(null);
+  const pagination = ref(null);
   const user = ref(null);
   const loading = ref(false);
   const error = ref(null);
 
-  const get = async function () {
+  const users = computed(() => pagination.value?.data);
+
+  const get = async function (page) {
     try {
       error.value = null;
       loading.value = true;
 
-      const response = await axios.get("/api/users");
-      users.value = response.data;
+      const response = await axios.get(`/api/users?page=${page}`);
+      pagination.value = response.data;
 
       loading.value = false;
       return response;
@@ -43,16 +45,11 @@ export const useUsersStore = defineStore("users", () => {
   const update = async (id, data) => {
     try {
       error.value = null;
-      loading.value = true;
 
       const response = await axios.patch(`/api/users/${id}`, data);
 
-      await get();
-
-      loading.value = false;
       return response;
     } catch (e) {
-      loading.value = false;
       error.value = e.response?.data?.data;
 
       setErrorToast(e);
@@ -85,6 +82,7 @@ export const useUsersStore = defineStore("users", () => {
     user,
     loading,
     error,
+    pagination,
     get,
     show,
     update,

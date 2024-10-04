@@ -2,7 +2,7 @@
 definePageMeta({ layout: 'admin-layout' });
 
 const usersStore = useUsersStore();
-const { users, loading } = storeToRefs(usersStore);
+const { users, loading, pagination } = storeToRefs(usersStore);
 
 onMounted(async () => {
   await usersStore.get();
@@ -64,5 +64,8 @@ const deleteUser = async (id) => {
         </tbody>
       </template>
     </BaseTable>
+    <div class="flex items-center justify-end px-10" v-if="users">
+      <Pagination :items="pagination" @update-page="usersStore.get($event)"/>
+    </div>
   </div>
 </template>

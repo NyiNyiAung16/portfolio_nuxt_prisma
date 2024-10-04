@@ -18,6 +18,7 @@ export default defineEventHandler(async (event)  => {
             include: {
                 user: {
                     select: {
+                        id: true,
                         username: true,
                         email: true
                     }

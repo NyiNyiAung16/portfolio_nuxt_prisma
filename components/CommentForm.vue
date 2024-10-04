@@ -14,7 +14,7 @@ const content = ref("");
 const active = ref(false);
 
 const commentsStore = useCommentsStore();
-const { loading, error, comments } = storeToRefs(commentsStore);
+const { loading, error } = storeToRefs(commentsStore);
 
 const onSubmit = async () => {
     const data = {
@@ -22,7 +22,10 @@ const onSubmit = async () => {
         userId: user.value.id,
         projectId: projectId
     }
-    await commentsStore.create(data);
+   let response =  await commentsStore.create(data);
+   if(response) {
+       content.value = "";
+   }
 }
 
 </script>
@@ -39,7 +42,7 @@ const onSubmit = async () => {
         <FontAwesome icon="arrow-down" v-show="!active"/>
       </button>
       <form class="space-y-2 mt-5" @submit.prevent="onSubmit" v-show="active">
-        <BaseTextarea v-model="content" placeholder="Write your comment" />
+        <BaseTextarea v-model="content" placeholder="Write your thougth.." />
         <BaseError v-if="error?.content">{{ error?.content }}</BaseError>
         <BaseButton type="submit" class-name="text-sm" :disabled="loading">
           <span v-if="!loading">Create</span>

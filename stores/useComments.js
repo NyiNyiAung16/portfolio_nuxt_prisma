@@ -45,21 +45,18 @@ export const useCommentsStore = defineStore("comments", () => {
       setTimeout(() => {
         error.value = null;
       }, 3000);
-    } 
+    }
   };
   const update = async (id, data) => {
     try {
       error.value = null;
-      loading.value = true;
-
       const response = await axios.patch(`/api/comments/${id}`, data);
-      
-      await get(data.projectId);
 
-      loading.value = false;
+      // await get(data.projectId);
+
+      setToast({ title: "Comment updated successfully👏" });
       return response;
     } catch (e) {
-      loading.value = false;
       error.value = e.response?.data?.data;
 
       setErrorToast(e);
@@ -75,11 +72,8 @@ export const useCommentsStore = defineStore("comments", () => {
       const response = await axios.delete(
         `/api/comments/${commentId}/projects/${projectId}`
       );
-      const deletedComment = response?.data;
 
-      comments.value = comments.value.filter(
-        (comment) => comment.id !== deletedComment.id
-      );
+      setToast({ title: "Comment deleted successfully👏", duration: 1500 });
 
       return response;
     } catch (e) {
@@ -94,6 +88,6 @@ export const useCommentsStore = defineStore("comments", () => {
     get,
     update,
     create,
-    destroy
+    destroy,
   };
 });
