@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
         }
 
         const page = Number(getQuery(event)?.page) || 1;
-        const limit = 1;
+        const limit = 6;
         const skip = (page - 1) * limit;
 
 

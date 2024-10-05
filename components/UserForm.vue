@@ -48,7 +48,7 @@ const onSubmit = async (e) => {
       <BaseError v-if="error?.email">{{ error?.email }}</BaseError>
       <BaseSelect label="Role" v-model="role" :options="['USER', 'ADMIN']" />
       <BaseError v-if="error?.password">{{ error?.password }}</BaseError>
-      <BaseButton class-name="text-sm" :disabled="loading">
+      <BaseButton type="submit" class-name="text-sm" :disabled="loading">
         <span v-if="!loading">Save Changes</span>
         <Loading v-if="loading" />
       </BaseButton>

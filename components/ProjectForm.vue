@@ -2,51 +2,51 @@
 import { useFile } from "~/componsables/useFile";
 
 const { project } = defineProps({
-    project: {
-        type:Object
-    }
+  project: {
+    type: Object,
+  },
 });
 
-const emits = defineEmits(['close']);
-
+const emits = defineEmits(["close"]);
 
 const { handleFileInput, files } = useFileStorage();
 
 const projectsStore = useProjectsStore();
-
 const { error, loading } = storeToRefs(projectsStore);
 
-//project 
-const localProject = ref({...project});
+//project
+const localProject = ref({ ...project });
 
-const title = ref(localProject?.value?.title || "");
-const description = ref(localProject?.value?.description || "");
-const tags = ref( [...localProject?.value?.tags] || []);
+const title = ref(localProject.value?.title || "");
+const description = ref(localProject.value?.description || "");
+const tags = ref([...localProject.value?.tags] || []);
+const youtubeLink = ref(localProject.value?.youtube_link || "");
+const previewImages = ref(
+  localProject.value?.images_path
+    ? localProject.value?.images_path.map(
+        (image) => `/project/photos/${image}`
+      )
+    : []
+);
+const images_path = ref(localProject.value?.images_path || []);
 const tag = ref("");
-const youtubeLink = ref( localProject?.value?.youtube_link || "");
-const previewImages = ref( localProject?.value?.images_path ? localProject?.value?.images_path.map((image) => `/project/photos/${image}`) : []);
-const images_path = ref( localProject?.value?.images_path || []);
 
 const onChange = async (files) => {
   previewImages.value = [];
-
   await handleFileInput(files);
-
   const { tempPreviewImages } = await useFile(files);
-
   previewImages.value = tempPreviewImages;
 };
 
 const addTag = (val) => {
   if (!val.trim() || tags.value.includes(val)) return;
-  
+
   tags.value.push(val.trim());
   tag.value = "";
 };
 
-const onClick = (val) => {
+const onDeleteTag = (val) => {
   tags.value = tags.value.filter((tag) => tag != val);
-  ``;
 };
 
 const onSubmit = async () => {
@@ -58,33 +58,38 @@ const onSubmit = async () => {
     images_path: images_path.value,
   };
 
-  console.log(data);
-  
-  let response = localProject.value ? 
-  await projectsStore.update(localProject.value.id,data,files.value) 
-  : 
-  await projectsStore.create(data, files.value);
-  
+  console.log(data)
+
+  let response = Object.keys(localProject.value).length > 0
+    ? await projectsStore.update(localProject.value.id, data, files.value)
+    : await projectsStore.create(data, files.value);
+
   if (response.status === 200 && response?.statusText == "OK") {
+    console.log('hit')
     title.value = "";
     description.value = "";
     youtubeLink.value = "";
     tags.value = [];
     previewImages.value = [];
     files.value = [];
-    emits('close')
+    emits("close");
+  }else {
+    console.log(response)
   }
 };
-
 </script>
 
 <template>
   <div
     :class="{
-      'max-w-xl mx-auto border border-slate-200 rounded-md shadow-md px-6 py-4': !project,
+      'max-w-xl mx-auto border border-slate-200 rounded-md shadow-md px-6 py-4':
+        !project,
     }"
   >
-    <h1 v-if="!project" class="text-xl font-bold text-center mb-4 text-[#808080]">
+    <h1
+      v-if="!project"
+      class="text-xl font-bold text-center mb-4 text-[#808080]"
+    >
       <span>Create Project</span>
     </h1>
     <form class="space-y-3" @submit.prevent.self="onSubmit">
@@ -116,7 +121,7 @@ const onSubmit = async () => {
           <FontAwesome
             icon="xmark"
             class="absolute top-0 right-0 cursor-pointer hover:text-red-500 duration-150"
-            @click="onClick(tag)"
+            @click="onDeleteTag(tag)"
           />
         </div>
       </div>
@@ -149,7 +154,7 @@ const onSubmit = async () => {
         </div>
       </div>
       <BaseButton class-name="text-sm" type="submit" :disabled="loading">
-        <span v-if="!loading">{{ project ? 'Save Changes' : 'Create'}}</span>
+        <span v-if="!loading">{{ project ? "Save Changes" : "Create" }}</span>
         <Loading v-if="loading" />
       </BaseButton>
     </form>

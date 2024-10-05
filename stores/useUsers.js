@@ -7,7 +7,14 @@ export const useUsersStore = defineStore("users", () => {
   const loading = ref(false);
   const error = ref(null);
 
-  const users = computed(() => pagination.value?.data);
+  const users = computed({
+    get() {
+      return pagination.value?.data;
+    },
+    set(newValue) {
+      pagination.value.data = newValue;
+    }
+  });
 
   const get = async function (page) {
     try {
@@ -45,11 +52,14 @@ export const useUsersStore = defineStore("users", () => {
   const update = async (id, data) => {
     try {
       error.value = null;
+      loading.value = true;
 
       const response = await axios.patch(`/api/users/${id}`, data);
 
+      loading.value = false;
       return response;
     } catch (e) {
+      loading.value = false;
       error.value = e.response?.data?.data;
 
       setErrorToast(e);

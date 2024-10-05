@@ -5,7 +5,7 @@ import ProjectForm from '~/components/ProjectForm.vue';
 </script>
 
 <template>
-  <div>
+  <div class="py-5">
     <ProjectForm/>
   </div>
 </template>
