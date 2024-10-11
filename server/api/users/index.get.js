@@ -2,6 +2,8 @@ import prisma from "~/lib/prisma"
 
 export default defineEventHandler(async (event) => {
     try {
+        hasUser(event.context?.user);
+
         const page = Number(getQuery(event)?.page) || 1;
         const limit = 6;
         const skip = (page - 1) * limit;
@@ -25,11 +27,6 @@ export default defineEventHandler(async (event) => {
             pages,
         };
     } catch (error) {
-        if(error instanceof Error) {
-            throw createError({
-                statusCode: error.statusCode || 500,
-                statusText: error.message,
-            })
-        }
+        throwError(error);
     }
 })

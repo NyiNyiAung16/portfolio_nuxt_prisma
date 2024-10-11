@@ -7,7 +7,7 @@ const { toasts } = useToast()
 </script>
 
 <template>
-  <div>
+  <div v-bind="$attrs">
     <ToastProvider>
       <Toast v-for="toast in toasts" :key="toast.id" v-bind="toast">
         <div class="grid gap-1">

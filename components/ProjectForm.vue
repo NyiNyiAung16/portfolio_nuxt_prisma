@@ -14,21 +14,19 @@ const { handleFileInput, files } = useFileStorage();
 const projectsStore = useProjectsStore();
 const { error, loading } = storeToRefs(projectsStore);
 
-//project
-const localProject = ref({ ...project });
+//project destructured
+const localProject = ref({ ...project } || {});
 
-const title = ref(localProject.value?.title || "");
-const description = ref(localProject.value?.description || "");
-const tags = ref([...localProject.value?.tags] || []);
-const youtubeLink = ref(localProject.value?.youtube_link || "");
-const previewImages = ref(
-  localProject.value?.images_path
-    ? localProject.value?.images_path.map(
-        (image) => `/project/photos/${image}`
-      )
-    : []
-);
-const images_path = ref(localProject.value?.images_path || []);
+const hasProject = computed(() => {
+  return Object.keys(localProject.value).length > 0;
+});
+
+const title = ref("");
+const description = ref("");
+const tags = ref([]);
+const youtubeLink = ref("");
+const previewImages = ref([]);
+const images_path = ref([]);
 const tag = ref("");
 
 const onChange = async (files) => {
@@ -58,36 +56,44 @@ const onSubmit = async () => {
     images_path: images_path.value,
   };
 
-  console.log(data)
-
-  let response = Object.keys(localProject.value).length > 0
+  const response = Object.keys(localProject.value).length > 0
     ? await projectsStore.update(localProject.value.id, data, files.value)
     : await projectsStore.create(data, files.value);
 
-  if (response.status === 200 && response?.statusText == "OK") {
-    console.log('hit')
-    title.value = "";
-    description.value = "";
-    youtubeLink.value = "";
-    tags.value = [];
-    previewImages.value = [];
-    files.value = [];
+  if (response.status === 200 && response.statusText === "OK") {
+    resetForm();
     emits("close");
-  }else {
-    console.log(response)
   }
 };
+const resetForm = () => {
+  title.value = "";
+  description.value = "";
+  youtubeLink.value = "";
+  tags.value = [];
+  previewImages.value = [];
+  files.value = [];
+};
+
+
+if(Object.keys(localProject.value).length > 0){
+  title.value = localProject.value.title;
+  description.value = localProject.value.description;
+  youtubeLink.value = localProject.value.youtube_link;
+  tags.value = [...localProject.value.tags];
+  images_path.value = [...localProject.value.images_path];
+  previewImages.value = images_path.value.map((image) => `/project/photos/${image}`);
+}
 </script>
 
 <template>
   <div
     :class="{
       'max-w-xl mx-auto border border-slate-200 rounded-md shadow-md px-6 py-4':
-        !project,
+        !hasProject,
     }"
   >
     <h1
-      v-if="!project"
+      v-if="!hasProject"
       class="text-xl font-bold text-center mb-4 text-[#808080]"
     >
       <span>Create Project</span>
@@ -153,11 +159,12 @@ const onSubmit = async () => {
           />
         </div>
       </div>
-      <BaseButton class-name="text-sm" type="submit" :disabled="loading">
-        <span v-if="!loading">{{ project ? "Save Changes" : "Create" }}</span>
-        <Loading v-if="loading" />
+      <BaseButton class-name="text-sm" type="submit" :disabled="loading.value">
+        <span v-if="!loading.value">{{
+          project ? "Save Changes" : "Create"
+        }}</span>
+        <Loading v-if="loading.value" />
       </BaseButton>
     </form>
-    <Toaster />
   </div>
 </template>

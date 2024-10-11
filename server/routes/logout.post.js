@@ -1,5 +1,9 @@
 export default defineEventHandler(async (event) => {
-    await clearUserSession(event);
-
-    setResponseStatus(event, 200, 'Session deleted');
+    try {
+        await clearUserSession(event);
+    
+        setResponseStatus(event, 200, 'Session deleted');
+    } catch (error) {
+        throwError(error);
+    }
 })

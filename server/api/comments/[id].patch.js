@@ -1,46 +1,26 @@
 import prisma from "~/lib/prisma";
 
 export default defineEventHandler(async (event) => {
-    try {
-        const id = event.context?.params?.id;
+  try {
+    const id = event.context?.params?.id;
 
-        if(isValidObjectId(id) ===  false) {
-            throw createError({
-                statusCode: 400,    
-                statusText: "Invalid ID",
-            })
-        }
+    isValidObjectId(id);
+    hasUser(event.context?.user);
 
-        const body = await readBody(event);
-        const { error } = validation(commentSchema,body);
+    const body = await readBody(event);
+    const cleanData = await validate(commentSchema, body);
 
-        if (error && Object.keys(error).length > 0) {
-            throw sendError(    
-              event,
-              createError({
-                statusCode: 400,
-                statusText: "Validation failed",
-                data: error || {},
-              })    
-            );
-        }
+    const comment = await prisma.comment.update({
+      where: {
+        id,
+      },
+      data: {
+        ...cleanData,
+      },
+    });
 
-        const comment = await prisma.comment.update({
-            where: {
-                id,
-            },  
-            data: {
-                ...body
-            }
-        });
-
-        return comment;
-    } catch (error) {
-        if(error instanceof Error) {
-            throw createError({
-                statusCode: error.statusCode || 500,        
-                statusText: error.message,
-            })
-        }
-    }
-})
+    return comment;
+  } catch (error) {
+    throwError(error);
+  }
+});

@@ -15,12 +15,9 @@ export const useAuth = defineStore("auth", () => {
       const response = await axios.post("/login", { email, password });
       await fetch();
 
-      loading.value = false;
-      setToast({ title: `Welcome Back ${user?.value?.username}🥰🥰`, duration: 3000 });
-
+      setToast({ title: `Welcome Back ${user?.value?.username}🥰🥰`, duration: 2000 });
       return response;
     } catch (e) {
-      loading.value = false;
       error.value = e.response?.data?.data;
 
       setErrorToast(e);
@@ -28,6 +25,8 @@ export const useAuth = defineStore("auth", () => {
       setTimeout(() => {
         error.value = null;
       }, 3000);
+    } finally {
+      loading.value = false;
     }
   }
 
@@ -43,16 +42,13 @@ export const useAuth = defineStore("auth", () => {
       });
       await fetch();
 
-      loading.value = false;
       setToast({
         title: "Account Created",
-        description: `Welcome to ${user?.value?.username}👋👋😍`,
+        description: `Welcome to ${user.value?.username}👋👋😍`,
         duration: 3000,
       });
-
       return response;
     } catch (e) {
-      loading.value = false;
       error.value = e.response?.data?.data;
 
       setErrorToast(e);
@@ -60,9 +56,10 @@ export const useAuth = defineStore("auth", () => {
       setTimeout(() => {
         error.value = null;
       }, 3000);
+    } finally {
+      loading.value = false;
     }
   }
-
   return {
     user,
     session,

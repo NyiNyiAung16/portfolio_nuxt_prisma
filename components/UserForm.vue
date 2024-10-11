@@ -8,7 +8,7 @@ const { user } = defineProps({
 const emits = defineEmits(["close"]);
 
 const usersStore = useUsersStore();
-const { users, error, loading } = storeToRefs(usersStore);
+const { error, loading } = storeToRefs(usersStore);
 
 const localUser = ref({ ...user });
 const username = ref(localUser.value.username || "");
@@ -21,22 +21,20 @@ const onSubmit = async (e) => {
     email: email.value,
     role: role.value,
   });
-
+  
   if (response?.status === 200 && response?.statusText == "OK") {
-    username.value = "";
-    email.value = "";
-    role.value = "";
-    users.value = users.value.map((user) =>
-      user.id === response.data.id
-        ? {
-            ...user,
-            ...response.data
-          }
-        : user
-    );
+    resetForm();
     emits("close");
   }
 };
+
+
+const resetForm = () => {
+  username.value = "";
+  email.value = "";
+  role.value = "";
+}
+
 </script>
 
 <template>
@@ -48,9 +46,9 @@ const onSubmit = async (e) => {
       <BaseError v-if="error?.email">{{ error?.email }}</BaseError>
       <BaseSelect label="Role" v-model="role" :options="['USER', 'ADMIN']" />
       <BaseError v-if="error?.password">{{ error?.password }}</BaseError>
-      <BaseButton type="submit" class-name="text-sm" :disabled="loading">
-        <span v-if="!loading">Save Changes</span>
-        <Loading v-if="loading" />
+      <BaseButton type="submit" class-name="text-sm" :disabled="loading.value">
+        <span v-if="loading.type !== 'update' && !loading.value">Save Changes</span>
+        <Loading v-if="loading.type === 'update'  && loading.value" />
       </BaseButton>
     </form>
   </div>

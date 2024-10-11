@@ -5,23 +5,12 @@ import createToken from "~/componsables/createToken.js";
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
+    const cleanData = await validate(signUpSchema,body);
 
-    const { error } = validation(signUpSchema,body);
-
-    if (error && Object.keys(error).length > 0) {
-      throw sendError(
-        event,
-        createError({
-          statusCode: 400,
-          statusText: "Validation failed",
-          data: error || {},
-        })
-      );
-    }
 
     const userExists = await prisma.user.findUnique({
       where: {
-        email: body.email,
+        email: cleanData.email,
       },
     });
 
@@ -33,12 +22,12 @@ export default defineEventHandler(async (event) => {
     }
 
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(body.password, salt);
+    const hash = bcrypt.hashSync(cleanData.password, salt);
 
     const user = await prisma.user.create({
       data: {
-        username: body.username,
-        email: body.email,
+        username: cleanData.username,
+        email: cleanData.email,
         password: hash,
         role: "USER",
       },
@@ -59,11 +48,6 @@ export default defineEventHandler(async (event) => {
       user: updatedUser,
     };
   } catch (error) {
-    if (error instanceof Error) {
-      throw createError({
-        statusCode: error.statusCode,
-        statusText: error.message,
-      });
-    }
+    throwError(error);
   }
 });

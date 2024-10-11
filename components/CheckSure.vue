@@ -8,8 +8,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-const emits = defineEmits(['onDelete']);
+defineProps({
+  description: {
+    type:String,
+    default: 'you want to delete the data?'
+  }
+})
 
+const emits = defineEmits(['onDelete']);
 
 const open = ref(false);
 
@@ -22,18 +28,18 @@ const onClick = () => {
 
 <template>
   <Dialog v-model:open="open">
-    <DialogTrigger class="font-medium text-red-600 hover:underline">
-      Delete
+    <DialogTrigger>
+      <slot/>
     </DialogTrigger>
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Are you sure!</DialogTitle>
         <DialogDescription>
-          you want to delete the data?
+          {{ description }}
         </DialogDescription>
       </DialogHeader>
-      <Button class="bg-red-700 hover:bg-red-800 text-white" @click="onClick">Delete</Button>
-      <Button class="bg-gray-700" @click="open = false">Cancel</Button>
+      <Button class="bg-red-700 hover:bg-red-800 text-white" @click.once.stop="onClick">Delete</Button>
+      <Button class="bg-gray-700" @click.once.stop="open = false">Cancel</Button>
     </DialogContent>
   </Dialog>
 </template>

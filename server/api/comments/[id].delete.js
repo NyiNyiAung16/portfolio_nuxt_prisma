@@ -2,20 +2,19 @@ import prisma from "~/lib/prisma";
 
 export default defineEventHandler(async (event) => {
     try {
-        const id = event.context?.params?.id;
+        const commentId = event.context?.params?.id;
 
-        isValidObjectId(id);
+        isValidObjectId(commentId);
         hasUser(event.context?.user);
-        isAdmin(event.context?.user);
 
-        const user = await prisma.user.delete({
+        const comment = await prisma.comment.delete({
             where: {
-                id
+                id: commentId,
             }
         });
 
-        return user;
+        return comment;
     } catch (error) {
         throwError(error);
-    }
+    }   
 })

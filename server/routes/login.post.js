@@ -5,22 +5,11 @@ import createToken from "~/componsables/createToken.js";
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
-    const { error } = validation(signInSchema,body);
-
-    if (error && Object.keys(error).length > 0) {
-      throw sendError(
-        event,
-        createError({
-          statusCode: 400,
-          statusText: "Validation failed",
-          data: error || {},
-        })
-      );
-    }
+    const cleanData = await validate(signInSchema,body);
 
     const user = await prisma.user.findUnique({
       where: {
-        email: body.email,
+        email: cleanData.email,
       },
     });
 
@@ -54,11 +43,6 @@ export default defineEventHandler(async (event) => {
 
     return { ...user, password: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw createError({
-        statusCode: error.statusCode,
-        statusText: error.message,
-      });
-    }
+    throwError(error);
   }
 });

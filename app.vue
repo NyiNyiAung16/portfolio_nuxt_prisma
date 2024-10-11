@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NuxtLoadingIndicator color="purple" :height="10"/>
+    <Toaster/>
     <NuxtLayout>
       <NuxtPage/>
     </NuxtLayout>

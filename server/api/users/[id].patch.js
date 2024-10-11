@@ -4,41 +4,22 @@ export default defineEventHandler(async (event) => {
   try {
     const id = event.context.params.id;
 
-    if(isValidObjectId(id) === false) {
-      throw createError({
-        statusCode: 400,
-        statusText: "Invalid ID",
-      })
-    }
+    isValidObjectId(id);
+    hasUser(event.context?.user);
+    isAdmin(event.context?.user);
 
     const body = await readBody(event);
-    const { error } = validation(userSchema,body);
-
-    if (error && Object.keys(error).length > 0) {
-      throw sendError(
-        event,
-        createError({
-          statusCode: 400,
-          statusText: "Validation failed",
-          data: error || {},
-        })
-      );
-    }
+    const cleanData = await validate(userSchema,body);
 
     const user = await prisma.user.update({
       where: {
         id,
       },
-      data: body,
+      data: {...cleanData},
     });
 
     return user;
   } catch (error) {
-    if(error instanceof Error) {
-      throw createError({
-        statusCode: error.statusCode || 500,
-        statusText: error.message,
-      });
-    }
+    throwError(error);
   }
 });

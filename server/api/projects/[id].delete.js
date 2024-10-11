@@ -3,36 +3,27 @@ import prisma from "~/lib/prisma";
 export default defineEventHandler(async (event) => {
     try {
         const id = event.context?.params?.id;
-        const userId = event.context?.user?.id;
+        const role = event.context?.user?.role;
 
-        if(isValidObjectId(id) === false) {
+        isValidObjectId(id);
+        hasUser(event.context?.user);
+        isAdmin(event.context?.user);
+
+        if(role !== 'ADMIN') {
             throw createError({
-                statusCode: 400,
-                statusText: "Invalid ID",
+                status:403,
+                statusMessage:'Unauthorized'
             })
         }
-
-        if(!userId){
-            throw createError({
-                statusCode: 401,
-                statusText: "Unauthorized",
-            })
-        }
-
+        
         const project = await prisma.project.delete({
             where: {
                 id,
-                userId
             },
         });
 
         return project;
     } catch (error) {
-        if(error instanceof Error) {
-            throw createError({
-                statusCode: error.statusCode || 500,
-                message: error.message,
-            })
-        }
+        throwError(error);
     }    
 })

@@ -1,12 +1,21 @@
-function validation(schema, body) {
-  const { error, value } = schema.validate(body, {
-    abortEarly: false,
-  });
+function validate(schema, data) {
+  const result = schema.validate(data, { abortEarly: false });
 
-  return {
-    error: error ? makeErrorObject(error) : {},
-    value,
-  };
+  return new Promise((resolve, reject) => {
+    if (result.error) {
+      const errorMessages = makeErrorObject(result.error);
+
+      reject(
+        createError({
+          statusCode: 400,
+          statusMessage: "Validation failed",
+          data: errorMessages || {},
+        })
+      );
+    } else {
+      resolve(result.value);
+    }
+  });
 }
 
 function makeErrorObject(error) {
@@ -25,4 +34,4 @@ function makeErrorObject(error) {
   return errorMessages;
 }
 
-export { validation };
+export { validate, makeErrorObject };

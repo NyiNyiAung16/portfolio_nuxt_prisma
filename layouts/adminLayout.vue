@@ -4,16 +4,20 @@
 
 
 <template>
-    <div>
-        <div class="grid grid-cols-12 px-4 py-3 h-[88dvh]">
-            <div class="col-span-3 flex flex-col gap-y-4 text-lg px-5 pt-5">    
-                <NuxtLink href="/admin/dashboard">Dashboard</NuxtLink>
-                <NuxtLink href="/admin/users">Users</NuxtLink>
-                <NuxtLink href="/admin/project/create">Create Project</NuxtLink>
-            </div>
-            <div class="col-span-9 border-l border-zinc-500 px-4">
-                <AdminHeader/>
-                <slot/>
+    <div class="h-screen flex flex-col">
+        <div class="flex flex-col h-full">
+            <div class="h-full flex">
+                <div class="h-full w-64 border-r border-zinc-500 py-4 px-4">
+                    <div class="flex flex-col gap-y-2">
+                        <NuxtLink href="/admin/dashboard" class="rounded-md py-2 px-3 hover:bg-gray-200">Dashboard</NuxtLink>
+                        <NuxtLink href="/admin/users" class="rounded-md py-2 px-3 hover:bg-gray-200">Users</NuxtLink>
+                        <NuxtLink href="/admin/project/create" class="rounded-md py-2 px-3 hover:bg-gray-200">Create Project</NuxtLink>
+                    </div>
+                </div>
+                <div class="h-full flex-1 py-4 px-4">
+                    <AdminHeader/>
+                    <slot/>
+                </div>
             </div>
         </div>
     </div>
@@ -22,7 +26,7 @@
 <style scoped>
 
 .router-link-active {
-    @apply text-zinc-500 font-bold
+    @apply text-gray-600 font-medium bg-gray-200
 }
 
 </style>

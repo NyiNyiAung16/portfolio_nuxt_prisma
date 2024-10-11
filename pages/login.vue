@@ -21,22 +21,35 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <Toaster />
-  <div class="max-w-xl w-full mx-auto bg-white mt-6 p-5 rounded-md shadow-md">
-    <h1 class="text-3xl text-center font-bold mb-5 text-[#808080]">
-      Login Form
-    </h1>
-    <form class="space-y-2" @submit.prevent="onSubmit">
-      <BaseInput type="email" placeholder="Email Address" v-model="email" />
-      <BaseError v-if="error?.email">{{ error?.email }}</BaseError>
-      <BaseInput type="password" placeholder="Password" v-model="password" />
-      <BaseError v-if="error?.password">{{ error?.password }}</BaseError>
-      <BaseButton type="submit" class-name="text-sm" :disabled="loading">
+  <div class="max-w-lg mx-5 md:mx-auto mt-5 bg-white rounded-lg shadow-md p-4 md:p-6 lg:p-8">
+    <div class="text-center">
+      <h1 class="text-3xl font-bold mb-5 text-[#808080]">
+        Login Form
+      </h1>
+    </div>
+    <form class="space-y-4" @submit.prevent="onSubmit">
+      <BaseInput
+        type="email"
+        placeholder="Email Address"
+        v-model="email"
+      />
+      <BaseError v-if="error?.email" class="text-sm text-red-500">{{ error?.email }}</BaseError>
+      <BaseInput
+        type="password"
+        placeholder="Password"
+        v-model="password"
+      />
+      <BaseError v-if="error?.password" class="text-sm text-red-500">{{ error?.password }}</BaseError>
+      <BaseButton
+        type="submit"
+        class-name="text-sm w-full"
+        :disabled="loading"
+      >
         <span v-if="!loading">Login</span>
         <Loading v-if="loading" />
       </BaseButton>
     </form>
-    <p class="mt-3 font-light text-[#929292] tracking-wide">
+    <p class="mt-3 text-center text-sm text-[#929292] tracking-wide">
       Don't have an account?
       <NuxtLink to="/register" class="hover:underline">Register</NuxtLink>
     </p>

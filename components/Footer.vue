@@ -7,7 +7,7 @@ const latestYear = new Date().getFullYear();
 <template>
     <div class="flex flex-col items-center justify-center gap-y-10 pt-[100px] pb-[50px]" id="footer">
         <div class="flex flex-col items-center gap-y-5">
-            <h1 class="text-7xl font-bold">Nyi Nyi Aung</h1>
+            <h1 class="text-5xl md:text-7xl font-bold">Nyi Nyi Aung</h1>
             <ul class="flex gap-x-4 items-center">
                 <li>Facebook</li>
                 <li>Github</li>

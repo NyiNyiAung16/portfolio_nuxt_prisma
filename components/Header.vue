@@ -11,26 +11,26 @@ const logout = async () => {
 </script>
 
 <template>
-    <div class="flex justify-between p-8 select-none">
-        <h2 class="font-bold text-2xl">NYI NYI AUNG</h2>
-        <ul class="flex gap-3 items-center">
+    <div class="flex justify-between px-4 py-2 md:px-8 md:py-4 select-none">
+        <h2 class="font-bold text-2xl text-gray-800 md:text-3xl">NYI NYI AUNG</h2>
+        <ul class="flex gap-3 items-center md:gap-6">
             <li>
-                <NuxtLink href="/">Home</NuxtLink>
+                <NuxtLink href="/" class="block md:inline-block">Home</NuxtLink>
             </li>
             <li>
-                <NuxtLink href="/projects">Projects</NuxtLink>
+                <NuxtLink href="/projects" class="block md:inline-block">Projects</NuxtLink>
             </li>
             <li v-if="user?.role === 'ADMIN'">
-                <NuxtLink href="/admin/dashboard">Dashboard</NuxtLink>
+                <NuxtLink href="/admin/dashboard" class="block md:inline-block">Dashboard</NuxtLink>
             </li>
             <li v-if="!loggedIn">
-                <NuxtLink href="/login">Login</NuxtLink>
+                <NuxtLink href="/login" class="block md:inline-block">Login</NuxtLink>
             </li>
             <li v-if="!loggedIn">
-                <NuxtLink href="/register">Register</NuxtLink>
+                <NuxtLink href="/register" class="block md:inline-block">Register</NuxtLink>
             </li>
             <li v-if="loggedIn"> 
-                <p @click="logout" class="cursor-pointer">Logout</p>
+                <p @click="logout" class="cursor-pointer block md:inline-block">Logout</p>
             </li>
         </ul>
     </div>

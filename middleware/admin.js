@@ -2,9 +2,8 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
     const { user } = useUserSession();
 
     if(user?.value?.role !== 'ADMIN') {
-        throw createError({
+        throw showError({
             statusCode: 403,    
-            statusText: 'Unauthorized'
+            statusMessage: 'Forbidden! You are not allowed to go there',
         })
-    }
-})
+    }})

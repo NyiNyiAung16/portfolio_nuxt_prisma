@@ -4,12 +4,7 @@ export default defineEventHandler(async (event)  => {
     try {
         const projectId = event.context?.params?.id;
 
-        if(isValidObjectId(projectId) === false) {
-            throw createError({
-                statusCode: 400,    
-                statusText: "Invalid ID",
-            })
-        }
+        isValidObjectId(projectId);
 
         const comments = await prisma.comment.findMany({
             where: {
@@ -31,11 +26,6 @@ export default defineEventHandler(async (event)  => {
 
         return comments;
     } catch (error) {
-        if(error instanceof Error) {
-            throw createError({
-                statusCode: error.statusCode,
-                statusText: error?.message
-            })
-        }
+        throwError(error);
     }    
 })

@@ -6,12 +6,11 @@ const { loading, comments } = storeToRefs(commentsStore);
 
 onMounted(async () => {
     await commentsStore.get(id);
-    console.log(comments.value)
 })
 
 
 const deleteComment = async (commentId) => {
-   let response = await commentsStore.destroy(id,commentId);
+   let response = await commentsStore.destroy(commentId);
    if(response) {
     let deletedComment = comments.value.filter((comment) => comment.id !== commentId);
     comments.value = deletedComment;
@@ -29,8 +28,8 @@ const updateComment = async (commentId,data) => {
 
 <template>
   <div>
-    <div v-if="loading && comments?.length === 0">
-      <Loading class="mx-auto" />
+    <div v-if="loading.value && (loading.type === 'get' || loading.type === 'update')">
+      <Loading class="mx-auto my-2" />
     </div>
     <div v-if="comments && comments.length > 0" class="space-y-4">
       <div v-for="comment in comments" :key="comment.id">

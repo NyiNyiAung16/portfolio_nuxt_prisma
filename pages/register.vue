@@ -27,8 +27,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <Toaster />
-  <div class="max-w-xl w-full mx-auto p-5 rounded-md bg-white mt-6 shadow-md">
+  <div class="max-w-lg mx-5 md:mx-auto mt-5 bg-white rounded-lg shadow-md p-4 md:p-6 lg:p-8">
     <h1 class="text-3xl text-center font-bold text-[#808080] mb-5">
       Register Form
     </h1>
@@ -39,7 +38,7 @@ const onSubmit = async () => {
       <BaseError v-if="error?.email">{{ error?.email }}</BaseError>
       <BaseInput type="password" placeholder="Password" v-model="password" />
       <BaseError v-if="error?.password">{{ error?.password }}</BaseError>
-      <BaseButton class-name="text-sm" :disabled="loading">
+      <BaseButton class-name="text-sm w-full" :disabled="loading">
         <span v-if="!loading">Register</span>
         <Loading v-if="loading" />
       </BaseButton>

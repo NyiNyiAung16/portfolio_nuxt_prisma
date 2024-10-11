@@ -1,5 +1,8 @@
+
 export default defineEventHandler(async (event) => {
     try{
+        hasUser(event.context?.user);
+
         const { files } = await readBody(event);
     
         const filesPaths = [];
@@ -10,12 +13,7 @@ export default defineEventHandler(async (event) => {
         }
     
         return filesPaths;
-    }catch(e){
-        if(e instanceof Error) {
-            throw createError({
-                statusCode: e.statusCode,
-                statusText:  e.message
-            })
-        }
+    }catch(error){
+        throwError(error);
     }
 })

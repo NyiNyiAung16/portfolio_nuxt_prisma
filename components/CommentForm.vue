@@ -17,11 +17,16 @@ const commentsStore = useCommentsStore();
 const { loading, error } = storeToRefs(commentsStore);
 
 const onSubmit = async () => {
+    if(!user?.value) {
+      return navigateTo('/login',{ replace: true });
+    }
+
     const data = {
         content: content.value,
         userId: user.value.id,
         projectId: projectId
     }
+    
    let response =  await commentsStore.create(data);
    if(response) {
        content.value = "";
@@ -44,9 +49,9 @@ const onSubmit = async () => {
       <form class="space-y-2 mt-5" @submit.prevent="onSubmit" v-show="active">
         <BaseTextarea v-model="content" placeholder="Write your thougth.." />
         <BaseError v-if="error?.content">{{ error?.content }}</BaseError>
-        <BaseButton type="submit" class-name="text-sm" :disabled="loading">
-          <span v-if="!loading">Create</span>
-          <Loading v-if="loading" />
+        <BaseButton type="submit" class-name="text-sm" :disabled="loading.value && loading.type === 'create'">
+          <span v-if="!loading.value || loading.type != 'create'">Create</span>
+          <Loading v-if="loading.value && loading.type === 'create'" />
         </BaseButton>
       </form>
     </div>

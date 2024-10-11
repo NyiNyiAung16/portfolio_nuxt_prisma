@@ -1,43 +1,40 @@
 import axios from "axios";
+import { resetLoading, setLoading } from "~/componsables/loadingHelper";
 import { setErrorToast, setToast } from "~/componsables/toastHelper.js";
 
 export const useCommentsStore = defineStore("comments", () => {
   const comments = ref(null);
   const error = ref(null);
-  const loading = ref(false);
+  const loading = ref({ type: "", value: false });
 
   const get = async (projectId) => {
     try {
-      loading.value = true;
+      loading.value = setLoading({ type: "get", value: true });
 
       const response = await axios.get(`/api/projects/${projectId}/comments`);
 
       comments.value = response?.data;
-      loading.value = false;
-
       return response;
     } catch (e) {
-      loading.value = false;
       setErrorToast(e);
+    } finally {
+      loading.value = resetLoading();
     }
   };
 
   const create = async (data) => {
     try {
       error.value = null;
-      loading.value = true;
+      loading.value = setLoading({ type: "create", value: true });
 
       const response = await axios.post("/api/comments", data);
 
-      await get(data.projectId);
+      comments.value = [response.data,...comments.value];
 
-      loading.value = false;
-      setToast({ title: "Comment created successfully👏" });
+      setToast({ title: "Comment created successfully👏 " , duration: 2000 });
 
       return response;
     } catch (e) {
-      console.log(e);
-      loading.value = false;
       error.value = e.response?.data?.data;
 
       setErrorToast(e);
@@ -45,16 +42,18 @@ export const useCommentsStore = defineStore("comments", () => {
       setTimeout(() => {
         error.value = null;
       }, 3000);
+    } finally {
+      loading.value = resetLoading();
     }
   };
+
   const update = async (id, data) => {
     try {
       error.value = null;
+      loading.value = setLoading({ type: "update", value: true });
       const response = await axios.patch(`/api/comments/${id}`, data);
 
-      // await get(data.projectId);
-
-      setToast({ title: "Comment updated successfully👏" });
+      setToast({ title: "Comment updated successfully👏" , duration: 2000 });
       return response;
     } catch (e) {
       error.value = e.response?.data?.data;
@@ -64,13 +63,17 @@ export const useCommentsStore = defineStore("comments", () => {
       setTimeout(() => {
         error.value = null;
       }, 3000);
+    } finally {
+      loading.value = resetLoading();
     }
   };
 
-  const destroy = async (projectId, commentId) => {
+  const destroy = async (commentId) => {
     try {
+      loading.value = setLoading({ type: "delete", value: true });
+
       const response = await axios.delete(
-        `/api/comments/${commentId}/projects/${projectId}`
+        `/api/comments/${commentId}`
       );
 
       setToast({ title: "Comment deleted successfully👏", duration: 1500 });
@@ -78,6 +81,8 @@ export const useCommentsStore = defineStore("comments", () => {
       return response;
     } catch (e) {
       setErrorToast(e);
+    } finally {
+      loading.value = resetLoading();
     }
   };
 

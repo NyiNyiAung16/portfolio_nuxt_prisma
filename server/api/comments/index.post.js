@@ -2,34 +2,28 @@ import prisma from "~/lib/prisma";
 
 export default defineEventHandler(async (event) => {
     try {
+        hasUser(event.context?.user);
 
         const body = await readBody(event);
-        const { error } = validation(commentSchema,body);
-
-        if (error && Object.keys(error).length > 0) {
-            throw sendError( 
-              event,
-              createError({
-                statusCode: 400,
-                statusText: "Validation failed",
-                data: error || {},
-              })    
-            );
-        }   
+        const cleanData = await validate(commentSchema,body);  
 
         const comment = await prisma.comment.create({
             data: {
-                ...body
-            }
+                ...cleanData
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        username: true,
+                        email: true
+                    }
+                },
+            },
         });
 
         return comment;
     } catch (error) {
-        if(error instanceof Error) {
-            throw createError({
-                statusCode: error.statusCode || 500,
-                statusText: error.message,
-            })
-        }
+        throwError(error);
     }
 })

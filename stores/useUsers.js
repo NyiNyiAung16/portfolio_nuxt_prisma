@@ -1,50 +1,46 @@
 import axios from "axios";
+import { resetLoading, setLoading } from "~/componsables/loadingHelper";
 import { setErrorToast, setToast } from "~/componsables/toastHelper";
 
 export const useUsersStore = defineStore("users", () => {
   const pagination = ref(null);
   const user = ref(null);
-  const loading = ref(false);
+  const loading = ref({ type: '', value: false });
   const error = ref(null);
 
   const users = computed({
     get() {
       return pagination.value?.data;
     },
-    set(newValue) {
-      pagination.value.data = newValue;
-    }
-  });
-
+    set(newUsers) {
+      pagination.value.data = newUsers;
+    },
+  });  
   const get = async function (page) {
     try {
       error.value = null;
-      loading.value = true;
+      loading.value = setLoading({ type: 'get', value: true });
 
       const response = await axios.get(`/api/users?page=${page}`);
       pagination.value = response.data;
 
-      loading.value = false;
       return response;
     } catch (e) {
-      loading.value = false;
       setErrorToast(e);
+    } finally {
+      loading.value = resetLoading();
     }
   };
 
   const show = async (id) => {
     try {
       error.value = null;
-      loading.value = true;
 
       const response = await axios.get(`/api/users/${id}`);
 
       user.value = response.data;
-      loading.value = false;
-
       return response;
     } catch (e) {
-      loading.value = false;
       setErrorToast(e);
     }
   };
@@ -52,14 +48,21 @@ export const useUsersStore = defineStore("users", () => {
   const update = async (id, data) => {
     try {
       error.value = null;
-      loading.value = true;
+      loading.value = setLoading({ type: 'update', value: true });
 
       const response = await axios.patch(`/api/users/${id}`, data);
+      users.value = users.value.map((user) =>
+        user.id === response.data.id
+          ? {
+              ...user,
+              ...response.data
+            }
+          : user
+      );
 
-      loading.value = false;
+      setToast({ title: "User updated successfully👏", duration: 2000});
       return response;
     } catch (e) {
-      loading.value = false;
       error.value = e.response?.data?.data;
 
       setErrorToast(e);
@@ -67,32 +70,37 @@ export const useUsersStore = defineStore("users", () => {
       setTimeout(() => {
         error.value = null;
       }, 3000);
+    } finally{
+      loading.value = resetLoading();
     }
   };
 
   const destroy = async (id) => {
     try {
       error.value = null;
-      loading.value = true;
+      loading.value = setLoading({ type: 'delete', value: true });
 
       const response = await axios.delete(`/api/users/${id}`);
+      users.value = users.value.filter((user) => user.id !== response.data.id);
 
-      loading.value = false;
-      setToast({ title: "User deleted successfully👏", duration: 3000 });
-
+      setToast({ title: "User deleted successfully👏"});
       return response;
     } catch (e) {
-      loading.value = false;
       setErrorToast(e);
+    } finally {
+      loading.value = resetLoading();
     }
   };
+
+
+
 
   return {
     users,
     user,
-    loading,
     error,
     pagination,
+    loading,
     get,
     show,
     update,

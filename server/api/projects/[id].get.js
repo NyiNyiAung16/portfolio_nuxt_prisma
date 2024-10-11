@@ -4,13 +4,8 @@ export default defineEventHandler(async (event) => {
     try {
         const id = event.context?.params?.id;
 
-        if(isValidObjectId(id) === false){
-            throw createError({
-                statusCode: 400,
-                statusText: "Invalid ID",
-            })
-        }
-
+        isValidObjectId(id);
+    
         const project = await prisma.project.findUnique({
             where: {
                 id
@@ -19,11 +14,6 @@ export default defineEventHandler(async (event) => {
 
         return project;
     } catch (error) {
-        if(error instanceof Error) {
-            throw createError({
-                statusCode: error.statusCode || 500,
-                statusText: error.message,
-            })
-        }
+        throwError(error);
     }
 })
