@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     if (userExists) {
       throw createError({
         statusCode: 400,
-        statusText: "User already exists",
+        statusMessage: "User already exists",
       });
     }
 

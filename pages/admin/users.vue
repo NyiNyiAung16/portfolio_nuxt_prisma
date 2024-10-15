@@ -1,6 +1,11 @@
 <script setup>
 import { formatDistanceToNow } from 'date-fns';
 import { onSearch, onSort } from '~/componsables/filter';
+import {
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@/components/ui/table'
 
 definePageMeta({ layout: 'admin-layout' , middleware: 'admin'});
 
@@ -8,6 +13,7 @@ const usersStore = useUsersStore();
 const { users, pagination, loading } = storeToRefs(usersStore);
 
 const localUsers = ref([]);
+const open = ref(false);
 
 onMounted(async () => {
   await usersStore.get();
@@ -16,7 +22,8 @@ onMounted(async () => {
 
 
 const deleteUser = async (id) => {
-  let response = await usersStore.destroy(id);
+  await usersStore.destroy(id);
+  open.value = false;
 }
 
 const searchValue = (value) => {
@@ -36,57 +43,39 @@ watch(users, () => {
 <template>
   <div>
     <div v-if="loading.type === 'get' && loading.value">
-      <Loading class="mx-auto" />
+      <Loading/>
     </div>
     <div v-else>
       <FilteredBy filter="username" @onSearch="searchValue" @sortBy="sortBy"/>
-      <div v-if="localUsers && localUsers.length > 0 && !loading.value">
-        <BaseTable >
+      <div v-if="localUsers && localUsers.length > 0">
+        <BaseTable caption="A list of your users">
           <template #header>
-            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
-              <tr>
-                <th scope="col" class="px-6 py-3">Id</th>
-                <th scope="col" class="px-6 py-3">Username</th>
-                <th scope="col" class="px-6 py-3">Email</th>
-                <th scope="col" class="px-6 py-3">Role</th>
-                <th scope="col" class="px-6 py-3">Created At</th>
-                <th scope="col" class="px-6 py-3">Action</th>
-              </tr>
-            </thead>
+            <TableHead>Id</TableHead>
+            <TableHead>Username</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Role</TableHead>
+            <TableHead>Created At</TableHead>
+            <TableHead>Action</TableHead>
           </template>
           <template #body>
-            <tbody>
-              <tr
-                v-for="(user,index) in localUsers"
-                :key="user.id"
-                class="bg-white border-b hover:bg-gray-50"
-              >
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                >
-                  {{ index + 1 }}
-                </th>
-                <td class="px-6 py-4">
-                  {{ user?.username }}
-                </td>
-                <td class="px-6 py-4">
-                  {{ user?.email }}
-                </td>
-                <td class="px-6 py-4 space-x-2">
-                  {{ user?.role }}
-                </td>
-                <td class="px-6 py-4 space-x-2">
-                  {{ formatDistanceToNow(new Date(user?.createdAt)) }}
-                </td>
-                <td class="px-6 py-4 space-x-2 flex">
+            <TableRow
+              v-for="(user,index) in localUsers"
+              :key="user.id"
+            >
+              <TableCell class="font-medium">
+                {{ index + 1}}
+              </TableCell>
+              <TableCell>{{ user.username }}</TableCell>
+              <TableCell>{{ user.email }}</TableCell>
+              <TableCell>{{ user.role }}</TableCell>
+              <TableCell>{{ formatDistanceToNow(new Date(user?.createdAt)) }}</TableCell>
+              <TableCell class="flex gap-1 items-center">
                 <EditUserDialog :user="user"/>
-                <CheckSure @onDelete="deleteUser(user?.id)">
+                <CheckSure :open="open" :loading="loading"@onDelete="deleteUser(user?.id)" description="you want to delete this user?">
                   <p class="font-medium text-red-600 hover:underline">Delete</p>
                 </CheckSure>
-                </td>
-              </tr>
-            </tbody>
+              </TableCell>
+            </TableRow>
           </template>
         </BaseTable>
         <div class="flex items-center justify-end px-10" v-if="users && users.length > 0 && !loading.value">

@@ -137,7 +137,6 @@ export const useProjectsStore = defineStore("projects", () => {
       );
 
       setToast({ title: "Project deleted successfully👏", duration: 2000 });
-
       return response;
     } catch (e) {
       setErrorToast(e);

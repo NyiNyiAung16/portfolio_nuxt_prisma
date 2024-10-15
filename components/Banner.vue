@@ -5,7 +5,7 @@
 
 <template>
     <div class="overflow-hidden">
-        <div class="container mx-auto flex flex-col justify-center h-[90dvh]">
+        <div class="container mx-auto flex flex-col justify-center h-[100dvh]">
             <div class="flex flex-col items-center gap-6">
                 <div class="sm:text-6xl md:text-8xl text-4xl font-bold">
                     <h2>Nyi Nyi Aung</h2>

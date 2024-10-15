@@ -7,27 +7,31 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import Loading from "./Loading.vue";
 
-defineProps({
+const props = defineProps({
+  open: {
+    type: Boolean,
+    default: false
+  },
   description: {
     type:String,
     default: 'you want to delete the data?'
-  }
-})
+  },
+  loading:Object
+});
 
 const emits = defineEmits(['onDelete']);
-
-const open = ref(false);
+const localOpen = ref(props.open || false);
 
 const onClick = () => {
-    emits('onDelete');
-    open.value = false;
+  emits('onDelete');
 }
 
 </script>
 
 <template>
-  <Dialog v-model:open="open">
+  <Dialog v-model:open="localOpen">
     <DialogTrigger>
       <slot/>
     </DialogTrigger>
@@ -38,8 +42,11 @@ const onClick = () => {
           {{ description }}
         </DialogDescription>
       </DialogHeader>
-      <Button class="bg-red-700 hover:bg-red-800 text-white" @click.once.stop="onClick">Delete</Button>
-      <Button class="bg-gray-700" @click.once.stop="open = false">Cancel</Button>
+      <Button class="bg-red-700 hover:bg-red-800 text-white" @click.once.stop="onClick">
+        <span v-if="!loading?.value && loading?.type !== 'delete'">Delete</span>
+        <Loading v-if="loading?.value && loading?.type === 'delete'"/>
+      </Button>
+      <Button class="bg-gray-700" @click.once.stop="localOpen = false">Cancel</Button>
     </DialogContent>
   </Dialog>
 </template>

@@ -12,7 +12,7 @@ onMounted(async () => {
 <template>
   <div class="py-5">
     <div v-if="loading.type === 'show' && loading.value">
-      <Loading class="mx-auto" />
+      <Loading />
     </div>
     <div class="mt-5" v-if="project && !loading.value">
       <div class="w-[80%] bg-[#eaeaea] rounded mx-auto pb-10">
@@ -42,7 +42,8 @@ onMounted(async () => {
             </div>
           </div>
         </div>
-      </div>    </div>
+      </div>
+    </div>
     <div v-if="project && !loading.value">
       <CommentForm :project-id="id" />
       <Comments />

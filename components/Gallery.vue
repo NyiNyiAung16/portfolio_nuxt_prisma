@@ -17,6 +17,19 @@ const { isCoverFlow } = defineProps({
     }
 });
 
+let coverflowView = ref(3);
+let defaultView = ref(2);
+
+onMounted(() => {
+    if(window.innerWidth < 768) {
+        coverflowView.value = 1;
+        defaultView.value = 1;
+    } else {
+        coverflowView.value = 3;
+        defaultView.value = 2;
+    }
+})
+
 const handleClick = (event) => {
     if(isCoverFlow === false) return false;
 
@@ -37,8 +50,8 @@ const handleClick = (event) => {
             modifier:.7,
             slideShadows:true,
         }"
-        :space-between="30"
-        :slides-per-view="isCoverFlow ? 3 : 2"
+        :space-between="10"
+        :slides-per-view="isCoverFlow ? coverflowView : defaultView"
         :pagination="{ clickable : true}"
         :navigation="true"
         :autoplay="{

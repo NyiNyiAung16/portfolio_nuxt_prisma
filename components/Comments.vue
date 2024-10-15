@@ -29,7 +29,7 @@ const updateComment = async (commentId,data) => {
 <template>
   <div>
     <div v-if="loading.value && (loading.type === 'get' || loading.type === 'update')">
-      <Loading class="mx-auto my-2" />
+      <Loading class=" my-2" />
     </div>
     <div v-if="comments && comments.length > 0" class="space-y-4">
       <div v-for="comment in comments" :key="comment.id">

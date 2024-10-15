@@ -1,11 +1,13 @@
 <script setup>
 import { formatDistanceToNow } from "date-fns";
 import { onSearch, onSort } from "~/componsables/filter";
+import { TableCell, TableHead, TableRow } from "@/components/ui/table";
 
 const projectsStore = useProjectsStore();
 const { projects, pagination, loading } = storeToRefs(projectsStore);
 
 const localProjects = ref([]);
+const open = ref(false);
 
 onMounted(async () => {
   await projectsStore.get();
@@ -14,6 +16,7 @@ onMounted(async () => {
 
 const deleteProject = async (id) => {
   await projectsStore.destroy(id);
+  open.value = false;
 };
 
 const searchValue = (value) => {
@@ -36,68 +39,59 @@ watch(
 <template>
   <div>
     <div v-if="loading.type === 'get' && loading.value">
-      <Loading class="mx-auto" />
+      <Loading />
     </div>
     <div v-else>
       <FilteredBy filter="title" @onSearch="searchValue" @sortBy="sortBy" />
-      <div v-if="localProjects && localProjects.length > 0 && !loading.value">
-        <BaseTable>
+      <div v-if="localProjects && localProjects.length > 0">
+        <BaseTable caption="A list of your recent projects">
           <template #header>
-            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
-              <tr>
-                <th scope="col" class="px-6 py-3">Id</th>
-                <th scope="col" class="px-6 py-3">Title</th>
-                <th scope="col" class="px-6 py-3">Description</th>
-                <th scope="col" class="px-6 py-3">Tags</th>
-                <th scope="col" class="px-6 py-3">Created At</th>
-                <th scope="col" class="px-6 py-3">Action</th>
-              </tr>
-            </thead>
+            <TableHead> Id </TableHead>
+            <TableHead>Title</TableHead>
+            <TableHead>Description</TableHead>
+            <TableHead> Tags </TableHead>
+            <TableHead>Created At</TableHead>
+            <TableHead>Action</TableHead>
           </template>
           <template #body>
-            <tbody>
-              <tr
-                v-for="(project, index) in localProjects"
-                :key="project.id"
-                class="bg-white border-b hover:bg-gray-50"
-              >
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+            <TableRow
+              v-for="(project, index) in localProjects"
+              :key="project.id"
+            >
+              <TableCell class="font-medium">
+                {{ index + 1 }}
+              </TableCell>
+              <TableCell>{{ project.title }}</TableCell>
+              <TableCell>{{
+                project.description.toString(100) + "..."
+              }}</TableCell>
+              <TableCell class="flex gap-1 items-center">
+                <div
+                  v-for="tag in project.tags"
+                  :key="tag"
+                  class="inline-block px-3 py-2 rounded-md bg-[#eaeaea] select-none"
                 >
-                  {{ index + 1 }}
-                </th>
-                <th class="px-6 py-4">
-                  {{ project.title }}
-                </th>
-                <td class="px-6 py-4">
-                  {{ project.description.toString(100) + "..." }}
-                </td>
-                <td class="px-6 py-4 space-x-2">
-                  <div
-                    v-for="tag in project.tags"
-                    :key="tag"
-                    class="inline-block px-3 py-2 rounded-md bg-[#eaeaea] select-none"
-                  >
-                    {{ tag }}
-                  </div>
-                </td>
-                <td class="px-6 py-4">
-                  {{ formatDistanceToNow(new Date(project.createdAt)) }}
-                </td>
-                <td class="px-6 py-4 space-x-2">
-                  <EditProjectDialog :project="project" />
-                  <CheckSure @on-delete="deleteProject(project.id)">
-                    <p class="font-medium text-red-600 hover:underline">Delete</p>
-                  </CheckSure>
-                </td>
-              </tr>
-            </tbody>
+                  {{ tag }}
+                </div>
+              </TableCell>
+              <TableCell>{{
+                formatDistanceToNow(new Date(project.createdAt))
+              }}</TableCell>
+              <TableCell class="flex gap-1 items-center">
+                <EditProjectDialog :project="project" />
+                <CheckSure
+                  :open="open"
+                  :loading="loading"
+                  @on-delete="deleteProject(project.id)"
+                  description="you want to delete this project?"
+                >
+                  <p class="font-medium text-red-600 hover:underline">Delete</p>
+                </CheckSure>
+              </TableCell>
+            </TableRow>
           </template>
         </BaseTable>
-        <div
-          class="flex items-center justify-end px-10"
-        >
+        <div class="flex items-center justify-end px-10">
           <Pagination
             :items="pagination"
             @update-page="projectsStore.get($event)"
@@ -105,8 +99,10 @@ watch(
         </div>
       </div>
       <div v-if="localProjects && localProjects.length === 0 && !loading.value">
-          <p class="text-sm font-medium text-zinc-500">There is not any project!</p>
+        <p class="text-sm font-medium text-zinc-500">
+          There is not any project!
+        </p>
       </div>
     </div>
-    </div>
+  </div>
 </template>

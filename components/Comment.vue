@@ -33,7 +33,7 @@ const onKeydown = () => {
 
 <template>
   <div
-    class="max-w-lg w-full mx-auto bg-[#eaeaea] px-6 py-4 rounded-md shadow-sm"
+    class="max-w-md md:max-w-lg mx-5 sm:mx-auto bg-[#eaeaea] px-6 py-4 rounded-md shadow-sm"
   >
     <div class="flex items-start justify-between">
       <div class="flex flex-col">
@@ -45,9 +45,8 @@ const onKeydown = () => {
         }}</span>
       </div>
       <div>
-        
         <div
-          class="flex items-center justify-end gap-x-3 pt-1"
+          class="flex items-center justify-end gap-x-3"
           v-if="user?.id === comment.user.id"
         >
           <FontAwesome

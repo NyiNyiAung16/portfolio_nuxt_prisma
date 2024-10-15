@@ -15,11 +15,11 @@ const images = ref([
 
 
 <template>
-    <div class="py-14">
+    <div class="block md:block px-6 py-14">
         <div>
             <div class="text-center space-y-3">
-                <h2 class="font-bold text-6xl">My Projects</h2>
-                <p class="text-3xl">Examples of my projects completed</p>
+                <h2 class="font-bold text-3xl sm:text-4xl md:text-6xl">My Projects</h2>
+                <p class="text-md sm:text-xl md:text-3xl">Examples of my projects completed</p>
             </div>
             <div class="mt-10 max-w-[1200px] mx-5 md:mx-auto">
                 <Gallery :images="images"/>

@@ -7,7 +7,7 @@ const { toasts } = useToast()
 </script>
 
 <template>
-  <div v-bind="$attrs">
+  <div :v-bind="$attrs">
     <ToastProvider>
       <Toast v-for="toast in toasts" :key="toast.id" v-bind="toast">
         <div class="grid gap-1">
@@ -26,7 +26,7 @@ const { toasts } = useToast()
         </div>
         <component :is="toast.action" />
       </Toast>
-      <ToastViewport />
+      <ToastViewport/>
     </ToastProvider>
   </div>
 </template>

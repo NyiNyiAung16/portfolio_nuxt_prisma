@@ -43,7 +43,7 @@ const onSubmit = async () => {
         <Loading v-if="loading" />
       </BaseButton>
     </form>
-    <p class="mt-3 font-light text-[#929292] tracking-wide">
+    <p class="mt-3 text-center text-sm text-[#929292] tracking-wide">
       Already have an account?
       <NuxtLink to="/login" class="hover:underline">Login</NuxtLink>
     </p>

@@ -29,6 +29,8 @@ const previewImages = ref([]);
 const images_path = ref([]);
 const tag = ref("");
 
+const hovering = ref({ value: false, image: null });
+
 const onChange = async (files) => {
   previewImages.value = [];
   await handleFileInput(files);
@@ -46,6 +48,10 @@ const addTag = (val) => {
 const onDeleteTag = (val) => {
   tags.value = tags.value.filter((tag) => tag != val);
 };
+
+const onDeleteImage = (image) => {
+  previewImages.value = previewImages.value.filter(preview => preview !== image);
+}
 
 const onSubmit = async () => {
   const data = {
@@ -149,14 +155,30 @@ if(Object.keys(localProject.value).length > 0){
       <BaseError v-if="error?.images_path">{{ error?.images_path }}</BaseError>
       <div
         v-show="previewImages.length > 0"
-        class="flex items-start flex-wrap gap-3"
+        class="flex items-start flex-wrap gap-1"
       >
-        <div v-for="image in previewImages" :key="image">
+        <div
+          v-for="image in previewImages"
+          :key="image"
+          class="relative w-[100px] h-[100px] overflow-hidden rounded-md"
+        >
           <img
             :src="image"
             :alt="image"
-            class="w-[150px] object-cover rounded-md"
+            class="w-full h-full object-cover"
           />
+          <div
+            class="absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center transition duration-300 hover:bg-opacity-75"
+            @mouseover="hovering = { value: true, image}"
+            @mouseleave="hovering = { value: false, image}"
+          >
+            <FontAwesome
+              v-if="hovering.value && hovering.image === image"
+              icon="xmark"
+              class=" text-white text-3xl cursor-pointer"
+              @click="onDeleteImage(image)"
+            />
+          </div>
         </div>
       </div>
       <BaseButton class-name="text-sm" type="submit" :disabled="loading.value">
