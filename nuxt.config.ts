@@ -12,8 +12,8 @@ export default defineNuxtConfig({
     "nuxt-file-storage",
   ],
   runtimeConfig: {
-    databaseUrl: process.env.DATABASE_URL,
     jwtSecret: process.env.JWT_SECRET,
+    databaseUrl: process.env.DATABASE_URL,
     nuxtSessionPassword: process.env.NUXT_SESSION_PASSWORD,
   },
   fontawesome: {

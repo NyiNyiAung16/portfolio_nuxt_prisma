@@ -1,6 +1,6 @@
 import prisma from "~/lib/prisma";
 import bcrypt from "bcrypt";
-import createToken from "~/componsables/createToken.js";
+import createToken from "~/server/utils/createToken.js";
 
 export default defineEventHandler(async (event) => {
   try {
