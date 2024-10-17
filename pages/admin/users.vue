@@ -41,7 +41,7 @@ watch(users, () => {
 </script>
 
 <template>
-  <div>
+  <div class="dark:bg-gray-800 dark:text-white">
     <div v-if="loading.type === 'get' && loading.value">
       <Loading/>
     </div>
@@ -50,17 +50,18 @@ watch(users, () => {
       <div v-if="localUsers && localUsers.length > 0">
         <BaseTable caption="A list of your users">
           <template #header>
-            <TableHead>Id</TableHead>
-            <TableHead>Username</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Created At</TableHead>
-            <TableHead>Action</TableHead>
+            <TableHead class="dark:text-gray-300">Id</TableHead>
+            <TableHead class="dark:text-gray-300">Username</TableHead>
+            <TableHead class="dark:text-gray-300">Email</TableHead>
+            <TableHead class="dark:text-gray-300">Role</TableHead>
+            <TableHead class="dark:text-gray-300">Created At</TableHead>
+            <TableHead class="dark:text-gray-300">Action</TableHead>
           </template>
           <template #body>
             <TableRow
               v-for="(user,index) in localUsers"
               :key="user.id"
+              class="dark:bg-gray-600 dark:hover:bg-gray-500"
             >
               <TableCell class="font-medium">
                 {{ index + 1}}
@@ -83,7 +84,7 @@ watch(users, () => {
         </div>
       </div>
       <div v-if="localUsers && localUsers.length === 0 && !loading.value">
-          <p class="text-sm font-medium text-zinc-500">There is not any user!</p>
+          <p class="text-sm font-medium text-zinc-500 dark:text-gray-400">There is not any user!</p>
       </div>
     </div>
   </div>

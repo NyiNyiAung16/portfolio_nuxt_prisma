@@ -42,11 +42,11 @@ const onClick = () => {
           {{ description }}
         </DialogDescription>
       </DialogHeader>
-      <Button class="bg-red-700 hover:bg-red-800 text-white" @click.once.stop="onClick">
+      <Button class="bg-red-700 hover:bg-red-800 text-white dark:bg-red-500 dark:hover:bg-red-600" @click.once.stop="onClick">
         <span v-if="!loading?.value && loading?.type !== 'delete'">Delete</span>
         <Loading v-if="loading?.value && loading?.type === 'delete'"/>
       </Button>
-      <Button class="bg-gray-700" @click.once.stop="localOpen = false">Cancel</Button>
+      <Button class="bg-gray-700 dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-gray-100" @click.once.stop="localOpen = false">Cancel</Button>
     </DialogContent>
   </Dialog>
 </template>

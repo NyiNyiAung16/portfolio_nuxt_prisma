@@ -10,18 +10,20 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
+  <div
+    class="dark:bg-gray-800 dark:text-white transition-colors duration-500"
+  >
     <!-- Skeleton Feature -->
    <SkeletonCard v-show="loading.value && loading.type === 'get' "/>
 
     <div
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-10 pb-10 mt-7"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-10 pb-10 pt-5"
       v-if="projects && projects.length > 0"
     >
       <div
         v-for="project in projects"
         :key="project.id"
-        class="bg-[#eaeaea] rounded"
+        class="dark:bg-gray-700 bg-[#eaeaea] rounded"
       >
         <div class="w-full h-[250px]">
           <NuxtLink :href="`/projects/${project.id}`">
@@ -39,7 +41,8 @@ onMounted(async () => {
           </p>
         </div>
       </div>
-    </div>    <div class="flex items-center justify-end px-10" v-if="projects && projects.length > 0">
+    </div>
+    <div class="flex items-center justify-end px-10" v-if="projects && projects.length > 0">
       <Pagination :items="pagination" @update-page="projectsStore.get($event)"/>
     </div>
   </div>

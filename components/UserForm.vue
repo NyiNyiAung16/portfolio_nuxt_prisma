@@ -46,10 +46,10 @@ const resetForm = () => {
       <BaseError v-if="error?.email">{{ error?.email }}</BaseError>
       <BaseSelect label="Role" v-model="role" :options="['USER', 'ADMIN']" />
       <BaseError v-if="error?.password">{{ error?.password }}</BaseError>
-      <BaseButton type="submit" class-name="text-sm" :disabled="loading.value">
+      <Button type="submit" :disabled="loading.value">
         <span v-if="loading.type !== 'update' && !loading.value">Save Changes</span>
         <Loading v-if="loading.type === 'update'  && loading.value" />
-      </BaseButton>
+      </Button>
     </form>
   </div>
 </template>

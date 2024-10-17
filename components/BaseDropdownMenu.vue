@@ -12,7 +12,7 @@ import {
     <DropdownMenuTrigger>
       <slot name="icon"/>
     </DropdownMenuTrigger>
-    <DropdownMenuContent class="ml-1 space-y-1">
+    <DropdownMenuContent class="dark:bg-popover-dark dark:text-popover-foreground-dark ml-1 space-y-1">
         <slot name="content"/>
     </DropdownMenuContent>
   </DropdownMenu>

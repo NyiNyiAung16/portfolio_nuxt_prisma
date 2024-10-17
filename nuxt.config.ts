@@ -27,7 +27,7 @@ export default defineNuxtConfig({
         "spinner",
         "right-to-bracket"
       ],
-      regular: [ "user" ],
+      regular: [ "user", "moon", "sun"],
     },
   },
 

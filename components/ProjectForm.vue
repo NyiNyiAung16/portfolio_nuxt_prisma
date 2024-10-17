@@ -29,8 +29,6 @@ const previewImages = ref([]);
 const images_path = ref([]);
 const tag = ref("");
 
-const hovering = ref({ value: false, image: null });
-
 const onChange = async (files) => {
   previewImages.value = [];
   await handleFileInput(files);
@@ -94,13 +92,13 @@ if(Object.keys(localProject.value).length > 0){
 <template>
   <div
     :class="{
-      'max-w-xl mx-auto border border-slate-200 rounded-md shadow-md px-6 py-4':
+      'max-w-xl mx-auto border border-slate-200 rounded-md shadow-md px-6 py-4 dark:border-gray-600 dark:bg-gray-800':
         !hasProject,
     }"
   >
     <h1
       v-if="!hasProject"
-      class="text-xl font-bold text-center mb-4 text-[#808080]"
+      class="text-xl font-bold text-center mb-4 text-[#808080] dark:text-white"
     >
       <span>Create Project</span>
     </h1>
@@ -117,7 +115,7 @@ if(Object.keys(localProject.value).length > 0){
         <BaseInput type="text" placeholder="Tag" v-model="tag" />
         <div
           @click="addTag(tag)"
-          class="flex items-center px-3 py-2 rounded-md bg-[#eaeaea] text-sm cursor-pointer hover:bg-[#dcdcdc] duration-150"
+          class="flex items-center px-3 py-2 rounded-md bg-[#eaeaea] dark:bg-gray-700 text-sm cursor-pointer hover:bg-[#dcdcdc] dark:hover:bg-gray-600 duration-150"
         >
           Add
         </div>
@@ -127,7 +125,7 @@ if(Object.keys(localProject.value).length > 0){
         <div
           v-for="tag in tags"
           :key="tag"
-          class="relative px-4 py-2 rounded-lg bg-[#eaeaea]"
+          class="relative px-4 py-2 rounded-lg bg-[#eaeaea] dark:bg-gray-700"
         >
           <span>{{ tag }}</span>
           <FontAwesome
@@ -140,7 +138,7 @@ if(Object.keys(localProject.value).length > 0){
       <div>
         <label
           for="files"
-          class="block px-3 py-2 bg-[#eaeaea] rounded-md text-[#929292] cursor-pointer"
+          class="block px-3 py-2 bg-[#eaeaea] dark:bg-gray-700 rounded-md text-[#929292] cursor-pointer"
           >Images</label
         >
         <input
@@ -157,36 +155,14 @@ if(Object.keys(localProject.value).length > 0){
         v-show="previewImages.length > 0"
         class="flex items-start flex-wrap gap-1"
       >
-        <div
-          v-for="image in previewImages"
-          :key="image"
-          class="relative w-[100px] h-[100px] overflow-hidden rounded-md"
-        >
-          <img
-            :src="image"
-            :alt="image"
-            class="w-full h-full object-cover"
-          />
-          <div
-            class="absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center transition duration-300 hover:bg-opacity-75"
-            @mouseover="hovering = { value: true, image}"
-            @mouseleave="hovering = { value: false, image}"
-          >
-            <FontAwesome
-              v-if="hovering.value && hovering.image === image"
-              icon="xmark"
-              class=" text-white text-3xl cursor-pointer"
-              @click="onDeleteImage(image)"
-            />
-          </div>
-        </div>
+        <PreviewPhotos v-for="image in previewImages" :key="image" :image="image" @on-delete-image="onDeleteImage"/>
       </div>
-      <BaseButton class-name="text-sm" type="submit" :disabled="loading.value">
+      <Button type="submit" :disabled="loading.value">
         <span v-if="!loading.value">{{
           project ? "Save Changes" : "Create"
         }}</span>
         <Loading v-if="loading.value" />
-      </BaseButton>
+      </Button>
     </form>
   </div>
 </template>

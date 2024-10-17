@@ -6,13 +6,19 @@ const { loggedIn, clear, user } = useUserSession();
 
 const logout = async () => {
   await clear();
-  setToast({ title: "Logout Successful🙌🙌", duration: 3000 });
+  setToast({ title: "Logout Successful🙌🙌"});
 };
+
+
 </script>
 
 <template>
-  <div class="flex justify-between px-4 py-2 md:px-8 md:py-4 select-none">
-    <h2 class="font-bold text-xl text-gray-800 md:text-3xl">NYI NYI AUNG</h2>
+  <div
+    class="flex justify-between px-4 py-2 md:px-8 md:py-4 select-none dark:bg-gray-800 dark:text-white transition-colors duration-500"
+  >
+    <h2 class="font-bold text-xl text-gray-800 md:text-3xl dark:text-white">
+      NYI NYI AUNG
+    </h2>
     <ul class="hidden md:flex gap-3 items-center md:gap-6">
       <li>
         <NuxtLink href="/" class="block md:inline-block">Home</NuxtLink>
@@ -40,64 +46,72 @@ const logout = async () => {
           Logout
         </p>
       </li>
+      <li>
+        <DarkMode/>
+      </li>
     </ul>
     <div class="block md:hidden">
-        <BaseDropdownMenu>
-          <template #icon>
-            <FontAwesome
-              icon="bars"
-              class="text-2xl text-gray-700 hover:text-gray-800 duration-100"
-            />
-          </template>
-          <template #content>
-            <DropdownMenuItem
-              :class="{
-                'bg-gray-200 text-gray-900': $route.path === '/',
-              }"
+      <BaseDropdownMenu>
+        <template #icon>
+          <FontAwesome
+            icon="bars"
+            class="text-2xl text-gray-700 hover:text-gray-800 duration-100 dark:text-white"
+          />
+        </template>
+        <template #content>
+          <DropdownMenuItem
+            :class="{
+              'bg-gray-200 text-gray-900': $route.path === '/',
+            }"
+          >
+            <NuxtLink href="/" class="w-full">Home</NuxtLink>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            :class="{
+              'bg-gray-200 text-gray-900': $route.path === '/projects',
+            }"
+          >
+            <NuxtLink href="/projects" class="w-full">Projects</NuxtLink>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            :class="{
+              'bg-gray-200 text-gray-900': $route.path === '/admin/dashboard',
+            }"
+            v-if="user?.role === 'ADMIN'"
+          >
+            <NuxtLink href="/admin/dashboard" class="w-full"
+              >Dashboard</NuxtLink
             >
-              <NuxtLink href="/" class="w-full">Home</NuxtLink>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              :class="{
-                'bg-gray-200 text-gray-900': $route.path === '/projects',
-              }"
-            >
-              <NuxtLink href="/projects" class="w-full">Projects</NuxtLink>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              :class="{
-                'bg-gray-200 text-gray-900': $route.path === '/admin/dashboard',
-              }"
-              v-if="user?.role === 'ADMIN'"
-            >
-              <NuxtLink href="/admin/dashboard" class="w-full">Dashboard</NuxtLink>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              :class="{
-                'bg-gray-200 text-gray-900': $route.path === '/login',
-              }"
-              v-if="!loggedIn"
-            >
-              <NuxtLink href="/login" class="w-full">Login</NuxtLink>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              :class="{
-                'bg-gray-200 text-gray-900': $route.path === '/register',
-              }"
-              v-if="!loggedIn"
-            >
-              <NuxtLink href="/register" class="w-full">Register</NuxtLink>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              :class="{
-                'bg-gray-200 text-gray-900': $route.path === '/logout',
-              }"
-              v-if="loggedIn"
-            >
-              <p @click="logout">Logout</p>
-            </DropdownMenuItem>
-          </template>
-        </BaseDropdownMenu>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            :class="{
+              'bg-gray-200 text-gray-900': $route.path === '/login',
+            }"
+            v-if="!loggedIn"
+          >
+            <NuxtLink href="/login" class="w-full">Login</NuxtLink>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            :class="{
+              'bg-gray-200 text-gray-900': $route.path === '/register',
+            }"
+            v-if="!loggedIn"
+          >
+            <NuxtLink href="/register" class="w-full">Register</NuxtLink>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            :class="{
+              'bg-gray-200 text-gray-900': $route.path === '/logout',
+            }"
+            v-if="loggedIn"
+          >
+            <p @click="logout">Logout</p>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <DarkMode/>
+          </DropdownMenuItem>
+        </template>
+      </BaseDropdownMenu>
     </div>
   </div>
 </template>

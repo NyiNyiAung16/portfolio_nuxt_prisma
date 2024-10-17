@@ -13,7 +13,7 @@ defineProps({
 
 <template>
   <button
-    :class="` ${
+    :class="`${
       defaultBgStyle ? 'bg-black text-white' : ''
     } ${className} cursor-pointer text-lg font-medium rounded-md px-3 py-2 hover:bg-opacity-80 active:bg-opacity-100 duration-150`"
   >

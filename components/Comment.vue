@@ -33,12 +33,12 @@ const onKeydown = () => {
 
 <template>
   <div
-    class="max-w-md md:max-w-lg mx-5 sm:mx-auto bg-[#eaeaea] px-6 py-4 rounded-md shadow-sm"
+    class="w-full mx-auto bg-[#eaeaea] dark:bg-gray-600 px-6 py-4 rounded-md shadow-sm"
   >
     <div class="flex items-start justify-between">
       <div class="flex flex-col">
-        <h1 class="text-lg font-bold">{{ comment.user.username }}</h1>
-        <span class="text-sm text-[#808080]">{{
+        <h1 class="text-lg font-bold dark:text-white">{{ comment.user.username }}</h1>
+        <span class="text-sm text-[#808080] dark:text-gray-400">{{
           formatDistanceToNow(new Date(comment.createdAt), {
             includeSeconds: true,
           })
@@ -64,10 +64,10 @@ const onKeydown = () => {
       </div>
     </div>
     <div class="mt-4">
-      <p class="font-medium" v-if="!active">{{ comment.content }}</p>
+      <p class="font-medium dark:text-white" v-if="!active">{{ comment.content }}</p>
       <input
         type="text"
-        class="w-full bg-inherit px-3 py-2 border border-[#808080] rounded-sm outline-none"
+        class="w-full bg-inherit dark:bg-gray-700 dark:text-white px-3 py-2 border border-[#808080] dark:border-gray-500 rounded-sm outline-none"
         autofocus
         v-if="active"
         v-model="content"

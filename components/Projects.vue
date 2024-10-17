@@ -37,7 +37,7 @@ watch(
 </script>
 
 <template>
-  <div>
+  <div class="dark:bg-gray-800 dark:text-white">
     <div v-if="loading.type === 'get' && loading.value">
       <Loading />
     </div>
@@ -46,38 +46,39 @@ watch(
       <div v-if="localProjects && localProjects.length > 0">
         <BaseTable caption="A list of your recent projects">
           <template #header>
-            <TableHead> Id </TableHead>
-            <TableHead>Title</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead> Tags </TableHead>
-            <TableHead>Created At</TableHead>
-            <TableHead>Action</TableHead>
+            <TableHead class="dark:text-gray-300"> Id </TableHead>
+            <TableHead class="dark:text-gray-300">Title</TableHead>
+            <TableHead class="dark:text-gray-300">Description</TableHead>
+            <TableHead class="dark:text-gray-300"> Tags </TableHead>
+            <TableHead class="dark:text-gray-300">Created At</TableHead>
+            <TableHead class="dark:text-gray-300">Action</TableHead>
           </template>
           <template #body>
             <TableRow
               v-for="(project, index) in localProjects"
               :key="project.id"
+              class="dark:bg-gray-600 dark:hover:bg-gray-500"
             >
-              <TableCell class="font-medium">
+              <TableCell class="font-medium dark:text-gray-400">
                 {{ index + 1 }}
               </TableCell>
-              <TableCell>{{ project.title }}</TableCell>
-              <TableCell>{{
+              <TableCell class="dark:text-gray-300">{{ project.title }}</TableCell>
+              <TableCell class="dark:text-gray-300">{{
                 project.description.toString(100) + "..."
               }}</TableCell>
-              <TableCell class="flex gap-1 items-center">
+              <TableCell class="flex gap-1 items-center dark:text-gray-400">
                 <div
                   v-for="tag in project.tags"
                   :key="tag"
-                  class="inline-block px-3 py-2 rounded-md bg-[#eaeaea] select-none"
+                  class="inline-block px-3 py-2 rounded-md bg-[#eaeaea] dark:bg-gray-700 select-none dark:text-white"
                 >
                   {{ tag }}
                 </div>
               </TableCell>
-              <TableCell>{{
+              <TableCell class="dark:text-gray-400">{{
                 formatDistanceToNow(new Date(project.createdAt))
               }}</TableCell>
-              <TableCell class="flex gap-1 items-center">
+              <TableCell class="flex gap-1 items-center dark:text-gray-400">
                 <EditProjectDialog :project="project" />
                 <CheckSure
                   :open="open"
@@ -85,7 +86,9 @@ watch(
                   @on-delete="deleteProject(project.id)"
                   description="you want to delete this project?"
                 >
-                  <p class="font-medium text-red-600 hover:underline">Delete</p>
+                  <p class="font-medium text-red-600 hover:underline dark:text-red-500">
+                    Delete
+                  </p>
                 </CheckSure>
               </TableCell>
             </TableRow>
@@ -99,7 +102,7 @@ watch(
         </div>
       </div>
       <div v-if="localProjects && localProjects.length === 0 && !loading.value">
-        <p class="text-sm font-medium text-zinc-500">
+        <p class="text-sm font-medium text-zinc-500 dark:text-gray-400">
           There is not any project!
         </p>
       </div>

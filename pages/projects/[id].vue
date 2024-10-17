@@ -10,14 +10,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="py-5">
+  <div class="py-5 min-h-screen dark:bg-gray-800 dark:text-white transition-colors duration-500">
     <div v-if="loading.type === 'show' && loading.value">
       <Loading />
     </div>
     <div class="mt-5" v-if="project && !loading.value">
-      <div class="w-[80%] bg-[#eaeaea] rounded mx-auto pb-10">
+      <div
+        class="w-[80%] bg-[#eaeaea] dark:bg-gray-700 rounded mx-auto pb-10 dark:text-white"
+      >
         <Gallery :is-cover-flow="false" :images="project.images_path" />
-        <div class="mt-7 px-6">
+        <div class="mt-7 px-6 dark:text-white">
           <div class="space-y-1 mt-3">
             <h2 class="font-bold text-2xl">{{ project.title }}</h2>
             <p class="font-light">{{ project.description }}</p>
@@ -28,15 +30,15 @@ onMounted(async () => {
               :href="project.youtube_link"
               :external="true"
               target="_blank"
-              class="underline"
+              class="underline dark:text-blue-500"
               >{{ project.youtube_link }}</NuxtLink
             >
           </div>
-          <div class="flex items-center gap-3 mt-4 text-sm">
+          <div class="flex items-center gap-3 mt-4 text-sm dark:text-white">
             <div
               v-for="tag in project.tags"
               :key="tag"
-              class="inline-block px-3 py-2 rounded-md bg-[#fff] select-none"
+              class="inline-block px-3 py-2 rounded-md bg-[#fff] dark:bg-gray-800 select-none"
             >
               {{ tag }}
             </div>
@@ -44,7 +46,7 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <div v-if="project && !loading.value">
+    <div v-if="project && !loading.value" class="max-w-sm md:max-w-md px-5 sm:px-0 mx-auto">
       <CommentForm :project-id="id" />
       <Comments />
     </div>

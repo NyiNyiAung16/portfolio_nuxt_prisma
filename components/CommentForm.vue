@@ -36,23 +36,22 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <div>
-    <div class="max-w-lg w-full mx-auto mt-6 p-5">
-      <button
-        class="bg-black text-white cursor-pointer text-lg font-medium rounded-md px-3 py-2 hover:bg-opacity-80 active:bg-opacity-100 duration-150"
-        @click="active = !active"
-      >
-        Comment Form 
+  <div
+    class="dark:bg-gray-800 dark:text-white transition-colors duration-500"
+  >
+    <div class="w-full mx-auto mt-6 mb-4">
+      <Button class="text-lg font-medium space-x-1 px-3 py-2" @click="active = !active">
+        <span>Comment Form </span>
         <FontAwesome icon="arrow-up" v-show="active"/>
         <FontAwesome icon="arrow-down" v-show="!active"/>
-      </button>
-      <form class="space-y-2 mt-5" @submit.prevent="onSubmit" v-show="active">
+      </Button>
+      <form class="space-y-1 mt-5" @submit.prevent="onSubmit" v-show="active">
         <BaseTextarea v-model="content" placeholder="Write your thougth.." />
         <BaseError v-if="error?.content">{{ error?.content }}</BaseError>
-        <BaseButton type="submit" class-name="text-sm" :disabled="loading.value && loading.type === 'create'">
+        <Button type="submit"  :disabled="loading.value && loading.type === 'create'">
           <span v-if="!loading.value || loading.type != 'create'">Create</span>
           <Loading v-if="loading.value && loading.type === 'create'" />
-        </BaseButton>
+        </Button>
       </form>
     </div>
   </div>
