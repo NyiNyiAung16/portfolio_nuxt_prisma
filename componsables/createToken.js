@@ -7,12 +7,12 @@ export default function createToken(user) {
         throw new Error('The user object cannot be null or undefined');
     }
 
-    if (!process.env.JWT_SECRET) {
+    if (!useRuntimeConfig().jwtSecret) {
         throw new Error('The JWT secret is not set');
     }
 
     try {
-        return jwt.sign({user}, process.env.JWT_SECRET, {
+        return jwt.sign({user}, useRuntimeConfig().jwtSecret, {
             expiresIn: maxAge
         });
     } catch (error) {

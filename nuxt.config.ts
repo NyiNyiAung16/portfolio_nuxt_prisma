@@ -11,6 +11,11 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "nuxt-file-storage",
   ],
+  runtimeConfig: {
+    databaseUrl: process.env.DATABASE_URL,
+    jwtSecret: process.env.JWT_SECRET,
+    nuxtSessionPassword: process.env.NUXT_SESSION_PASSWORD,
+  },
   fontawesome: {
     icons: {
       solid: [
