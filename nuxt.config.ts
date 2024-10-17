@@ -11,6 +11,17 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "nuxt-file-storage",
   ],
+  vite: {
+    build: {
+      rollupOptions: {
+        external: [
+          "@fortawesome/free-brands-svg-icons",
+          "@fortawesome/free-regular-svg-icons",
+          "@fortawesome/free-solid-svg-icons",
+        ],
+      },
+    },
+  },
   fontawesome: {
     icons: {
       solid: [
@@ -25,9 +36,9 @@ export default defineNuxtConfig({
         "magnifying-glass",
         "bars",
         "spinner",
-        "right-to-bracket"
+        "right-to-bracket",
       ],
-      regular: [ "user", "moon", "sun"],
+      regular: ["user", "moon", "sun"],
     },
   },
 
@@ -47,6 +58,6 @@ export default defineNuxtConfig({
     componentDir: "./components/ui",
   },
   app: {
-    pageTransition: { name: 'page', mode: 'out-in'}
-  }
+    pageTransition: { name: "page", mode: "out-in" },
+  },
 });
