@@ -48,22 +48,22 @@ export const useCommentsStore = defineStore("comments", () => {
   };
 
   const update = async (id, data) => {
-    try {
-      error.value = null;
-      loading.value = setLoading({ type: "update", value: true });
-      const response = await axios.patch(`/api/comments/${id}`, data);
+    error.value = null;
+    loading.value = setLoading({ type: "update", value: true });
 
-      setToast({ title: "Comment updated successfully👏" , duration: 2000 });
+    try {
+      const response = await axios.patch(`/api/comments/${id}`, data);
+      comments.value = comments.value.map(comment => 
+        comment.id === response.data.id ? { ...comment, ...response.data } : comment
+      );
+
+      setToast({ title: "Comment updated successfully👏", duration: 2000 });
       return response;
     } catch (e) {
       error.value = e.response?.data?.data;
-
       setErrorToast(e);
-
-      setTimeout(() => {
-        error.value = null;
-      }, 3000);
     } finally {
+      error.value = null;
       loading.value = resetLoading();
     }
   };
@@ -72,12 +72,11 @@ export const useCommentsStore = defineStore("comments", () => {
     try {
       loading.value = setLoading({ type: "delete", value: true });
 
-      const response = await axios.delete(
-        `/api/comments/${commentId}`
-      );
+      let response = await axios.delete(`/api/comments/${commentId}`);
 
-      setToast({ title: "Comment deleted successfully👏", duration: 1500 });
+      comments.value = comments.value.filter(comment => comment.id !== commentId);
 
+      setToast({ title: "Comment deleted successfully", duration: 1500 });
       return response;
     } catch (e) {
       setErrorToast(e);

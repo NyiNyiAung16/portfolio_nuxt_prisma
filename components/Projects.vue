@@ -15,8 +15,13 @@ onMounted(async () => {
 });
 
 const deleteProject = async (id) => {
-  await projectsStore.destroy(id);
-  open.value = false;
+  try {
+    await projectsStore.destroy(id);
+  } catch (error) {
+    setToast({ title: error.message });
+  } finally {
+    open.value = false;
+  }
 };
 
 const searchValue = (value) => {

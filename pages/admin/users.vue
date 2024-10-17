@@ -22,8 +22,13 @@ onMounted(async () => {
 
 
 const deleteUser = async (id) => {
-  await usersStore.destroy(id);
-  open.value = false;
+  try {
+    await usersStore.destroy(id);
+  } catch (error) {
+    setToast({ title: error.message });
+  } finally {
+    open.value = false;
+  }
 }
 
 const searchValue = (value) => {

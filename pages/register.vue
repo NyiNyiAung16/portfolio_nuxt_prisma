@@ -11,17 +11,21 @@ const email = ref("");
 const password = ref("");
 
 const onSubmit = async () => {
-  const response = await auth.register(
-    username.value,
-    email.value,
-    password.value
-  );
-
-  if (response.status === 200 && response.statusText == "OK") {
-    username.value = '';
-    email.value = '';
-    password.value = '';
-    return navigateTo("/", { replace: true });
+  try {
+    const response = await auth.register(
+      username.value,
+      email.value,
+      password.value
+    );
+  
+    if (response.status === 200 && response.statusText == "OK") {
+      username.value = '';
+      email.value = '';
+      password.value = '';
+      return navigateTo("/", { replace: true });
+    }
+  } catch (error) {
+    setToast({ title: error.message });
   }
 };
 </script>

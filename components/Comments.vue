@@ -5,31 +5,34 @@ const commentsStore = useCommentsStore();
 const { loading, comments } = storeToRefs(commentsStore);
 
 onMounted(async () => {
-    await commentsStore.get(id);
-})
-
+  await commentsStore.get(id);
+});
 
 const deleteComment = async (commentId) => {
-   let response = await commentsStore.destroy(commentId);
-   if(response) {
-    let deletedComment = comments.value.filter((comment) => comment.id !== commentId);
-    comments.value = deletedComment;
-   }
-}
+  try {
+    await commentsStore.destroy(commentId);
+  } catch (error) {
+    setToast({ title: error.message });
+  }
+};
 
-
-const updateComment = async (commentId,data) => {
-   let response = await commentsStore.update(commentId,data);
-   if(response) {
-    comments.value = comments.value.map((comment) => comment.id === commentId ? {...comment, content: data.content} : comment);
-   }
-}
+const updateComment = async (commentId, data) => {
+  try {
+    await commentsStore.update(commentId, data);
+  } catch (error) {
+    setToast({ title: error.message });
+  }
+};
 </script>
 
 <template>
   <div>
-    <div v-if="loading.value && (loading.type === 'get' || loading.type === 'update')">
-      <Loading class=" my-2" />
+    <div
+      v-if="
+        loading.value && (loading.type === 'get' || loading.type === 'update')
+      "
+    >
+      <Loading class="my-2" />
     </div>
     <div v-if="comments && comments.length > 0" class="space-y-4">
       <div v-for="comment in comments" :key="comment.id">
@@ -38,9 +41,9 @@ const updateComment = async (commentId,data) => {
           @deleteComment="deleteComment(comment.id)"
           @updateComment="
             ($event) =>
-              updateComment(comment.id,{
+              updateComment(comment.id, {
                 content: $event,
-                userId : comment.user.id,
+                userId: comment.user.id,
                 projectId: id,
               })
           "

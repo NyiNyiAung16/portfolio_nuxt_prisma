@@ -15,16 +15,18 @@ const username = ref(localUser.value.username || "");
 const email = ref(localUser.value.email || "");
 const role = ref(localUser.value.role || "");
 
-const onSubmit = async (e) => {
-  let response = await usersStore.update(localUser.value.id, {
-    username: username.value,
-    email: email.value,
-    role: role.value,
-  });
-  
-  if (response?.status === 200 && response?.statusText == "OK") {
+const onSubmit = async () => {
+  try {
+    await usersStore.update(localUser.value.id, {
+      username: username.value,
+      email: email.value,
+      role: role.value,
+    });
+
     resetForm();
     emits("close");
+  } catch (error) {
+    setToast({ title: error.message });
   }
 };
 

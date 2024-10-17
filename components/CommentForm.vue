@@ -17,21 +17,21 @@ const commentsStore = useCommentsStore();
 const { loading, error } = storeToRefs(commentsStore);
 
 const onSubmit = async () => {
-    if(!user?.value) {
-      return navigateTo('/login',{ replace: true });
-    }
+  if (!user.value) return navigateTo('/login', { replace: true });
 
-    const data = {
-        content: content.value,
-        userId: user.value.id,
-        projectId: projectId
-    }
-    
-   let response =  await commentsStore.create(data);
-   if(response) {
-       content.value = "";
-   }
-}
+  const data = {
+    content: content.value,
+    userId: user.value.id,
+    projectId,
+  };
+
+  try {
+    await commentsStore.create(data);
+    content.value = "";
+  } catch (error) {
+    setToast({ title: error.message });
+  }
+};
 
 </script>
 

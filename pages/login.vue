@@ -1,4 +1,5 @@
 <script setup>
+
 definePageMeta({
   middleware: "auth",
 });
@@ -10,12 +11,16 @@ const email = ref("");
 const password = ref("");
 
 const onSubmit = async () => {
-  const response = await auth.login(email.value, password.value);
+  try {
+    const response = await auth.login(email.value, password.value);
 
-  if (response.status === 200 && response.statusText == "OK") {
-    email.value = "";
-    password.value = "";
-    return navigateTo("/", { replace: true });
+    if (response.status === 200 && response.statusText === "OK") {
+      email.value = "";
+      password.value = "";
+      return navigateTo("/", { replace: true });
+    }
+  } catch (error) {
+    setToast({ title: error.message });
   }
 };
 </script>

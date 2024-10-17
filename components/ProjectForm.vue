@@ -52,23 +52,28 @@ const onDeleteImage = (image) => {
 }
 
 const onSubmit = async () => {
-  const data = {
-    title: title.value,
-    description: description.value,
-    youtube_link: youtubeLink.value,
-    tags: tags.value,
-    images_path: images_path.value,
-  };
+  try {
+    const data = {
+      title: title.value,
+      description: description.value,
+      youtube_link: youtubeLink.value,
+      tags: tags.value,
+      images_path: images_path.value,
+    };
 
-  const response = Object.keys(localProject.value).length > 0
-    ? await projectsStore.update(localProject.value.id, data, files.value)
-    : await projectsStore.create(data, files.value);
+    const response = Object.keys(localProject.value).length > 0
+      ? await projectsStore.update(localProject.value.id, data, files.value)
+      : await projectsStore.create(data, files.value);
 
-  if (response.status === 200 && response.statusText === "OK") {
-    resetForm();
-    emits("close");
+    if (response.status === 200 && response.statusText === "OK") {
+      resetForm();
+      emits("close");
+    }
+  } catch (error) {
+    setToast({ title: error.message });
   }
 };
+
 const resetForm = () => {
   title.value = "";
   description.value = "";
