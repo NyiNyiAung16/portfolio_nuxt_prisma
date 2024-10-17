@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
         apiToken: token,
       },
       loggedIn: true,
-    },{ cookie: { secure: false }});
+    });
 
     return { ...user, password: null };
   } catch (error) {
