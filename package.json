@@ -16,7 +16,9 @@
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.4",
     "@prisma/nuxt": "^0.0.35",
+    "@types/bcrypt": "^5.0.2",
     "@vesp/nuxt-fontawesome": "^1.1.0",
+    "autoprefixer": "^10.4.20",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
@@ -30,22 +32,20 @@
     "nuxt-auth-utils": "^0.3.9",
     "nuxt-file-storage": "^0.2.7",
     "pinia": "^2.2.2",
+    "postcss": "^8.4.47",
+    "prisma": "^5.21.0",
     "radix-vue": "^1.9.6",
     "shadcn-nuxt": "^0.10.4",
     "swiper": "^11.1.14",
     "tailwind-merge": "^2.5.2",
+    "tailwindcss": "^3.4.12",
     "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.6.2",
     "util": "^0.12.5",
     "vue": "latest",
     "vue-router": "latest"
   },
   "devDependencies": {
-    "@prisma/client": "^5.21.0",
-    "@types/bcrypt": "^5.0.2",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.47",
-    "prisma": "^5.21.0",
-    "tailwindcss": "^3.4.12",
-    "typescript": "^5.6.2"
+    "@prisma/client": "^5.21.0"
   }
 }

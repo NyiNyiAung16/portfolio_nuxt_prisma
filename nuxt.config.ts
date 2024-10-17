@@ -11,17 +11,6 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "nuxt-file-storage",
   ],
-  vite: {
-    build: {
-      rollupOptions: {
-        external: [
-          "@fortawesome/free-brands-svg-icons",
-          "@fortawesome/free-regular-svg-icons",
-          "@fortawesome/free-solid-svg-icons",
-        ],
-      },
-    },
-  },
   fontawesome: {
     icons: {
       solid: [
