@@ -11,6 +11,13 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "nuxt-file-storage",
   ],
+  build: {
+    transpile: [
+      "@fortawesome/free-brands-svg-icons",
+      "@fortawesome/free-regular-svg-icons",
+      "@fortawesome/free-solid-svg-icons",
+    ],
+  },
   runtimeConfig: {
     jwtSecret: process.env.JWT_SECRET,
     databaseUrl: process.env.DATABASE_URL,

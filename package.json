@@ -7,7 +7,8 @@
     "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "vercel-build": "prisma generate && prisma db push &&nuxt build"
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.6.0",
@@ -33,7 +34,7 @@
     "nuxt-file-storage": "^0.2.7",
     "pinia": "^2.2.2",
     "postcss": "^8.4.47",
-    "prisma": "^5.21.0",
+    "prisma": "^5.21.1",
     "radix-vue": "^1.9.6",
     "shadcn-nuxt": "^0.10.4",
     "swiper": "^11.1.14",
@@ -46,6 +47,6 @@
     "vue-router": "latest"
   },
   "devDependencies": {
-    "@prisma/client": "^5.21.0"
+    "@prisma/client": "^5.21.1"
   }
 }
