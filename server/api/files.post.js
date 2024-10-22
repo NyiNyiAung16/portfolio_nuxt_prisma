@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
         const filesPaths = [];
     
         for(const file of files){
-           let path =  await storeFileLocally(file,102,'../../public/project/photos');
+           let path =  await storeFileLocally(file,50,'../../public/project/photos');
            filesPaths.push(path);
         }
     

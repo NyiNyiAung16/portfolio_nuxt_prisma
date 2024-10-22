@@ -1,7 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
-  devtools: { enabled: true },
+  devtools: { enabled: false },
+  vite: {
+    resolve: {
+      alias: {
+        '.prisma/client/index-browser': './node_modules/.prisma/client/index-browser.js',
+      },
+    },
+  },
   modules: [
     "@prisma/nuxt",
     "@vesp/nuxt-fontawesome",
@@ -16,6 +23,11 @@ export default defineNuxtConfig({
       "@fortawesome/free-brands-svg-icons",
       "@fortawesome/free-regular-svg-icons",
       "@fortawesome/free-solid-svg-icons",
+      '@hapi/hoek',
+      '@sideway/formula',
+      '@sideway/pinpoint',
+      '@hapi/topo',
+      '@sideway/address',
     ],
   },
   runtimeConfig: {
