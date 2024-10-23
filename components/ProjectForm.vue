@@ -1,4 +1,5 @@
 <script setup>
+import extractNumber from "~/componsables/extractNumber";
 import { useFile } from "~/componsables/useFile";
 
 const { project } = defineProps({
@@ -51,6 +52,8 @@ const onDeleteImage = (image) => {
   previewImages.value = previewImages.value.filter(preview => preview !== image);
 }
 
+const sortFiles = (files) => files.sort((a, b) => extractNumber(a.name) - extractNumber(b.name));
+
 const onSubmit = async () => {
   try {
     const data = {
@@ -62,8 +65,8 @@ const onSubmit = async () => {
     };
 
     const response = Object.keys(localProject.value).length > 0
-      ? await projectsStore.update(localProject.value.id, data, files.value)
-      : await projectsStore.create(data, files.value);
+      ? await projectsStore.update(localProject.value.id, data, sortFiles(files.value))
+      : await projectsStore.create(data, sortFiles(files.value));
 
     if (response.status === 200 && response.statusText === "OK") {
       resetForm();
@@ -110,7 +113,7 @@ if(Object.keys(localProject.value).length > 0){
     <form class="space-y-3" @submit.prevent.self="onSubmit">
       <BaseInput type="text" placeholder="Title" v-model="title" />
       <BaseError v-if="error?.title">{{ error?.title }}</BaseError>
-      <BaseInput type="text" placeholder="Description" v-model="description" />
+      <BaseTextarea placeholder="Description" v-model="description" />
       <BaseError v-if="error?.description">{{ error?.description }}</BaseError>
       <BaseInput type="text" placeholder="Youtube Link" v-model="youtubeLink" />
       <BaseError v-if="error?.youtube_link"

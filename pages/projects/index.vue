@@ -37,7 +37,7 @@ onMounted(async () => {
         <div class="px-3 pt-2 pb-4 space-y-1 mt-3">
           <h2 class="font-bold text-2xl">{{ project.title }}</h2>
           <p class="font-light">
-            {{ project.description.substring(0, 90) + "..." }}
+            {{ project.description.slice(0, 100) + "..." }}
           </p>
         </div>
       </div>

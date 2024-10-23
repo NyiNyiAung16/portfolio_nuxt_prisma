@@ -68,10 +68,10 @@ watch(
                 {{ index + 1 }}
               </TableCell>
               <TableCell class="dark:text-gray-300">{{ project.title }}</TableCell>
-              <TableCell class="dark:text-gray-300">{{
-                project.description.toString(100) + "..."
-              }}</TableCell>
-              <TableCell class="flex gap-1 items-center dark:text-gray-400">
+              <TableCell class=" dark:text-gray-300">
+                {{ project.description.slice(0, 100) + "..." }}
+              </TableCell>
+              <TableCell class="flex flex-wrap gap-1 items-center dark:text-gray-400">
                 <div
                   v-for="tag in project.tags"
                   :key="tag"

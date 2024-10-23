@@ -19,7 +19,7 @@ const onDownloadCV = () => {
             </div>
         </div>
         <div>
-            <img src="/photos/1.jpg" alt="image" class="w-full h-[500px] object-cover rounded dark:bg-gray-700">
+            <img src="/photos/coding.jpg" alt="image" class="w-full h-[500px] object-cover rounded dark:bg-gray-700">
         </div> 
     </div>
 </template>
