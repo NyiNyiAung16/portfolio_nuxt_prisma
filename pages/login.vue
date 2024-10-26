@@ -18,7 +18,7 @@ const onSubmit = async () => {
     if (response?.status === 200 && response?.statusText === "OK") {
       email.value = "";
       password.value = "";
-      return navigateTo("/", { replace: true });
+      return navigateTo("/");
     }
   } catch (error) {
     if(error instanceof Error) {

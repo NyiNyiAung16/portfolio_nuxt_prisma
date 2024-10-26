@@ -100,7 +100,7 @@ watch(
     <form class="space-y-3" @submit.prevent.self="onSubmit">
       <BaseInput type="text" placeholder="Title" v-model="title" />
       <BaseError v-if="error?.title">{{ error?.title }}</BaseError>
-      <BaseTextarea placeholder="Description" v-model="description" />
+      <BaseTextarea placeholder="Description" class="description" v-model="description" />
       <BaseError v-if="error?.description">{{ error?.description }}</BaseError>
       <BaseInput type="text" placeholder="Youtube Link" v-model="youtubeLink" />
       <BaseError v-if="error?.youtube_link"
@@ -116,7 +116,7 @@ watch(
         </div>
       </div>
       <BaseError v-if="error?.tags">{{ error?.tags }}</BaseError>
-      <div v-show="tags.length > 0" class="flex items-center gap-x-3">
+      <div v-show="tags.length > 0" class="flex flex-wrap items-center gap-2">
         <div
           v-for="tag in tags"
           :key="tag"
@@ -143,3 +143,33 @@ watch(
     </form>
   </div>
 </template>
+
+<style scoped>
+.description {
+  --sb-track-color: #949494;
+  --sb-thumb-color: #c1c1c1;
+  --sb-size: 6px;
+}
+
+.description::-webkit-scrollbar {
+  width: var(--sb-size)
+}
+
+.description::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 6px;
+}
+
+.description::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 6px;
+  border: 1px solid var(--sb-track-color);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .description {
+    scrollbar-color: var(--sb-thumb-color)
+                     var(--sb-track-color);
+  }
+}
+</style>

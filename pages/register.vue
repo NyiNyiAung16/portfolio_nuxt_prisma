@@ -24,7 +24,7 @@ const onSubmit = async () => {
       username.value = '';
       email.value = '';
       password.value = '';
-      return navigateTo("/", { replace: true });
+      return navigateTo("/");
     }
   } catch (error) {
     if(error instanceof Error) {

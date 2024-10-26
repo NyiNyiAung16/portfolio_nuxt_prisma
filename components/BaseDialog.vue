@@ -4,7 +4,7 @@ import {
   DialogHeader,
   DialogTitle,
   Dialog,
-  DialogContent,
+  DialogScrollContent,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
@@ -39,7 +39,7 @@ watch(
     >
       Edit
     </DialogTrigger>
-    <DialogContent>
+    <DialogScrollContent>
       <DialogHeader>
         <DialogTitle>{{ title }}</DialogTitle>
         <DialogDescription>
@@ -47,6 +47,6 @@ watch(
         </DialogDescription>
       </DialogHeader>
       <slot />
-    </DialogContent>
+    </DialogScrollContent>
   </Dialog>
 </template>

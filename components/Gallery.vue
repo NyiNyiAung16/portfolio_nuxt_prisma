@@ -65,9 +65,9 @@ const handleClick = (event) => {
         <SwiperSlide v-for="image in images" :key="image">
             <CldImage
                 :src="image"
-                width="auto"
-                height="350"
-                alt="test"
+                width="700"
+                height="400"
+                :alt="`Image - ${image}`"
             />
         </SwiperSlide>
     </Swiper>
