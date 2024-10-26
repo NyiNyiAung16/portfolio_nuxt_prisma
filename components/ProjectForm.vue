@@ -1,6 +1,5 @@
 <script setup>
-import extractNumber from "~/componsables/extractNumber";
-import { useFile } from "~/componsables/useFile";
+import { setToast } from "~/componsables/toastHelper";
 
 const { project } = defineProps({
   project: {
@@ -9,8 +8,6 @@ const { project } = defineProps({
 });
 
 const emits = defineEmits(["close"]);
-
-const { handleFileInput, files } = useFileStorage();
 
 const projectsStore = useProjectsStore();
 const { error, loading } = storeToRefs(projectsStore);
@@ -26,16 +23,8 @@ const title = ref("");
 const description = ref("");
 const tags = ref([]);
 const youtubeLink = ref("");
-const previewImages = ref([]);
 const images_path = ref([]);
 const tag = ref("");
-
-const onChange = async (files) => {
-  previewImages.value = [];
-  await handleFileInput(files);
-  const { tempPreviewImages } = await useFile(files);
-  previewImages.value = tempPreviewImages;
-};
 
 const addTag = (val) => {
   if (!val.trim() || tags.value.includes(val)) return;
@@ -48,12 +37,6 @@ const onDeleteTag = (val) => {
   tags.value = tags.value.filter((tag) => tag != val);
 };
 
-const onDeleteImage = (image) => {
-  previewImages.value = previewImages.value.filter(preview => preview !== image);
-}
-
-const sortFiles = (files) => files.sort((a, b) => extractNumber(a.name) - extractNumber(b.name));
-
 const onSubmit = async () => {
   try {
     const data = {
@@ -65,10 +48,10 @@ const onSubmit = async () => {
     };
 
     const response = Object.keys(localProject.value).length > 0
-      ? await projectsStore.update(localProject.value.id, data, sortFiles(files.value))
-      : await projectsStore.create(data, sortFiles(files.value));
+      ? await projectsStore.update(localProject.value.id, data)
+      : await projectsStore.create(data);
 
-    if (response.status === 200 && response.statusText === "OK") {
+    if (response?.status === 200 && response?.statusText === "OK") {
       resetForm();
       emits("close");
     }
@@ -82,19 +65,23 @@ const resetForm = () => {
   description.value = "";
   youtubeLink.value = "";
   tags.value = [];
-  previewImages.value = [];
-  files.value = [];
+  images_path.value = [];
 };
 
+watch(
+  () => localProject.value,
+  () => {
+    if (Object.keys(localProject.value).length > 0) {
+      title.value = localProject.value.title;
+      description.value = localProject.value.description;
+      youtubeLink.value = localProject.value.youtube_link;
+      tags.value = [...localProject.value.tags];
+      images_path.value = [...localProject.value.images_path];
+    }
+  },
+  { deep: true, immediate: true }
+);
 
-if(Object.keys(localProject.value).length > 0){
-  title.value = localProject.value.title;
-  description.value = localProject.value.description;
-  youtubeLink.value = localProject.value.youtube_link;
-  tags.value = [...localProject.value.tags];
-  images_path.value = [...localProject.value.images_path];
-  previewImages.value = images_path.value.map((image) => `/project/photos/${image}`);
-}
 </script>
 
 <template>
@@ -144,26 +131,8 @@ if(Object.keys(localProject.value).length > 0){
         </div>
       </div>
       <div>
-        <label
-          for="files"
-          class="block px-3 py-2 bg-[#eaeaea] dark:bg-gray-700 rounded-md text-[#929292] cursor-pointer"
-          >Images</label
-        >
-        <input
-          type="file"
-          id="files"
-          multiple
-          accept=".jpg, .jpeg, .png"
-          @change="onChange"
-          class="hidden"
-        />
-      </div>
-      <BaseError v-if="error?.images_path">{{ error?.images_path }}</BaseError>
-      <div
-        v-show="previewImages.length > 0"
-        class="flex items-start flex-wrap gap-1"
-      >
-        <PreviewPhotos v-for="image in previewImages" :key="image" :image="image" @on-delete-image="onDeleteImage"/>
+        <FilesUpload v-model="images_path"/>
+        <BaseError v-if="error?.images_path">{{ error?.images_path }}</BaseError>
       </div>
       <Button type="submit" :disabled="loading.value">
         <span v-if="!loading.value">{{

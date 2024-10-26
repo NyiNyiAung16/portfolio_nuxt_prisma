@@ -61,13 +61,10 @@ export const useProjectsStore = defineStore("projects", () => {
     }
   }
 
-  async function create(data, files) {
+  async function create(data) {
     try {
       error.value = null;
       loading.value = setLoading({ type: "create", value: true });
-
-      const filesResponse = await axios.post("/api/files", { files });
-      data.images_path = filesResponse.data;
 
       const response = await axios.post("/api/projects", data);
 
@@ -87,19 +84,10 @@ export const useProjectsStore = defineStore("projects", () => {
     }
   }
 
-  const update = async (id, data, files) => {
+  const update = async (id, data) => {
     try {
       error.value = null;
       loading.value = setLoading({ type: "update", value: true });
-
-      if (Object.keys(files).length > 0) {
-        await axios.delete("/api/files", {
-          data: { files: data.images_path },
-        });
-
-        const filesResponse = await axios.post("/api/files", { files });
-        data.images_path = filesResponse.data;
-      }
 
       const response = await axios.patch(`/api/projects/${id}`, data);
 
@@ -128,16 +116,22 @@ export const useProjectsStore = defineStore("projects", () => {
     }
   };
 
-  const destroy = async (id) => {
+  const destroy = async (project) => {
     try {
+      error.value = null;
       loading.value = setLoading({ type: "delete", value: true });
-      const response = await axios.delete(`/api/projects/${id}`);
+
+      const deleteFiles = axios.delete('/api/files', { data: { images_path: project.images_path }});
+      const deleteProject = axios.delete(`/api/projects/${project.id}`);
+
+      const [filesResponse, projectResponse] = await Promise.all([deleteFiles, deleteProject]);
+
       projects.value = projects.value.filter(
-        (user) => user.id !== response.data.id
+        (user) => user.id !== projectResponse.data.id
       );
 
       setToast({ title: "Project deleted successfully👏", duration: 2000 });
-      return response;
+      return projectResponse;
     } catch (e) {
       setErrorToast(e);
     } finally {

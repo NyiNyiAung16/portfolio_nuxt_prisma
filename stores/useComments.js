@@ -76,7 +76,7 @@ export const useCommentsStore = defineStore("comments", () => {
 
       comments.value = comments.value.filter(comment => comment.id !== commentId);
 
-      setToast({ title: "Comment deleted successfully", duration: 1500 });
+      setToast({ title: "Comment deleted successfully👏", duration: 1500 });
       return response;
     } catch (e) {
       setErrorToast(e);

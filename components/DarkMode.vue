@@ -4,22 +4,13 @@ const isDarkMode = ref(true);
 const modeIcon = ref("moon");
 
 onMounted(() => {
-  // Check local storage to see if dark mode is enabled
-  isDarkMode.value = localStorage.getItem('theme') === 'dark'
-  if (isDarkMode.value) {
-    document.documentElement.classList.add('dark')
-  }
+  isDarkMode.value = localStorage.theme === 'dark'
+  document.documentElement.classList.toggle('dark', isDarkMode.value)
 })
 
 const toggleDarkMode = () => {
-  isDarkMode.value = !isDarkMode.value
-  if (isDarkMode.value) {
-    document.documentElement.classList.add('dark')
-    localStorage.setItem('theme', 'dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-    localStorage.setItem('theme', 'light')
-  }
+  document.documentElement.classList.toggle('dark', isDarkMode.value = !isDarkMode.value);
+  localStorage.setItem('theme', isDarkMode.value ? 'dark' : 'light');
 }
 
 </script>

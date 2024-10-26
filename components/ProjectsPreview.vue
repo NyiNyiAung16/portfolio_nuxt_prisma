@@ -1,14 +1,14 @@
 <script setup>
 
 const images = ref([
-   "dMr3htq3I0ZLa8Db5VKJsuBFDI2xWiJ5SCHtT50z8GifXGMkex.png",
-   "I7S6GSt4EHAREuuohFWDHTngxOIrVYCCkx7skX0jniSvdlk6Mf.png",
-   "K3tmcV0pyErp0gpLWNRaxGSLaX31mXhDyhtCJgLwirKsNZ0hyF.png",
-   "nHp5r4odarXxc0pIB7aMx4BoYUM8L1UQ9OOfrdUcJNw0aExPUg.png",
-   "rQp2nxZ9RrPToLjDRJKEAzpunRmEU58JfwdV8WGvjJ7qogx15A.png",
-   "rQp2nxZ9RrPToLjDRJKEAzpunRmEU58JfwdV8WGvjJ7qogx15A.png",
-   "wFI5SNjseW7B550KRLniH0ini2kiPGlOUIwn74DWm2BxSAYje8.png",
-   "wFI5SNjseW7B550KRLniH0ini2kiPGlOUIwn74DWm2BxSAYje8.png"
+   "jz7kqgwtlr0uqa2njgav",
+   "ykgcjk54jmqk7kjlxu8z",
+   "o0p4oelflphczgd20zah",
+   "txi1vlq7cipxpcivcsqj",
+   "mlhltupuukxfizgqnmpy",
+   "u1hgqxvefylsmxdgujqc",
+   "xs1gblqtxngiif9pjzuq",
+   "dgyhzefraaxgu2dkfzel"
 ])
 
 </script>

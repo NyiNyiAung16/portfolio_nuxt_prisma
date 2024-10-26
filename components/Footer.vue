@@ -10,16 +10,16 @@ const latestYear = new Date().getFullYear();
             <h1 class="text-5xl md:text-7xl font-bold">Nyi Nyi Aung</h1>
             <ul class="flex gap-x-4 items-center text-sm md:text-md lg:text-lg">
                 <li>
-                    <NuxtLink href="/facebook" :external="true" target="_blank">Facebook</NuxtLink>
+                    <NuxtLink href="https://www.facebook.com/nyinyiaung.nyinyiaung.75054689" :external="true" target="_blank">Facebook</NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink href="/github" :external="true" target="_blank">Github</NuxtLink>
+                    <NuxtLink href="https://github.com/NyiNyiAung16" :external="true" target="_blank">Github</NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink href="/linkedin" :external="true" target="_blank">Linkedin</NuxtLink>
+                    <NuxtLink href="https://www.linkedin.com/in/nyi-nyi-aung-36500b264" :external="true" target="_blank">Linkedin</NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink href="/twitter" :external="true" target="_blank">Twitter</NuxtLink>
+                    <NuxtLink href="https://t.me/NyiNyiAung16" :external="true" target="_blank">Telegram</NuxtLink>
                 </li>
             </ul>
         </div>

@@ -1,4 +1,6 @@
 <script setup>
+import { setToast } from '~/componsables/toastHelper';
+
 definePageMeta({
   middleware: "auth",
 });
@@ -18,14 +20,16 @@ const onSubmit = async () => {
       password.value
     );
   
-    if (response.status === 200 && response.statusText == "OK") {
+    if (response?.status === 200 && response?.statusText == "OK") {
       username.value = '';
       email.value = '';
       password.value = '';
       return navigateTo("/", { replace: true });
     }
   } catch (error) {
-    setToast({ title: error.message });
+    if(error instanceof Error) {
+      setToast({ title: error.message });
+    }
   }
 };
 </script>

@@ -27,10 +27,12 @@ onMounted(async () => {
       >
         <div class="w-full h-[250px]">
           <NuxtLink :href="`/projects/${project.id}`">
-            <img
-              :src="`/project/photos/${project.images_path[0]}`"
-              alt="image"
-              class="w-full h-full object-cover rounded-t"
+            <CldImage
+              :src="project.images_path[0]"
+              width="auto"
+              height="250"
+              alt="My Awesome Image"
+              loading="lazy"
             />
           </NuxtLink>
         </div>

@@ -1,4 +1,6 @@
 <script setup>
+import { setToast } from '~/componsables/toastHelper';
+
 const id = useRoute().params.id;
 
 const commentsStore = useCommentsStore();

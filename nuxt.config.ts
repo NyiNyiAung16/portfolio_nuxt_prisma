@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "nuxt-auth-utils",
     "shadcn-nuxt",
-    "nuxt-file-storage",
+    "@nuxtjs/cloudinary"
   ],
   build: {
     transpile: [
@@ -30,10 +30,15 @@ export default defineNuxtConfig({
       '@sideway/address',
     ],
   },
+  cloudinary:{
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+  },
   runtimeConfig: {
     jwtSecret: process.env.JWT_SECRET,
     databaseUrl: process.env.DATABASE_URL,
     nuxtSessionPassword: process.env.NUXT_SESSION_PASSWORD,
+    cloudKey: process.env.NUXT_CLOUT_API_KEY,
+    cloudSecret: process.env.NUXT_CLOUT_SECRET_KEY
   },
   fontawesome: {
     icons: {

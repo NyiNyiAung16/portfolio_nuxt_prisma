@@ -19,9 +19,9 @@ const expertises = ref([
   },
   {
     id: 4,
-    title: "Mobile App Development",
+    title: "Fullstack Development",
     content:
-      "Designing and developing user-friendly mobile applications for iOS and Android.",
+      "Designing and developing user-friendly web applications using HTML, CSS, React.JS, Node.JS, Express.JS, Laravel and Vue.JS",
   },
 ]);
 </script>

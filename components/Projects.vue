@@ -2,6 +2,7 @@
 import { formatDistanceToNow } from "date-fns";
 import { onSearch, onSort } from "~/componsables/filter";
 import { TableCell, TableHead, TableRow } from "@/components/ui/table";
+import { setToast } from "~/componsables/toastHelper";
 
 const projectsStore = useProjectsStore();
 const { projects, pagination, loading } = storeToRefs(projectsStore);
@@ -14,9 +15,9 @@ onMounted(async () => {
   localProjects.value = [...projects.value];
 });
 
-const deleteProject = async (id) => {
+const deleteProject = async (project) => {
   try {
-    await projectsStore.destroy(id);
+    await projectsStore.destroy(project);
   } catch (error) {
     setToast({ title: error.message });
   } finally {
@@ -88,8 +89,8 @@ watch(
                 <CheckSure
                   :open="open"
                   :loading="loading"
-                  @on-delete="deleteProject(project.id)"
-                  description="you want to delete this project?"
+                  @on-delete="deleteProject(project)"
+                  :description="`you want to delete the project: ${project.title}?`"
                 >
                   <p class="font-medium text-red-600 hover:underline dark:text-red-500">
                     Delete

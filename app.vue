@@ -1,3 +1,11 @@
+<script setup>
+
+onMounted(() => {
+  document.documentElement.classList.toggle('dark', localStorage.getItem('theme') === 'dark')
+})
+
+</script>
+
 <template>
   <div class="dark:bg-gray-800 dark:text-white">
     <Toaster />

@@ -1,4 +1,6 @@
 <script setup>
+import { setToast } from '~/componsables/toastHelper';
+
 const { user } = defineProps({
   user: {
     type: Object,
