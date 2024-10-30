@@ -7,6 +7,9 @@ definePageMeta({ layout: 'admin-layout', middleware: 'admin' });
 
 <template>
     <div>
+        <Head>
+            <Title>NYI NYI AUNG | Dashboard</Title>
+        </Head>
         <Projects/>
     </div>
 </template>

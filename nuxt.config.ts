@@ -16,7 +16,8 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "nuxt-auth-utils",
     "shadcn-nuxt",
-    "@nuxtjs/cloudinary"
+    "@nuxtjs/cloudinary",
+    "nuxt-lodash"
   ],
   build: {
     transpile: [

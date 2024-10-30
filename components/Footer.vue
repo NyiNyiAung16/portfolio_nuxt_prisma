@@ -23,9 +23,9 @@ const latestYear = new Date().getFullYear();
                 </li>
             </ul>
         </div>
-        <div class="flex flex-col items-center gap-y-2">
-            <p>&copy; {{ latestYear }} All rights reserved.</p>
-            <p> Terms and Privacy</p>
+        <div class="flex flex-col items-center gap-y-2 text-sm md:text-base lg:text-lg">
+            <p>Copyright &copy; {{ latestYear }} All rights reserved.</p>
+            <p class="md:text-center lg:text-left">Terms and Privacy</p>
         </div>
     </div>
 </template>

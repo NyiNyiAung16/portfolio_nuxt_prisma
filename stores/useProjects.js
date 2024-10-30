@@ -2,6 +2,7 @@ import axios from "axios";
 import { resetLoading, setLoading } from "~/componsables/loadingHelper";
 import { setErrorToast, setToast } from "~/componsables/toastHelper.js";
 
+
 export const useProjectsStore = defineStore("projects", () => {
   const pagination = ref(null);
   const project = ref(null);
@@ -121,14 +122,8 @@ export const useProjectsStore = defineStore("projects", () => {
       error.value = null;
       loading.value = setLoading({ type: "delete", value: true });
 
-      const deleteFiles = axios.delete('/api/files', { data: { images_path: project.images_path }});
-      const deleteProject = axios.delete(`/api/projects/${project.id}`);
-
-      const [filesResponse, projectResponse] = await Promise.all([deleteFiles, deleteProject]);
-
-      projects.value = projects.value.filter(
-        (user) => user.id !== projectResponse.data.id
-      );
+      await axios.delete('/api/files', { data: { images_path: project.images_path }});
+      let projectResponse = await axios.delete(`/api/projects/${project.id}`);
 
       setToast({ title: "Project deleted successfully👏", duration: 2000 });
       return projectResponse;

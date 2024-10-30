@@ -3,6 +3,10 @@ import { formatDistanceToNow } from "date-fns";
 import { onSearch, onSort } from "~/componsables/filter";
 import { TableCell, TableHead, TableRow } from "@/components/ui/table";
 import { setToast } from "~/componsables/toastHelper";
+import { pageReplace } from "~/componsables/pageHelper";
+
+const route = useRoute();
+const page = ref(route.query.page || 1);
 
 const projectsStore = useProjectsStore();
 const { projects, pagination, loading } = storeToRefs(projectsStore);
@@ -11,13 +15,14 @@ const localProjects = ref([]);
 const open = ref(false);
 
 onMounted(async () => {
-  await projectsStore.get();
+  await projectsStore.get(page.value);
   localProjects.value = [...projects.value];
 });
 
 const deleteProject = async (project) => {
   try {
     await projectsStore.destroy(project);
+    await projectsStore.get(page.value);
   } catch (error) {
     setToast({ title: error.message });
   } finally {
@@ -31,6 +36,19 @@ const searchValue = (value) => {
 
 const sortBy = ({ name, type }) => {
   localProjects.value = onSort(localProjects.value, { name, type });
+};
+
+const handlePage = async (newPage) => {
+  if (newPage === null || newPage === undefined) {
+    throw new Error("newPage is null or undefined");
+  }
+
+  try {
+    await pageReplace(newPage);
+    await projectsStore.get(newPage);
+  } catch (error) {
+    setToast({ title: error.message });
+  }
 };
 
 watch(
@@ -103,7 +121,7 @@ watch(
         <div class="flex items-center justify-end px-10">
           <Pagination
             :items="pagination"
-            @update-page="projectsStore.get($event)"
+            @update-page="handlePage"
           />
         </div>
       </div>

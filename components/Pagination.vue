@@ -67,11 +67,11 @@ defineEmits(["updatePage"]);
           <p
             v-for="page in items.pages"
             :key="page"
-            class="relative inline-flex items-center px-4 py-2 text-sm font-semibold focus:z-20 cursor-pointer dark:text-gray-300"
+            class="relative inline-flex items-center px-4 py-2 text-sm font-semibold focus:z-20 cursor-pointer dark:text-gray-600"
             :class="{
-              'z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600':
+              'z-10 bg-gray-600 dark:bg-gray-50 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600':
                 page === items.page,
-              'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0 dark:ring-gray-600 dark:hover:bg-gray-600':
+              'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 focus:outline-offset-0 dark:ring-gray-600 dark:hover:bg-gray-600':
                 page !== items.page,
             }"
             @click="$emit('updatePage', page)"

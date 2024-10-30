@@ -1,51 +1,81 @@
 <script setup>
+import { pageReplace } from '~/componsables/pageHelper';
+import { setToast } from '~/componsables/toastHelper';
+
+
+const { start, finish } = useLoadingIndicator()
+
+const route = useRoute();
+const page = ref(route.query.page || 1);
+
 const projectsStore = useProjectsStore();
 const { projects, pagination, loading } = storeToRefs(projectsStore);
 
-onMounted(async () => {
-  await projectsStore.get();
-});
+watch(
+  () => page.value,
+  async (newPage) => {
+    start();
+    await projectsStore.get(newPage);
+    finish();
+  },
+  { immediate: true }
+);
 
+const handlePage = async (newPage) => {
+  if (newPage === null || newPage === undefined) {
+    throw new Error("newPage is null or undefined");
+  }
+
+  try {
+    await pageReplace(newPage);
+    page.value = newPage;
+  } catch (error) {
+    setToast({ title: error.message });
+  }
+};
 
 </script>
 
 <template>
-  <div
-    class="dark:bg-gray-800 dark:text-white transition-colors duration-500"
-  >
-    <!-- Skeleton Feature -->
-   <SkeletonCard v-show="loading.value && loading.type === 'get' "/>
+  <div>
+    <Head>
+      <Title>NYI NYI AUNG | Projects</Title>
+      <Meta
+        name="description"
+        content="Projects Page"
+      />
+    </Head>
+    <SkeletonCard v-show="loading.value && loading.type === 'get' "/>
 
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-10 pb-10 pt-5"
-      v-if="projects && projects.length > 0"
-    >
-      <div
-        v-for="project in projects"
-        :key="project.id"
-        class="dark:bg-gray-700 bg-[#eaeaea] rounded"
-      >
-        <div class="w-full h-[250px]">
-          <NuxtLink :href="`/projects/${project.id}`">
-            <CldImage
-              :src="project.images_path[0]"
-              width="auto"
-              height="250"
-              alt="My Awesome Image"
-              loading="lazy"
-            />
-          </NuxtLink>
+    <div class="min-h-screen py-10" v-if="projects && projects.length > 0">
+      <div class="container mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div
+            v-for="project in projects"
+            :key="project.id"
+            class="bg-white dark:bg-gray-700 dark:text-gray-200 shadow-md rounded-lg overflow-hidden"
+          >
+            <NuxtLink :href="`/projects/${project.id}`">
+              <CldImage
+                :src="project.images_path[0]"
+                :alt="project.title"
+                width="auto"
+                height="200"
+                layout="fullWidth"
+              />
+            </NuxtLink>
+            <div class="p-6">
+              <h2 class="text-xl font-semibold mb-2">{{ project.title }}</h2>
+              <p class="text-gray-600 dark:text-gray-400">
+                {{ project.description.slice(0, 100) + '...' }}
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="px-3 pt-2 pb-4 space-y-1 mt-3">
-          <h2 class="font-bold text-2xl">{{ project.title }}</h2>
-          <p class="font-light">
-            {{ project.description.slice(0, 100) + "..." }}
-          </p>
-        </div>
+        <div class="flex items-center justify-end px-10" v-if="projects && projects.length > 0">
+        <Pagination :items="pagination" @update-page="handlePage"/>
       </div>
-    </div>
-    <div class="flex items-center justify-end px-10" v-if="projects && projects.length > 0">
-      <Pagination :items="pagination" @update-page="projectsStore.get($event)"/>
+      </div>
     </div>
   </div>
 </template>

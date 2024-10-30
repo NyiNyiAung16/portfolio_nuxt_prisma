@@ -1,15 +1,21 @@
 <script setup>
+
 defineProps({
   filter: {
     type: String,
   },
 });
 
-defineEmits(["onSearch", "sortBy"]);
+const emits = defineEmits(["onSearch", "sortBy"]);
 
 const search = ref("");
 const activeFilter = ref(false);
 const activeDate = ref(false);
+
+const debounceSearch = useDebounce((e) => {
+  emits('onSearch',search.value);
+},300)
+
 </script>
 
 <template>
@@ -24,7 +30,7 @@ const activeDate = ref(false);
           type="text"
           :placeholder="`Filter by ${filter}`"
           v-model="search"
-          @keyup="$emit('onSearch', search)"
+          @input="debounceSearch"
           class="flex-1 px-3 py-2 focus:border-inherit min-w-max dark:bg-gray-700"
         />
         <div class="px-3 py-2 bg-zinc-300 rounded-r-md dark:bg-gray-600">

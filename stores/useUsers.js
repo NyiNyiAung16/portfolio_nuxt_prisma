@@ -81,7 +81,6 @@ export const useUsersStore = defineStore("users", () => {
       loading.value = setLoading({ type: 'delete', value: true });
 
       const response = await axios.delete(`/api/users/${id}`);
-      users.value = users.value.filter((user) => user.id !== response.data.id);
 
       setToast({ title: "User deleted successfully👏"});
       return response;

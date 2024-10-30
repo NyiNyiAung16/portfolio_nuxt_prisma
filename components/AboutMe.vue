@@ -1,9 +1,13 @@
 <script setup>
 
-const onDownloadCV = () => {
-    location.href = '/cv.pdf';
-}
+const cvUrl = ref('/cv.pdf')
 
+const onDownloadCV = () => {
+  const link = document.createElement('a')
+  link.href = cvUrl.value
+  link.download = 'NyiNyiAung.pdf'
+  link.click()
+}
 </script>
 
 

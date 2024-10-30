@@ -34,6 +34,7 @@
     "mongodb": "^6.9.0",
     "nuxt": "^3.13.0",
     "nuxt-auth-utils": "^0.3.9",
+    "nuxt-lodash": "^2.5.3",
     "pinia": "^2.2.2",
     "postcss": "^8.4.47",
     "prisma": "^5.21.1",

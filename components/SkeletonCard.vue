@@ -1,23 +1,24 @@
-<script setup>
-
-
-</script>
+<script setup></script>
 
 <template>
-  <div
-    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-10 pb-10 pt-5 dark:bg-[#1A202C]"
-  >
-    <div
-      v-for="n in 6"
-      :key="n"
-      class="bg-[#eaeaea] rounded dark:bg-[#2D3748]"
-    >
-      <div class="w-full h-[250px]">
-        <Skeleton class="w-full h-full object-cover rounded-t bg-[#b8b8b8] dark:bg-[#4A5568]"/>
-      </div>
-      <div class="px-3 pt-2 pb-4 space-y-1 mt-3">
-        <Skeleton class="w-full h-6 bg-[#b8b8b8] dark:bg-[#4A5568]"/>
-        <Skeleton class="w-full h-4 bg-[#b8b8b8] dark:bg-[#4A5568]"/>
+  <div class="min-h-screen py-10">
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div
+          v-for="n in 6"
+          :key="n"
+          class="bg-white dark:bg-gray-700 dark:text-gray-200 shadow-md rounded-lg overflow-hidden"
+        >
+          <Skeleton
+            class="w-full h-[200px] rounded-t bg-gray-300 dark:bg-gray-600"
+          />
+          <div class="p-6">
+            <Skeleton
+              class="w-3/4 h-6 mb-2 bg-gray-300 dark:bg-gray-600 rounded"
+            />
+            <Skeleton class="w-full h-4 bg-gray-300 dark:bg-gray-600 rounded" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
