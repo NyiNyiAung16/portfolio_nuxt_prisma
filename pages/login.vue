@@ -15,6 +15,8 @@ const onSubmit = async () => {
   try {
     const response = await auth.login(email.value, password.value);
 
+    console.log(response);
+
     if (response && response.status === 200 && response.statusText === "OK") {
       email.value = "";
       password.value = "";
