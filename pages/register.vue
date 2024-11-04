@@ -20,11 +20,16 @@ const onSubmit = async () => {
       password.value
     );
   
-    if ( response && response.status === 200 && response.statusText == "OK") {
+    if ( response && response.status === 200 && response.statusText === "OK") {
       username.value = '';
       email.value = '';
       password.value = '';
-      await navigateTo("/");
+      await nextTick(() => {
+        if (import.meta.client) {
+          console.log("Redirecting to home...");
+          navigateTo("/", { replace: true });
+        }
+      })
     }
   } catch (error) {
     if(error instanceof Error) {

@@ -1,5 +1,5 @@
 <script setup>
-import { setToast } from '~/componsables/toastHelper';
+import { setToast } from "~/componsables/toastHelper";
 
 definePageMeta({
   middleware: "auth",
@@ -15,13 +15,18 @@ const onSubmit = async () => {
   try {
     const response = await auth.login(email.value, password.value);
 
-    if ( response && response.status === 200 && response.statusText === "OK") {
+    if (response && response.status === 200 && response.statusText === "OK") {
       email.value = "";
       password.value = "";
-      await navigateTo("/");
+      await nextTick(() => {
+        if (import.meta.client) {
+          console.log("Redirecting to home...");
+          navigateTo("/", { replace: true });
+        }
+      });
     }
   } catch (error) {
-    if(error instanceof Error) {
+    if (error instanceof Error) {
       setToast({ title: error.message });
     }
   }
@@ -49,20 +54,30 @@ const onSubmit = async () => {
             v-model="email"
             class="dark:bg-gray-700 dark:text-white"
           />
-          <BaseError v-if="error?.email" class="text-sm text-red-500 dark:text-red-300">{{ error?.email }}</BaseError>
+          <BaseError
+            v-if="error?.email"
+            class="text-sm text-red-500 dark:text-red-300"
+            >{{ error?.email }}</BaseError
+          >
           <BaseInput
             type="password"
             placeholder="Password"
             v-model="password"
             class="dark:bg-gray-700 dark:text-white"
           />
-          <BaseError v-if="error?.password" class="text-sm text-red-500 dark:text-red-300">{{ error?.password }}</BaseError>
-          <Button type="submit" class=" w-full " :disabled="loading">
+          <BaseError
+            v-if="error?.password"
+            class="text-sm text-red-500 dark:text-red-300"
+            >{{ error?.password }}</BaseError
+          >
+          <Button type="submit" class="w-full" :disabled="loading">
             <span v-if="!loading">Login</span>
             <Loading v-if="loading" />
           </Button>
         </form>
-        <p class="mt-3 text-center text-sm text-[#929292] dark:text-gray-300 tracking-wide">
+        <p
+          class="mt-3 text-center text-sm text-[#929292] dark:text-gray-300 tracking-wide"
+        >
           Don't have an account?
           <NuxtLink to="/register" class="hover:underline">Register</NuxtLink>
         </p>
