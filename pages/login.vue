@@ -15,14 +15,11 @@ const onSubmit = async () => {
   try {
     const response = await auth.login(email.value, password.value);
 
-    console.log(response);
-
-    if (response && response.status === 200 && response.statusText === "OK") {
+    if (response && response.status === 200) {
       email.value = "";
       password.value = "";
       await nextTick(() => {
         if (import.meta.client) {
-          console.log("Redirecting to home...");
           navigateTo("/", { replace: true });
         }
       });

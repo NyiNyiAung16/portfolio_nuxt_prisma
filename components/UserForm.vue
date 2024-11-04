@@ -19,14 +19,16 @@ const role = ref(localUser.value.role || "");
 
 const onSubmit = async () => {
   try {
-    await usersStore.update(localUser.value.id, {
+    let response = await usersStore.update(localUser.value.id, {
       username: username.value,
       email: email.value,
       role: role.value,
     });
 
-    resetForm();
-    emits("close");
+    if( response && response.status === 200 ){ 
+      resetForm();
+      emits("close");
+    }
   } catch (error) {
     setToast({ title: error.message });
   }

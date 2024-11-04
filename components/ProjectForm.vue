@@ -51,7 +51,7 @@ const onSubmit = async () => {
       ? await projectsStore.update(localProject.value.id, data)
       : await projectsStore.create(data);
 
-    if (response?.status === 200 && response?.statusText === "OK") {
+    if ( response && response.status === 200) {
       resetForm();
       emits("close");
     }
