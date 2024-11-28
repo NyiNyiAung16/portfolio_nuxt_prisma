@@ -16,8 +16,8 @@ const logout = async () => {
   <div
     class="flex justify-between px-4 py-2 md:px-8 md:py-4 select-none dark:bg-gray-800 dark:text-white transition-colors duration-500"
   >
-    <h2 class="font-bold text-xl text-gray-800 md:text-3xl dark:text-white">
-      NYI NYI AUNG
+    <h2 class="font-bold text-xl text-gray-800 md:text-2xl dark:text-white flex items-center gap-x-1">
+      <span>NYI NYI AUNG</span>
     </h2>
     <ul class="hidden md:flex gap-3 items-center md:gap-6">
       <li>

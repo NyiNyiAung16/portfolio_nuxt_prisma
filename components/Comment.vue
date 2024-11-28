@@ -46,7 +46,7 @@ const onKeydown = () => {
       </div>
       <div>
         <div
-          class="flex items-center justify-end gap-x-3"
+          class="flex items-center justify-end gap-x-2"
           v-if="user?.id === comment.user.id"
         >
           <FontAwesome

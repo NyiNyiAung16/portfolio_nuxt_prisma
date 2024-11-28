@@ -53,7 +53,7 @@ const handlePage = async (newPage) => {
           <div
             v-for="project in projects"
             :key="project.id"
-            class="bg-white dark:bg-gray-700 dark:text-gray-200 shadow-md rounded-lg overflow-hidden"
+            class="bg-white dark:bg-gray-700 dark:text-gray-200 shadow-md hover:shadow-lg rounded-lg overflow-hidden duration-100"
           >
             <NuxtLink :href="`/projects/${project.id}`">
               <CldImage

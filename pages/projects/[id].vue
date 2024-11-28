@@ -42,7 +42,7 @@ onMounted(async () => {
                 >{{ project.youtube_link }}</NuxtLink
               >
             </div>
-            <div class="flex items-center gap-3 mt-4 text-sm dark:text-white">
+            <div class="flex items-center flex-wrap gap-3 mt-4 text-sm dark:text-white">
               <div
                 v-for="tag in project.tags"
                 :key="tag"
