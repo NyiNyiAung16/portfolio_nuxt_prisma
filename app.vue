@@ -1,5 +1,6 @@
 <script setup>
 
+
 onMounted(() => {
   document.documentElement.classList.toggle('dark', localStorage.getItem('theme') === 'dark');
 });
@@ -11,7 +12,7 @@ onMounted(() => {
     <ClientOnly>
       <div>
         <Toaster/>
-        <NuxtLoadingIndicator color="#3b82f6"/>
+        <IndicatorBar/>
       </div>
     </ClientOnly>
     <NuxtLayout>
