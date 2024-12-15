@@ -27,7 +27,7 @@ const expertises = ref([
 </script>
 
 <template>
-  <div
+  <section
     class="bg-white dark:bg-[#1A202C] px-3 py-14"
     id="expertise"
   >
@@ -70,5 +70,5 @@ const expertises = ref([
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>

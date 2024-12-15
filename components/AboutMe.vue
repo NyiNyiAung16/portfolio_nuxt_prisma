@@ -12,7 +12,7 @@ const onDownloadCV = () => {
 
 
 <template>
-    <div class="grid grid-cols-1 md:grid-cols-2 px-8 py-[100px] dark:bg-gray-800 dark:text-white">
+    <section class="grid grid-cols-1 md:grid-cols-2 px-8 py-[100px] dark:bg-gray-800 dark:text-white">
         <div class="flex flex-col justify-center mb-3 md:mb-0 dark:text-white">
             <div class="space-y-3 pe-4 dark:text-white">
                 <h2 class="text-3xl sm:text-4xl lg:text-6xl font-bold">About Me</h2>
@@ -25,5 +25,5 @@ const onDownloadCV = () => {
         <div>
             <img src="/photos/coding.jpg" alt="image" class="w-full h-auto object-cover rounded dark:bg-gray-700"/>
         </div> 
-    </div>
+    </section>
 </template>

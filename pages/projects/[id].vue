@@ -10,7 +10,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
+  <div class="mt-16">
     <Head>
       <Title>NYI NYI AUNG | {{ project?.title }}</Title>
       <Meta

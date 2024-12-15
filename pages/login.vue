@@ -10,6 +10,7 @@ const { error, loading } = storeToRefs(auth);
 
 const email = ref("");
 const password = ref("");
+const showPassword = ref(false);
 
 const onSubmit = async () => {
   try {
@@ -37,9 +38,9 @@ const onSubmit = async () => {
     <Head>
       <Title>NYI NYI AUNG | Login</Title>
     </Head>
-    <div class="min-h-screen">
+    <div class="min-h-screen flex items-center justify-center">
       <div
-        class="max-w-lg mx-5 md:mx-auto mt-5 bg-white rounded-lg shadow-md p-4 md:p-6 lg:p-8 dark:bg-gray-900 dark:text-white transition-colors duration-500"
+        class="max-w-lg mx-5 md:mx-auto w-full bg-white rounded-lg shadow-md p-4 md:p-6 lg:p-8 dark:bg-gray-900 dark:text-white transition-colors duration-500"
       >
         <div class="text-center">
           <h1 class="text-3xl font-bold mb-5 text-[#808080] dark:text-white">
@@ -58,12 +59,19 @@ const onSubmit = async () => {
             class="text-sm text-red-500 dark:text-red-300"
             >{{ error?.email }}</BaseError
           >
-          <BaseInput
-            type="password"
-            placeholder="Password"
-            v-model="password"
-            class="dark:bg-gray-700 dark:text-white"
-          />
+          <div class="relative">
+            <BaseInput
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="Password"
+              v-model="password"
+              class="dark:bg-gray-700 dark:text-white"
+            />
+            <FontAwesome
+              :icon="showPassword ? 'eye' : 'eye-slash'"
+              @click="showPassword = !showPassword"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 cursor-pointer select-none"
+            />
+          </div>
           <BaseError
             v-if="error?.password"
             class="text-sm text-red-500 dark:text-red-300"

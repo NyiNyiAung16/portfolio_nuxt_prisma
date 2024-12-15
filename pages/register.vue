@@ -43,8 +43,8 @@ const onSubmit = async () => {
     <Head>
       <Title>NYI NYI AUNG | Register</Title>
     </Head>
-    <div class="min-h-screen">
-      <div class="max-w-lg mx-5 md:mx-auto mt-5 bg-white rounded-lg shadow-md p-4 md:p-6 lg:p-8 dark:bg-gray-900 dark:text-white transition-colors duration-500">
+    <div class="min-h-screen flex items-center justify-center">
+      <div class="max-w-lg mx-5 md:mx-auto w-full bg-white rounded-lg shadow-md p-4 md:p-6 lg:p-8 dark:bg-gray-900 dark:text-white transition-colors duration-500">
         <h1 class="text-3xl text-center font-bold text-[#808080] mb-5 dark:text-white">
           Register Form
         </h1>
