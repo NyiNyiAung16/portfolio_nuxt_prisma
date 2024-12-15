@@ -3,7 +3,7 @@ const latestYear = new Date().getFullYear();
 </script>
 
 <template>
-  <div
+  <section
     class="flex flex-col items-center justify-center gap-y-10 pt-[100px] pb-[50px] dark:bg-gray-800 dark:text-white"
     id="footer"
   >
@@ -54,5 +54,5 @@ const latestYear = new Date().getFullYear();
       <p>Copyright &copy; {{ latestYear }} All rights reserved.</p>
       <p class="md:text-center lg:text-left">Terms and Privacy</p>
     </div>
-  </div>
+  </section>
 </template>

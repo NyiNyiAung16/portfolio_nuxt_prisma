@@ -4,7 +4,7 @@
 
 <template>
     <div>
-        <Header/>
+        <Header class="w-full fixed top-0 z-50 shadow"/>
         <slot/>
     </div>
 </template>

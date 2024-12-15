@@ -56,6 +56,8 @@ export default defineNuxtConfig({
         "bars",
         "spinner",
         "right-to-bracket",
+        "eye",
+        "eye-slash"
       ],
       regular: ["user", "moon", "sun"],
     },

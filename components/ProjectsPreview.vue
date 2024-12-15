@@ -15,7 +15,7 @@ const images = ref([
 
 
 <template>
-    <div class="block md:block px-6 py-14 dark:bg-gray-800 dark:text-white transition-colors duration-500">
+    <section class="block md:block px-6 py-14 dark:bg-gray-800 dark:text-white transition-colors duration-500">
         <div>
             <div class="text-center space-y-3">
                 <h2 class="font-bold text-3xl sm:text-4xl md:text-6xl dark:text-white">My Projects</h2>
@@ -25,5 +25,5 @@ const images = ref([
                 <Gallery :images="images"/>
             </div>
         </div>
-    </div> 
+    </section> 
 </template>

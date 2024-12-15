@@ -37,7 +37,7 @@ const handlePage = async (newPage) => {
 </script>
 
 <template>
-  <div>
+  <div class="mt-16">
     <Head>
       <Title>NYI NYI AUNG | Projects</Title>
       <Meta
