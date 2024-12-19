@@ -16,6 +16,7 @@ onMounted(() => {
       </div>
     </ClientOnly>
     <NuxtLayout>
+      <NuxtLoadingIndicator/>
       <NuxtPage />
     </NuxtLayout>
   </div>

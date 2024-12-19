@@ -10,7 +10,7 @@ nuxtApp.hook("page:loading:start", () => {
 
 const start = () => {
   isLoading.value = true;
-  progress.value += 20;
+  progress.value += 10;
   setTimeout(() => {
     finish();
   }, 300);

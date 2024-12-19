@@ -2,37 +2,33 @@
 import { animate, inView, stagger } from "motion";
 
 onMounted(() => {
-  inView('.scrollAnimationLeft', ({ target }) => {
+  inView(".scrollAnimationLeft", ({ target }) => {
     animate(
       target,
-      { 
+      {
         opacity: [0, 1],
         x: [-100, 0],
         scale: [0.8, 1],
-        rotate: [-10, 0],
-        filter: ['blur(10px)', 'blur(0px)']
+        filter: ["blur(10px)", "blur(0px)"],
       },
       {
-        duration: 0.6,
-        delay: stagger(0.1),
-        easing: 'ease-out'
+        duration: 0.9,
+        easing: [0.17, 0.55, 0.55, 1],
       }
     );
   });
-  inView('.scrollAnimationRight', ({ target }) => {
+  inView(".scrollAnimationRight", ({ target }) => {
     animate(
       target,
-      { 
+      {
         opacity: [0, 1],
         x: [100, 0],
         scale: [0.8, 1],
-        rotate: [10, 0],
-        filter: ['blur(10px)', 'blur(0px)']
+        filter: ["blur(10px)", "blur(0px)"],
       },
       {
-        duration: 0.6,
-        delay: stagger(0.1),
-        easing: 'ease-out'
+        duration: 0.9,
+        easing: [0.17, 0.55, 0.55, 1],
       }
     );
   });
