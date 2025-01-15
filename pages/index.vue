@@ -1,5 +1,6 @@
 <script setup>
-import { animate, inView, stagger } from "motion";
+import { animate, inView } from "motion";
+
 
 onMounted(() => {
   inView(".scrollAnimationLeft", ({ target }) => {

@@ -2,9 +2,6 @@
 import { pageReplace } from '~/componsables/pageHelper';
 import { setToast } from '~/componsables/toastHelper';
 
-
-const { start, finish } = useLoadingIndicator()
-
 const route = useRoute();
 const page = ref(route.query.page || 1);
 
@@ -14,9 +11,7 @@ const { projects, pagination, loading } = storeToRefs(projectsStore);
 watch(
   () => page.value,
   async (newPage) => {
-    start();
     await projectsStore.get(newPage);
-    finish();
   },
   { immediate: true }
 );

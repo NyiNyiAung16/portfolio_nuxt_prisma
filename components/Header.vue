@@ -17,7 +17,7 @@ const logout = async () => {
     <h2
       class="font-bold text-xl text-gray-800 md:text-2xl dark:text-white flex items-center gap-x-1"
     >
-      <span>NYI NYI AUNG</span>
+      <NuxtLink href="/" active-class="''" exact-active-class="''">NYI NYI AUNG</NuxtLink>
     </h2>
     <ul class="hidden md:flex gap-3 items-center md:gap-6">
       <li>
@@ -46,7 +46,7 @@ const logout = async () => {
           Logout
         </p>
       </li>
-      <li>
+      <li class="self-end">
         <DarkMode />
       </li>
     </ul>

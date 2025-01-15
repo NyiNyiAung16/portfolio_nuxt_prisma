@@ -1,5 +1,8 @@
 <script setup>
 import { setToast } from '~/componsables/toastHelper';
+import { userSchema } from '~/validations/userValidation';
+import { z } from 'zod';
+import { zodErrorsToObject } from '~/componsables/zodErrorsHelper';
 
 const { user } = defineProps({
   user: {
@@ -19,18 +22,20 @@ const role = ref(localUser.value.role || "");
 
 const onSubmit = async () => {
   try {
-    let response = await usersStore.update(localUser.value.id, {
-      username: username.value,
-      email: email.value,
-      role: role.value,
-    });
+    const result = userSchema.parse({ username: username.value, email: email.value, role: role.value });
+    let response = await usersStore.update(localUser.value.id, result);
 
     if( response && response.status === 200 ){ 
       resetForm();
       emits("close");
     }
-  } catch (error) {
-    setToast({ title: error.message });
+  } catch (e) {
+    if(e instanceof z.ZodError){
+      error.value = zodErrorsToObject(e.errors);
+      setTimeout(() => error.value = null, 2000);
+    } else if(e instanceof Error) {
+      setToast({ title: e.message });
+    }
   }
 };
 

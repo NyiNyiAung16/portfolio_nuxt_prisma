@@ -1,5 +1,8 @@
 <script setup>
 import { setToast } from "~/componsables/toastHelper";
+import projectSchema from "~/validations/projectValidation";
+import { zodErrorsToObject } from "~/componsables/zodErrorsHelper";
+import { z } from "zod";
 
 const { project } = defineProps({
   project: {
@@ -47,16 +50,23 @@ const onSubmit = async () => {
       images_path: images_path.value,
     };
 
+    const result = projectSchema.parse(data);
+    
     const response = Object.keys(localProject.value).length > 0
-      ? await projectsStore.update(localProject.value.id, data)
-      : await projectsStore.create(data);
+      ? await projectsStore.update(localProject.value.id, result)
+      : await projectsStore.create(result);
 
     if ( response && response.status === 200) {
       resetForm();
       emits("close");
     }
-  } catch (error) {
-    setToast({ title: error.message });
+  } catch (e) {
+    if(e instanceof z.ZodError) {
+      error.value = zodErrorsToObject(e.errors);
+      setTimeout(() => error.value = null, 2000);
+    } else if(e instanceof Error) {
+      setToast({ title: e.response.data.message });
+    } 
   }
 };
 

@@ -1,5 +1,8 @@
 <script setup>
 import { setToast } from "~/componsables/toastHelper";
+import { registerSchema } from '../validations/authValidations.js';
+import { zodErrorsToObject } from '../componsables/zodErrorsHelper.js';
+import { z } from 'zod';
 
 definePageMeta({
   middleware: "auth",
@@ -15,11 +18,8 @@ const showPassword = ref(false);
 
 const onSubmit = async () => {
   try {
-    const response = await auth.register(
-      username.value,
-      email.value,
-      password.value
-    );
+    const result = registerSchema.parse({ username: username.value, email: email.value, password: password.value });
+    const response = await auth.register(result);
 
     if (response && response.status === 200) {
       username.value = "";
@@ -31,8 +31,11 @@ const onSubmit = async () => {
         }
       });
     }
-  } catch (error) {
-    if (error instanceof Error) {
+  } catch (e) {
+    if (e instanceof z.ZodError) {
+      error.value = zodErrorsToObject(e.errors);
+      setTimeout(() => error.value = null, 1500);
+    } else if (e instanceof Error) {
       setToast({ title: error.message });
     }
   }
@@ -103,7 +106,7 @@ const onSubmit = async () => {
           class="mt-3 text-center text-sm text-[#929292] dark:text-gray-300 tracking-wide"
         >
           Already have an account?
-          <NuxtLink to="/login" class="hover:underline">Login</NuxtLink>
+          <NuxtLink to="/login" class="underline hover:text-gray-500 duration-100">Login</NuxtLink>
         </p>
       </div>
     </div>

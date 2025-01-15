@@ -70,7 +70,7 @@ watch(
       <div v-if="localProjects && localProjects.length > 0">
         <BaseTable caption="A list of your recent projects">
           <template #header>
-            <TableHead class="dark:text-gray-300"> Id </TableHead>
+            <TableHead class="dark:text-gray-300"> ID </TableHead>
             <TableHead class="dark:text-gray-300">Title</TableHead>
             <TableHead class="dark:text-gray-300">Description</TableHead>
             <TableHead class="dark:text-gray-300"> Tags </TableHead>

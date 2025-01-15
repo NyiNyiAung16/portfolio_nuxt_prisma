@@ -1,4 +1,5 @@
 <script setup>
+import Switch from './ui/switch/Switch.vue';
 
 const isDarkMode = ref(true);
 const modeIcon = ref("moon");
@@ -18,13 +19,10 @@ const toggleDarkMode = () => {
 </script>
 
 <template>
-    <button
-        @click="toggleDarkMode(!isDarkMode)"
-        class="cursor-pointer block md:inline-block"
-    >
-        <FontAwesome
-        :icon="['far', modeIcon]"
-        class="text-2xl text-gray-700 hover:text-gray-800 duration-100 dark:text-gray-200"
-        />
-    </button>
+  <Switch :checked="isDarkMode" @update:checked="toggleDarkMode">
+    <template #thumb>
+      <MoonIcon class="w-[20px]" v-if="isDarkMode" />
+      <SunIcon class="w-[20px]" v-else />
+    </template>
+  </Switch>
 </template>
