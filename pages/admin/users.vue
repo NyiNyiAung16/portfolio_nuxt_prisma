@@ -67,9 +67,10 @@ watch(
 <template>
   <div>
     <Head>
-      <Title>NYI NYI AUNG | Users</Title>
+      <Title>Users</Title>
+      <Meta name="description" content="Users" />
     </Head>
-    <div class="dark:bg-gray-800 dark:text-white">
+    <div class="darkMode">
       <div v-if="loading.type === 'get' && loading.value">
         <Loading />
       </div>

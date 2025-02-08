@@ -46,7 +46,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <div class="dark:bg-gray-800 dark:text-white transition-colors duration-500">
+  <div class="darkMode dark:text-white transition-colors duration-500">
     <div class="w-full mx-auto mt-6 mb-4">
       <Button
         class="text-lg font-medium space-x-1 px-3 py-2"

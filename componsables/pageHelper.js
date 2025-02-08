@@ -1,7 +1,12 @@
-
 export  async function pageReplace(newPage) {
-    const router = useRouter();
     const route = useRoute();
     
-    await router.replace(`${route.path}?page=${newPage}`);
+    await navigateTo({
+        path: route.path,
+        query: {
+            page: newPage
+        }
+    });
+
+    window.scrollTo(0, 0);
 }

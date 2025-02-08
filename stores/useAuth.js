@@ -2,7 +2,7 @@ import axios from "axios";
 import { setErrorToast, setToast } from "~/componsables/toastHelper.js";
 
 export const useAuth = defineStore("auth", () => {
-  const { user, session, loggedIn, fetch, clear } = useUserSession();
+  const { user, session, loggedIn, fetch: refreshSession, clear } = useUserSession();
 
   const error = ref(null);
   const loading = ref(false);
@@ -13,7 +13,7 @@ export const useAuth = defineStore("auth", () => {
       loading.value = true;
 
       const response = await axios.post("/login", { email, password });
-      await fetch();
+      await refreshSession();
 
       setToast({ title: `Welcome Back ${user?.value?.username}🥰🥰`, duration: 2000 });
       return response;

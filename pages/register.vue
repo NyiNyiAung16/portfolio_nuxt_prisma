@@ -45,17 +45,20 @@ const onSubmit = async () => {
 <template>
   <div>
     <Head>
-      <Title>NYI NYI AUNG | Register</Title>
+      <Title>Register</Title>
+      <Meta name="description" content="Register"/>
     </Head>
     <div class="min-h-screen flex items-center justify-center">
       <div
-        class="max-w-lg mx-5 md:mx-auto w-full bg-white rounded-lg shadow-md p-4 md:p-6 lg:p-8 dark:bg-gray-900 dark:text-white transition-colors duration-500"
+        class="w-full max-w-md sm:max-w-lg md:max-w-xl mx-4 sm:mx-5 md:mx-auto bg-white rounded-lg shadow-md p-4 sm:p-6 md:p-8 dark:bg-gray-900 dark:text-white transition-colors duration-500"
       >
-        <h1
-          class="text-3xl text-center font-bold text-[#808080] mb-5 dark:text-white"
-        >
-          Register Form
-        </h1>
+      <div class="text-center">
+          <h1
+            class="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-5 text-[#808080] dark:text-white"
+          >
+            Register Form
+          </h1>
+        </div>
         <form class="space-y-3" @submit.prevent="onSubmit">
           <BaseInput
             type="text"
@@ -103,7 +106,7 @@ const onSubmit = async () => {
           </Button>
         </form>
         <p
-          class="mt-3 text-center text-sm text-[#929292] dark:text-gray-300 tracking-wide"
+          class="mt-2 sm:mt-3 text-center text-[#929292] dark:text-gray-300 tracking-wide text-sm md:text-base lg:text-lg"
         >
           Already have an account?
           <NuxtLink to="/login" class="underline hover:text-gray-500 duration-100">Login</NuxtLink>

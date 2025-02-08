@@ -3,7 +3,7 @@ import prisma from "~/lib/prisma"
 export default defineEventHandler(async (event) => {
     try {
         const page = Number(getQuery(event)?.page) || 1;
-        const limit = 9;
+        const limit = 6;
         const skip = (page - 1) * limit;
 
 

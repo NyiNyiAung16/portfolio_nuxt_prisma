@@ -7,7 +7,8 @@ import ProjectForm from '~/components/ProjectForm.vue';
 <template>
   <div class="py-5">
     <Head>
-      <Title>NYI NYI AUNG | Create Project</Title>
+      <Title>Create Project</Title>
+      <Meta name="description" content="Create Project"/>
     </Head>
     <ProjectForm/>
   </div>

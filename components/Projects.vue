@@ -61,7 +61,7 @@ watch(
 </script>
 
 <template>
-  <div class="dark:bg-gray-800 dark:text-white">
+  <div class="darkMode">
     <div v-if="loading.type === 'get' && loading.value">
       <Loading />
     </div>

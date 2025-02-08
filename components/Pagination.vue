@@ -11,7 +11,7 @@ defineEmits(["updatePage"]);
 
 <template>
   <div
-    class="flex items-center justify-between border-gray-200 px-4 py-3 sm:px-6 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+    class="flex items-center justify-between border-gray-200 px-4 py-3 sm:px-6 dark:border-gray-700 darkMode"
   >
     <div class="flex flex-1 justify-between sm:hidden">
       <button

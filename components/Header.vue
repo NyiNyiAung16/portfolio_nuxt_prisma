@@ -2,17 +2,17 @@
 import { setToast } from "~/componsables/toastHelper.js";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
-const { loggedIn, clear, user } = useUserSession();
+const { loggedIn, clear: clearSession, user } = useUserSession();
 
 const logout = async () => {
-  await clear();
+  await clearSession();
   setToast({ title: "Logout Successful🙌🙌" });
 };
 </script>
 
 <template>
-  <div
-    class="flex justify-between px-4 py-2 md:px-8 md:py-4 select-none dark:bg-gray-800 dark:text-white transition-colors duration-500"
+  <header
+    class="flex justify-between px-4 py-2 md:px-8 md:py-4 select-none darkMode transition-colors duration-500"
   >
     <h2
       class="font-bold text-xl text-gray-800 md:text-2xl dark:text-white flex items-center gap-x-1"
@@ -113,7 +113,7 @@ const logout = async () => {
         </template>
       </BaseDropdownMenu>
     </div>
-  </div>
+  </header>
 </template>
 
 <style scoped>

@@ -20,7 +20,7 @@ const debounceSearch = useDebounce((e) => {
 
 <template>
   <div
-    class="flex flex-col sm:flex-row items-center justify-between gap-x-5 md:gap-x-0 px-3 py-2 my-4 sm:gap-x-4 dark:bg-gray-800 dark:text-white transition-colors duration-500"
+    class="flex flex-col sm:flex-row items-center justify-between gap-x-5 md:gap-x-0 px-3 py-2 my-4 sm:gap-x-4 darkMode transition-colors duration-500"
   >
     <div class="sm:w-1/2 md:w-1/3 sm:order-2 md:order-1 mb-3 sm:mb-0">
       <div

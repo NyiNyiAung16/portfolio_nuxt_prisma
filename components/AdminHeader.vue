@@ -7,7 +7,7 @@ const { user } = storeToRefs(auth);
 
 <template>
   <div
-    class="dark:bg-gray-800 dark:text-white transition-colors duration-500 flex items-center justify-between px-4 py-3 mb-7"
+    class="darkMode dark:text-white transition-colors duration-500 flex items-center justify-between px-4 py-3 mb-7"
   >
     <div class="flex items-center gap-x-5 md:block">
       <div class="block md:hidden">

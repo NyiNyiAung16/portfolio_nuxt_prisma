@@ -97,7 +97,7 @@ watch(
 <template>
   <div
     :class="{
-      'max-w-xl mx-auto border border-slate-200 rounded-md shadow-md px-6 py-4 dark:border-gray-600 dark:bg-gray-800':
+      'max-w-xl mx-auto border border-slate-200 rounded-md shadow-md px-6 py-4 dark:border-gray-600 darkMode':
         !hasProject,
     }"
   >
@@ -156,7 +156,7 @@ watch(
 
 <style scoped>
 .description {
-  --sb-track-color: #949494;
+  --sb-track-color: transparent;
   --sb-thumb-color: #c1c1c1;
   --sb-size: 6px;
 }

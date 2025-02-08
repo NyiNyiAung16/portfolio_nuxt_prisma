@@ -1,6 +1,16 @@
 <script setup>
 import { animate, inView } from "motion";
 
+useHead({
+  title: "Home",
+  meta: [
+    {
+      name: 'description',
+      content: 'Home Page'
+    }
+  ]
+});
+
 
 onMounted(() => {
   inView(".scrollAnimationLeft", ({ target }) => {
@@ -38,10 +48,6 @@ onMounted(() => {
 
 <template>
   <div class="overflow-hidden">
-    <Head>
-      <Title>NYI NYI AUNG | Home</Title>
-      <Meta name="description" content="Home Page" />
-    </Head>
     <Banner />
     <Expertise class="scrollAnimationLeft" />
     <ProjectsPreview class="scrollAnimationRight" />
