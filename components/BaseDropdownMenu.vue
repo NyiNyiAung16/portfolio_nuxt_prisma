@@ -4,7 +4,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-
 </script>
 
 <template>

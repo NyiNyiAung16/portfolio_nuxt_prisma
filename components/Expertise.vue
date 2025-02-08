@@ -37,7 +37,7 @@ const expertises = ref([
       >
         My Expertise
       </h2>
-      <p class="text-md sm:text-2xl md:text-3xl text-black dark:text-white">
+      <p class="text-md sm:text-2xl md:text-3xl text-opacity-95 text-black dark:text-white">
         I have expertise in software development and coding.
       </p>
     </div>
@@ -62,7 +62,7 @@ const expertises = ref([
               {{ expertise.title }}
             </h3>
             <p
-              class="text-[#929292] md:text-lg font-light text-black dark:text-white"
+              class="md:text-lg font-light text-black dark:text-white"
             >
               {{ expertise.content }}
             </p>

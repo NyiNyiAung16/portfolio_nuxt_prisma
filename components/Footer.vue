@@ -4,7 +4,7 @@ const latestYear = new Date().getFullYear();
 
 <template>
   <section
-    class="flex flex-col items-center justify-center gap-y-10 pt-[100px] pb-[50px] dark:bg-gray-800 dark:text-white"
+    class="flex flex-col items-center justify-center gap-y-10 pt-[100px] pb-[50px] darkMode"
     id="footer"
   >
     <div class="flex flex-col items-center gap-y-5">

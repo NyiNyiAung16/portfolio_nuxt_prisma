@@ -5,7 +5,8 @@ export default defineNuxtConfig({
   vite: {
     resolve: {
       alias: {
-        '.prisma/client/index-browser': './node_modules/.prisma/client/index-browser.js',
+        ".prisma/client/index-browser":
+          "./node_modules/.prisma/client/index-browser.js",
       },
     },
   },
@@ -17,21 +18,21 @@ export default defineNuxtConfig({
     "nuxt-auth-utils",
     "shadcn-nuxt",
     "@nuxtjs/cloudinary",
-    "nuxt-lodash"
+    "nuxt-lodash",
   ],
   build: {
     transpile: [
       "@fortawesome/free-brands-svg-icons",
       "@fortawesome/free-regular-svg-icons",
       "@fortawesome/free-solid-svg-icons",
-      '@hapi/hoek',
-      '@sideway/formula',
-      '@sideway/pinpoint',
-      '@hapi/topo',
-      '@sideway/address',
+      "@hapi/hoek",
+      "@sideway/formula",
+      "@sideway/pinpoint",
+      "@hapi/topo",
+      "@sideway/address",
     ],
   },
-  cloudinary:{
+  cloudinary: {
     cloudName: process.env.CLOUDINARY_CLOUD_NAME,
   },
   runtimeConfig: {
@@ -39,7 +40,7 @@ export default defineNuxtConfig({
     databaseUrl: process.env.DATABASE_URL,
     nuxtSessionPassword: process.env.NUXT_SESSION_PASSWORD,
     cloudKey: process.env.NUXT_CLOUT_API_KEY,
-    cloudSecret: process.env.NUXT_CLOUT_SECRET_KEY
+    cloudSecret: process.env.NUXT_CLOUT_SECRET_KEY,
   },
   fontawesome: {
     icons: {
@@ -57,7 +58,7 @@ export default defineNuxtConfig({
         "spinner",
         "right-to-bracket",
         "eye",
-        "eye-slash"
+        "eye-slash",
       ],
       regular: ["user", "moon", "sun"],
     },
@@ -86,8 +87,14 @@ export default defineNuxtConfig({
           rel: "icon",
           type: "image/png",
           href: "/logo/logo.png",
-        }
-      ]
-    }
+        },
+      ],
+    },
+  },
+  css: ["swiper/swiper-bundle.css"],
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag) => tag.startsWith("swiper-"),
+    },
   },
 });

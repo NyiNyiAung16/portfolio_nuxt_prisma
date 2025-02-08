@@ -4,7 +4,7 @@
   <div class="h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
     <div class="flex flex-col h-full">
       <div class="h-full grid grid-cols-1 md:grid-cols-4">
-        <div class="h-full hidden md:block col-span-1 md:col-span-1 border-r border-zinc-500 py-4 px-4 bg-white dark:bg-gray-800">
+        <div class="h-full hidden md:block col-span-1 md:col-span-1 border-r border-zinc-500 py-4 px-4 bg-white darkMode">
           <div class="flex flex-col gap-y-2">
             <NuxtLink
               href="/admin/dashboard"
@@ -55,7 +55,7 @@
             </NuxtLink>
           </div>
         </div>
-        <div class="h-full col-span-3 md:col-span-3 py-4 px-4 bg-white dark:bg-gray-800">
+        <div class="h-full col-span-3 md:col-span-3 py-4 px-4 bg-white darkMode">
           <AdminHeader />
           <slot />
         </div>

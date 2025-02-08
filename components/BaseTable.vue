@@ -23,7 +23,7 @@ defineProps({
 </script>
 
 <template>
-  <Table class="dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+  <Table class="darkMode dark:border-gray-700 dark:text-white">
     <TableCaption class="dark:text-gray-300">{{ caption }}</TableCaption>
     <TableHeader>
       <TableRow>

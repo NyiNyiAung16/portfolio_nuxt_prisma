@@ -1,22 +1,27 @@
 <script setup>
 
-
-onMounted(() => {
-  document.documentElement.classList.toggle('dark', localStorage.getItem('theme') === 'dark');
+useHead({
+  titleTemplate: (title) => title ? `NYI NYI AUNG | ${title}` : "NYI NYI AUNG",
 });
 
+
+onMounted(() => {
+  document.documentElement.classList.toggle(
+    "dark",
+    localStorage.getItem("theme") === "dark"
+  );
+});
 </script>
 
 <template>
-  <div class="dark:bg-gray-800 dark:text-white">
+  <div class="min-h-screen bg-[#f5f5f5] darkMode dark:text-white ">
     <ClientOnly>
       <div>
-        <Toaster/>
-        <IndicatorBar/>
+        <Toaster />
+        <IndicatorBar />
       </div>
     </ClientOnly>
     <NuxtLayout>
-      <NuxtLoadingIndicator/>
       <NuxtPage />
     </NuxtLayout>
   </div>
@@ -32,7 +37,6 @@ onMounted(() => {
   opacity: 0;
 }
 
-
 body {
   --sb-track-color: #232e33;
   --sb-thumb-color: #c1c1c1;
@@ -40,7 +44,7 @@ body {
 }
 
 body::-webkit-scrollbar {
-  width: var(--sb-size)
+  width: var(--sb-size);
 }
 
 body::-webkit-scrollbar-track {
@@ -56,8 +60,7 @@ body::-webkit-scrollbar-thumb {
 
 @supports not selector(::-webkit-scrollbar) {
   body {
-    scrollbar-color: var(--sb-thumb-color)
-                     var(--sb-track-color);
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }
 </style>

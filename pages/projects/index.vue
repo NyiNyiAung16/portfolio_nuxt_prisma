@@ -2,8 +2,7 @@
 import { pageReplace } from '~/componsables/pageHelper';
 import { setToast } from '~/componsables/toastHelper';
 
-
-const { start, finish } = useLoadingIndicator()
+useHead({ title: 'Projects', meta: [{ name: 'description', content: 'Projects' }] });
 
 const route = useRoute();
 const page = ref(route.query.page || 1);
@@ -14,9 +13,7 @@ const { projects, pagination, loading } = storeToRefs(projectsStore);
 watch(
   () => page.value,
   async (newPage) => {
-    start();
     await projectsStore.get(newPage);
-    finish();
   },
   { immediate: true }
 );
@@ -37,17 +34,10 @@ const handlePage = async (newPage) => {
 </script>
 
 <template>
-  <div class="mt-16">
-    <Head>
-      <Title>NYI NYI AUNG | Projects</Title>
-      <Meta
-        name="description"
-        content="Projects Page"
-      />
-    </Head>
+  <div class="py-16">
     <SkeletonCard v-show="loading.value && loading.type === 'get' "/>
 
-    <div class="min-h-screen py-10" v-if="projects && projects.length > 0">
+    <div class="min-h-screen py-10" v-if="projects && projects.length > 0 && !loading.value">
       <div class="container mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div
@@ -62,6 +52,9 @@ const handlePage = async (newPage) => {
                 width="auto"
                 height="200"
                 layout="fullWidth"
+                fetchFormat="auto"
+                quality="50"
+                loading="lazy"
               />
             </NuxtLink>
             <div class="p-6">

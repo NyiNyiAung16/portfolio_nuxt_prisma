@@ -1,15 +1,16 @@
-<script setup lang="ts">
-import type { NuxtError } from '#app'
-
-const props = defineProps({
-  error: Object as () => NuxtError
-})
-
+<script setup>
+defineProps({
+  error: Object,
+});
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center min-h-screen text-center">
-    <h1 class="text-9xl font-extrabold tracking-widest">{{ error.statusCode }}</h1>
+  <div
+    class="flex flex-col items-center justify-center min-h-screen text-center"
+  >
+    <h1 class="text-9xl font-extrabold tracking-widest">
+      {{ error.statusCode }}
+    </h1>
     <div class="mt-4 prose">
       <p>{{ error.message }}</p>
     </div>

@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     if (!user) {
       throw createError({
         statusCode: 400,
-        statusMessage: "User is not exists",
+        statusMessage: "User is not exists.",
       });
     }
 
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
     if (!match) {
       throw createError({
         statusCode: 400,
-        statusMessage: "Password does not match",
+        statusMessage: "Password does not match.",
       });
     }
 
@@ -35,9 +35,6 @@ export default defineEventHandler(async (event) => {
 
     await setUserSession(event, {
       user: updatedUser,
-      secure: {
-        apiToken: token,
-      },
       loggedIn: true,
     });
 

@@ -1,6 +1,35 @@
-# Nuxt 3 Minimal Starter
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+# My Portfolio Website
+
+I built this project for personal and work. If someone wants to see my skills and others, they can easily look my projects and others. When I build this project, I faced a lot of challenges. I faced challenges in hosting because I host Nuxt framework for the first time. And I have a weakness in UI. So Thinking about UI is also a little challenge.
+
+
+## Features
+
+I have two main features. First one is comment feature. In that feature, everyone can send messages in the specific project. When you want to edit or delete a comment, I checked the user authorization. Second one is admin feature. In the admin feature, admin can see projects and users list. Also admin can create project.
+
+### Other Features
+
+- Light and Dark Mode
+- Authencation
+
+## Demo
+
+https://nyinyiaung-portfolio.vercel.app
+
+
+## Tech Stack
+
+**Client:** Nuxt, Vue, Shadcn UI, Pinia, Swiper
+
+**Server:** Node, Prisma
+
+**Database:** Mongodb
+
+**Icon:** Fontawesome
+
+**Authencation:** nuxt-auth-utils
+
 
 ## Setup
 

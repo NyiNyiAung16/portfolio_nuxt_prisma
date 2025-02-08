@@ -67,9 +67,10 @@ watch(
 <template>
   <div>
     <Head>
-      <Title>NYI NYI AUNG | Users</Title>
+      <Title>Users</Title>
+      <Meta name="description" content="Users" />
     </Head>
-    <div class="dark:bg-gray-800 dark:text-white">
+    <div class="darkMode">
       <div v-if="loading.type === 'get' && loading.value">
         <Loading />
       </div>
@@ -78,7 +79,7 @@ watch(
         <div v-if="localUsers && localUsers.length > 0">
           <BaseTable caption="A list of your users">
             <template #header>
-              <TableHead class="dark:text-gray-300">Id</TableHead>
+              <TableHead class="dark:text-gray-300">ID</TableHead>
               <TableHead class="dark:text-gray-300">Username</TableHead>
               <TableHead class="dark:text-gray-300">Email</TableHead>
               <TableHead class="dark:text-gray-300">Role</TableHead>
