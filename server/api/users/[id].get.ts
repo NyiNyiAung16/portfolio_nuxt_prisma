@@ -11,7 +11,6 @@ export default defineEventHandler(async (event) => {
             where: {
                 id
             },
-            // omit: ['password']
             select: {
                 password: false
             }
