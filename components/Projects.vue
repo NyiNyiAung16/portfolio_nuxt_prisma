@@ -86,11 +86,15 @@ watch(
               <TableCell class="font-medium dark:text-gray-400">
                 {{ index + 1 }}
               </TableCell>
-              <TableCell class="dark:text-gray-300">{{ project.title }}</TableCell>
-              <TableCell class=" dark:text-gray-300">
+              <TableCell class="dark:text-gray-300">{{
+                project.title
+              }}</TableCell>
+              <TableCell class="dark:text-gray-300">
                 {{ project.description.slice(0, 100) + "..." }}
               </TableCell>
-              <TableCell class="flex flex-wrap gap-1 items-center dark:text-gray-400">
+              <TableCell
+                class="flex flex-wrap gap-1 items-center dark:text-gray-400"
+              >
                 <div
                   v-for="tag in project.tags"
                   :key="tag"
@@ -102,7 +106,7 @@ watch(
               <TableCell class="dark:text-gray-400">{{
                 formatDistanceToNow(new Date(project.createdAt))
               }}</TableCell>
-              <TableCell class="flex gap-1 items-center dark:text-gray-400">
+              <TableCell class="flex gap-3 items-center dark:text-gray-400">
                 <EditProjectDialog :project="project" />
                 <CheckSure
                   :open="open"
@@ -110,19 +114,19 @@ watch(
                   @on-delete="deleteProject(project)"
                   :description="`you want to delete the project: ${project.title}?`"
                 >
-                  <p class="font-medium text-red-600 hover:underline dark:text-red-500">
-                    Delete
-                  </p>
+                  <div
+                    class="flex items-center gap-1 font-medium text-red-600 dark:text-red-500 hover:underline"
+                  >
+                    <Icons-Trash class="w-3" />
+                    <span>Delete</span>
+                  </div>
                 </CheckSure>
               </TableCell>
             </TableRow>
           </template>
         </BaseTable>
         <div class="flex items-center justify-end px-10">
-          <Pagination
-            :items="pagination"
-            @update-page="handlePage"
-          />
+          <Pagination :items="pagination" @update-page="handlePage" />
         </div>
       </div>
       <div v-if="localProjects && localProjects.length === 0 && !loading.value">

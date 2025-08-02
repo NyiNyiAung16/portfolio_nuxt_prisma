@@ -133,9 +133,8 @@ watch(
           class="relative px-4 py-2 rounded-lg bg-[#eaeaea] dark:bg-gray-700"
         >
           <span>{{ tag }}</span>
-          <FontAwesome
-            icon="xmark"
-            class="absolute top-0 right-0 cursor-pointer hover:text-red-500 duration-150"
+          <Icons-XMark
+            class="w-4 absolute top-0 right-0 cursor-pointer hover:text-red-500 duration-150"
             @click="onDeleteTag(tag)"
           />
         </div>

@@ -29,10 +29,9 @@ const hovering = ref({ value: false, image: null });
         @mouseover="hovering = { value: true, image }"
         @mouseleave="hovering = { value: false, image }"
       >
-        <FontAwesome
+        <Icons-XMark
           v-if="hovering.value && hovering.image === image"
-          icon="xmark"
-          class="text-white text-3xl cursor-pointer"
+          class="w-6 text-white text-3xl cursor-pointer hover:text-red-500 duration-150"
           @click.once="$emit('onDeleteImage', image)"
         />
       </div>

@@ -1,8 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { setToast } from "~/componsables/toastHelper";
 import { z } from "zod";
 import commentSchema from "~/validations/commentValidation";
 import { zodErrorsToObject } from "~/componsables/zodErrorsHelper";
+import type { FormData } from "~/types/Comment";
 
 const { projectId } = defineProps({
   projectId: {
@@ -23,9 +24,9 @@ const { loading, error } = storeToRefs(commentsStore);
 const onSubmit = async () => {
   if (!user.value) return navigateTo("/login", { replace: true });
 
-  const data = {
+  const data: FormData = {
     content: content.value,
-    userId: user.value.id,
+    userId: user.value?.id,
     projectId,
   };
 
@@ -53,8 +54,8 @@ const onSubmit = async () => {
         @click="active = !active"
       >
         <span>Comment Form </span>
-        <FontAwesome icon="arrow-up" v-show="active" />
-        <FontAwesome icon="arrow-down" v-show="!active" />
+        <Icons-ArrowUp class="w-5" v-show="active"/>
+        <Icons-ArrowDown class="w-5" v-show="!active"/>
       </Button>
       <form class="space-y-1 mt-5" @submit.prevent="onSubmit" v-show="active">
         <BaseTextarea v-model="content" placeholder="Write your thougth.." />
@@ -64,7 +65,7 @@ const onSubmit = async () => {
           :disabled="loading.value && loading.type === 'create'"
         >
           <span v-if="!loading.value || loading.type != 'create'">Create</span>
-          <Loading v-if="loading.value && loading.type === 'create'" />
+          <LoadingDots v-if="loading.value && loading.type === 'create'" />
         </Button>
       </form>
     </div>

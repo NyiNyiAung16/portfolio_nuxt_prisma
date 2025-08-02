@@ -53,10 +53,7 @@ const logout = async () => {
     <div class="block md:hidden">
       <BaseDropdownMenu>
         <template #icon>
-          <FontAwesome
-            icon="bars"
-            class="text-2xl text-gray-700 hover:text-gray-800 duration-100 dark:text-white"
-          />
+          <Icons-Bars class="w-7"/>
         </template>
         <template #content>
           <DropdownMenuItem

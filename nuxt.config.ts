@@ -10,9 +10,11 @@ export default defineNuxtConfig({
       },
     },
   },
+  typescript: {
+    typeCheck: true
+  },
   modules: [
     "@prisma/nuxt",
-    "@vesp/nuxt-fontawesome",
     "@pinia/nuxt",
     "@nuxtjs/tailwindcss",
     "nuxt-auth-utils",
@@ -22,9 +24,6 @@ export default defineNuxtConfig({
   ],
   build: {
     transpile: [
-      "@fortawesome/free-brands-svg-icons",
-      "@fortawesome/free-regular-svg-icons",
-      "@fortawesome/free-solid-svg-icons",
       "@hapi/hoek",
       "@sideway/formula",
       "@sideway/pinpoint",
@@ -41,27 +40,6 @@ export default defineNuxtConfig({
     nuxtSessionPassword: process.env.NUXT_SESSION_PASSWORD,
     cloudKey: process.env.NUXT_CLOUT_API_KEY,
     cloudSecret: process.env.NUXT_CLOUT_SECRET_KEY,
-  },
-  fontawesome: {
-    icons: {
-      solid: [
-        "trash",
-        "arrow-right",
-        "xmark",
-        "arrow-up",
-        "arrow-down",
-        "comment",
-        "pen",
-        "house-chimney",
-        "magnifying-glass",
-        "bars",
-        "spinner",
-        "right-to-bracket",
-        "eye",
-        "eye-slash",
-      ],
-      regular: ["user", "moon", "sun"],
-    },
   },
 
   imports: {

@@ -17,7 +17,7 @@ onMounted(async () => {
     </Head>
     <div class="transition-colors duration-500 darkMode">
       <div v-if="loading.type === 'show' && loading.value">
-        <Loading />
+        <Loading/>
       </div>
       <div class="mt-5" v-if="project && !loading.value">
         <div

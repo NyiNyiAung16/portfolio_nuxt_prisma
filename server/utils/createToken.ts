@@ -1,0 +1,24 @@
+import jwt from 'jsonwebtoken';
+import type { User } from '~/types/User';
+
+const jwtSecret = useRuntimeConfig().jwtSecret;
+
+const maxAge = 3 * 24 * 60 * 60;
+
+export default function createToken(user: User) {
+    if (!user) {
+        throw new Error('The user object cannot be null or undefined');
+    }
+
+    if (!jwtSecret) {
+        throw new Error('The JWT secret is not set');
+    }
+
+    try {
+        return jwt.sign({user}, jwtSecret, {
+            expiresIn: maxAge
+        });
+    } catch (error) {
+        throw new Error('Failed to create token', { cause: error });
+    }
+}

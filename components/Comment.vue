@@ -1,14 +1,19 @@
-<script setup>
+<script setup lang="ts">
 import { formatDistanceToNow } from "date-fns";
+import type { PropType } from "vue";
+import type { Comment } from "~/types/Comment";
 
 defineProps({
   comment: {
-    type: Object,
+    type: Object as PropType<Comment>,
     required: true,
   },
 });
 
-const emits = defineEmits(["deleteComment", "updateComment"]);
+const emits = defineEmits<{
+  (e: "deleteComment", payload: string): void;
+  (e: "updateComment", payload: string): void;
+}>();
 
 const commentsStore = useCommentsStore();
 const { error } = storeToRefs(commentsStore);
@@ -19,7 +24,7 @@ const { user } = storeToRefs(auth);
 const active = ref(false);
 const content = ref("");
 
-const openEditInput = (comment) => {
+const openEditInput = (comment: Comment) => {
   content.value = comment.content;
   active.value = !active.value;
 };
@@ -28,7 +33,6 @@ const onKeydown = () => {
   emits("updateComment", content.value);
   active.value = false;
 };
-
 </script>
 
 <template>
@@ -37,7 +41,9 @@ const onKeydown = () => {
   >
     <div class="flex items-start justify-between">
       <div class="flex flex-col">
-        <h1 class="text-lg font-bold dark:text-white">{{ comment.user.username }}</h1>
+        <h1 class="text-lg font-bold dark:text-white">
+          {{ comment.user.username }}
+        </h1>
         <span class="text-sm text-[#808080] dark:text-gray-400">{{
           formatDistanceToNow(new Date(comment.createdAt), {
             includeSeconds: true,
@@ -49,22 +55,25 @@ const onKeydown = () => {
           class="flex items-center justify-end gap-x-2"
           v-if="user?.id === comment.user.id"
         >
-          <FontAwesome
-            icon="pen"
-            class="text-blue-500 hover:text-blue-600 duration-150 cursor-pointer"
+          <Icons-Pen
+            class="w-5 text-blue-500 hover:text-blue-600 duration-150 cursor-pointer"
             @click.stop="openEditInput(comment)"
           />
-          <CheckSure @on-delete="$emit('deleteComment', comment.id)" description="you want to delete this comment?">
-            <FontAwesome
-              icon="trash"
-              class="text-red-500 hover:text-red-600 duration-150 cursor-pointer"
+          <CheckSure
+            @on-delete="$emit('deleteComment', comment.id)"
+            description="you want to delete this comment?"
+          >
+            <Icons-Trash
+              class="w-5 text-red-500 hover:text-red-600 duration-150 cursor-pointer"
             />
           </CheckSure>
         </div>
       </div>
     </div>
     <div class="mt-4">
-      <p class="font-medium dark:text-white" v-if="!active">{{ comment.content }}</p>
+      <p class="font-medium dark:text-white" v-if="!active">
+        {{ comment.content }}
+      </p>
       <input
         type="text"
         class="w-full bg-inherit dark:bg-gray-700 dark:text-white px-3 py-2 border border-[#808080] dark:border-gray-500 rounded-sm outline-none"

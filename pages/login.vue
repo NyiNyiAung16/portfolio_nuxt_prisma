@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { setToast } from "~/componsables/toastHelper";
 import { loginSchema } from "../validations/authValidations.js";
 import { zodErrorsToObject } from "../componsables/zodErrorsHelper.js";
@@ -37,7 +37,7 @@ const onSubmit = async () => {
       error.value = zodErrorsToObject(e.errors);
       setTimeout(() => (error.value = null), 1500);
     } else if (e instanceof Error) {
-      setToast({ title: e.message });
+      setToast({ title: e.name, description: e.message});
     }
   }
 };
@@ -79,10 +79,15 @@ const onSubmit = async () => {
               v-model="password"
               class="dark:bg-gray-700 dark:text-white"
             />
-            <FontAwesome
-              :icon="showPassword ? 'eye' : 'eye-slash'"
+            <Icons-EyeOff
+            v-if="!showPassword"
+            @click="showPassword = !showPassword"
+            class="w-5 absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-gray-600 cursor-pointer select-none"
+            />
+            <Icons-Eye
+              v-else
               @click="showPassword = !showPassword"
-              class="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-gray-600 cursor-pointer select-none"
+              class="w-5 absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-gray-600 cursor-pointer select-none"
             />
           </div>
           <BaseError
@@ -92,11 +97,11 @@ const onSubmit = async () => {
           >
           <Button type="submit" class="w-full" :disabled="loading">
             <span v-if="!loading">Login</span>
-            <Loading v-if="loading" />
+            <LoadingDots v-else/>
           </Button>
         </form>
         <p
-          class="mt-2 sm:mt-3 text-center text-[#929292] dark:text-gray-300 tracking-wide text-sm md:text-base lg:text-lg"
+          class="mt-2 sm:mt-3 text-center text-[#929292] dark:text-gray-300 tracking-wide text-sm md:text-base xl:text-lg"
         >
           Don't have an account?
           <NuxtLink

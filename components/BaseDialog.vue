@@ -37,7 +37,12 @@ watch(
       class="font-medium text-blue-600 hover:underline"
       @click.once.stop="$emit('onOpen')"
     >
-      Edit
+      <div class="flex items-center gap-1">
+        <Icons-Pen class="w-3"/>
+        <span>
+          Edit
+        </span>
+      </div>
     </DialogTrigger>
     <DialogScrollContent>
       <DialogHeader>

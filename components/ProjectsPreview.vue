@@ -1,5 +1,4 @@
 <script setup>
-
 const images = ref([]);
 
 const projectsStore = useProjectsStore();
@@ -24,7 +23,7 @@ onMounted(async () => {
             <div class="mt-10 max-w-[1200px] mx-5 md:mx-auto" v-if="images.length > 0">
                 <Gallery :images="images"/>
             </div>
-            <div v-else class="mt-3">
+            <div class="my-3" v-else>
                 <Loading/>
             </div>
         </div>

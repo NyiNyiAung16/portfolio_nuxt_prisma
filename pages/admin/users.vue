@@ -101,7 +101,7 @@ watch(
                 <TableCell>{{
                   formatDistanceToNow(new Date(user?.createdAt))
                 }}</TableCell>
-                <TableCell class="flex gap-1 items-center">
+                <TableCell class="flex gap-3 items-center">
                   <EditUserDialog :user="user" />
                   <CheckSure
                     :open="open"
@@ -109,7 +109,10 @@ watch(
                     @onDelete="deleteUser(user?.id)"
                     :description="`you want to delete the user: ${user.username}?`"
                   >
-                    <p class="font-medium text-red-600 hover:underline">Delete</p>
+                    <div class="flex items-center gap-1 font-medium text-red-600 dark:text-red-500 hover:underline">
+                      <Icons-Trash class="w-3"/>
+                      <span>Delete</span>
+                    </div>
                   </CheckSure>
                 </TableCell>
               </TableRow>

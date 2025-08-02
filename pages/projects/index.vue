@@ -1,8 +1,11 @@
 <script setup>
-import { pageReplace } from '~/componsables/pageHelper';
-import { setToast } from '~/componsables/toastHelper';
+import { pageReplace } from "~/componsables/pageHelper";
+import { setToast } from "~/componsables/toastHelper";
 
-useHead({ title: 'Projects', meta: [{ name: 'description', content: 'Projects' }] });
+useHead({
+  title: "Projects",
+  meta: [{ name: "description", content: "Projects" }],
+});
 
 const route = useRoute();
 const page = ref(route.query.page || 1);
@@ -30,14 +33,16 @@ const handlePage = async (newPage) => {
     setToast({ title: error.message });
   }
 };
-
 </script>
 
 <template>
   <div class="py-16">
-    <SkeletonCard v-show="loading.value && loading.type === 'get' "/>
+    <SkeletonCard v-show="loading.value && loading.type === 'get'" />
 
-    <div class="min-h-screen py-10" v-if="projects && projects.length > 0 && !loading.value">
+    <div
+      class="min-h-screen py-10"
+      v-if="projects && projects.length > 0 && !loading.value"
+    >
       <div class="container mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div
@@ -60,14 +65,17 @@ const handlePage = async (newPage) => {
             <div class="p-6">
               <h2 class="text-xl font-semibold mb-2">{{ project.title }}</h2>
               <p class="text-gray-600 dark:text-gray-400">
-                {{ project.description.slice(0, 100) + '...' }}
+                {{ project.description.slice(0, 100) + "..." }}
               </p>
             </div>
           </div>
         </div>
-        <div class="flex items-center justify-end px-10" v-if="projects && projects.length > 0">
-        <Pagination :items="pagination" @update-page="handlePage"/>
-      </div>
+        <div
+          class="flex items-center justify-end px-10"
+          v-if="projects && projects.length > 0"
+        >
+          <Pagination :items="pagination" @update-page="handlePage" />
+        </div>
       </div>
     </div>
   </div>

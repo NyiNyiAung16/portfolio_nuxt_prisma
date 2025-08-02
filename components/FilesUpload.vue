@@ -65,7 +65,7 @@ watch(
       class="w-full block text-center px-3 py-2 bg-[#eaeaea] dark:bg-gray-700 rounded-md text-[#929292] cursor-pointer"
       >
         <span v-if="!loading">Upload Images</span>
-        <Loading v-if="loading" />
+        <Loading class="w-[1em] h-[1em]" v-else/>
       </label
     >
     <input

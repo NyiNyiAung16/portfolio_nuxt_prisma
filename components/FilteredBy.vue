@@ -1,6 +1,5 @@
 <script setup>
-
-defineProps({
+const { filter } = defineProps({
   filter: {
     type: String,
   },
@@ -9,13 +8,28 @@ defineProps({
 const emits = defineEmits(["onSearch", "sortBy"]);
 
 const search = ref("");
-const activeFilter = ref(false);
-const activeDate = ref(false);
+const isFilterAsc = ref(true);
+const isDateAsc = ref(true);
 
-const debounceSearch = useDebounce((e) => {
-  emits('onSearch',search.value);
-},300)
+const debounceSearch = useDebounce(() => {
+  emits("onSearch", search.value);
+}, 300);
 
+const toggleFilterSort = () => {
+  isFilterAsc.value = !isFilterAsc.value;
+  emits("sortBy", {
+    name: filter,
+    type: isFilterAsc.value ? "desc" : "asc",
+  });
+};
+
+const toggleDateSort = () => {
+  isDateAsc.value = !isDateAsc.value;
+  emits("sortBy", {
+    name: "createdAt",
+    type: isDateAsc.value ? "desc" : "asc",
+  });
+};
 </script>
 
 <template>
@@ -34,7 +48,7 @@ const debounceSearch = useDebounce((e) => {
           class="flex-1 px-3 py-2 focus:border-inherit border-none min-w-max dark:bg-gray-700"
         />
         <div class="px-3 py-2 bg-zinc-300 rounded-r-md dark:bg-gray-600">
-          <FontAwesome icon="magnifying-glass" />
+          <Icons-Search class="w-6 text-gray-600 dark:text-gray-200" />
         </div>
       </div>
     </div>
@@ -43,38 +57,22 @@ const debounceSearch = useDebounce((e) => {
     >
       <Button
         class="bg-zinc-500 hover:bg-zinc-600 rounded-md px-3 py-2 flex items-center space-x-1 dark:bg-gray-600 dark:hover:bg-gray-700"
-        @click="
-          () => {
-            activeFilter = !activeFilter;
-            $emit('sortBy', {
-              name: filter,
-              type: activeFilter ? 'desc' : 'asc',
-            });
-          }
-        "
+        @click="toggleFilterSort"
       >
         <span class="text-sm font-semibold dark:text-gray-100">Sort by {{ filter }}</span>
         <span class="text-zinc-400">
-          <FontAwesome icon="arrow-down" v-show="!activeFilter" size="xs" />
-          <FontAwesome icon="arrow-up" v-show="activeFilter" size="xs" />
+          <Icons-ArrowDown class="w-4" v-if="isFilterAsc" />
+          <Icons-ArrowUp class="w-4" v-if="!isFilterAsc" />
         </span>
       </Button>
       <Button
         class="bg-zinc-500 hover:bg-zinc-600 rounded-md px-3 py-2 flex items-center space-x-1 dark:bg-gray-600 dark:hover:bg-gray-700"
-        @click="
-          () => {
-            activeDate = !activeDate;
-            $emit('sortBy', {
-              name: 'createdAt',
-              type: activeDate ? 'desc' : 'asc',
-            });
-          }
-        "
+        @click="toggleDateSort"
       >
         <span class="text-sm font-semibold dark:text-gray-100">Sort by date</span>
         <span class="text-zinc-400">
-          <FontAwesome icon="arrow-down" v-show="!activeDate" size="xs" />
-          <FontAwesome icon="arrow-up" v-show="activeDate" size="xs" />
+          <Icons-ArrowDown class="w-4" v-show="isDateAsc" />
+          <Icons-ArrowUp class="w-4" v-show="!isDateAsc" />
         </span>
       </Button>
     </div>

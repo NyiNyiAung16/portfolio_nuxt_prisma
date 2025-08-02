@@ -13,10 +13,7 @@ const { user } = storeToRefs(auth);
       <div class="block md:hidden">
         <BaseDropdownMenu>
           <template #icon>
-            <FontAwesome
-              icon="bars"
-              class="text-2xl text-gray-700 hover:text-gray-800 duration-100 dark:text-gray-300"
-            />
+            <Icons-Bars class="w-7" />
           </template>
           <template #content>
             <DropdownMenuItem>
@@ -57,11 +54,7 @@ const { user } = storeToRefs(auth);
         <BaseTooltip>
           <template #icon>
             <NuxtLink href="/">
-              <FontAwesome
-                icon="right-to-bracket"
-                transform="rotate-180"
-                class="text-2xl text-gray-700 hover:translate-x-[-5px] duration-300 dark:text-gray-300"
-              />
+              <Icons-LeftArrow class="w-6 text-2xl text-gray-700 hover:translate-x-[-5px] duration-300 dark:text-gray-300" />
             </NuxtLink>
           </template>
           <template #content>
