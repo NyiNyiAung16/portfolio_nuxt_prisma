@@ -8,18 +8,15 @@ export default defineEventHandler(async (event) => {
         const limit = 6;
         const skip = (page - 1) * limit;
 
-        const users = await prisma.user.findMany({
+        const usersWithPassword = await prisma.user.findMany({
             orderBy: {
                 createdAt: "desc"
             },
             take: limit,
-            skip,
-            select: {
-                password: false
-            }
+            skip
         });
-        
-        // const count = await prisma.user.count();
+
+        const users = usersWithPassword.map(({ password, ...user }) => user);        
         const count = users.length;
 
         const totalPages = Math.ceil(count / limit);
