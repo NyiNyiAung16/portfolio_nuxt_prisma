@@ -26,7 +26,7 @@ const onSubmit = async () => {
 
   const data: FormData = {
     content: content.value,
-    userId: user.value?.id,
+    userId: user.value.id,
     projectId,
   };
 

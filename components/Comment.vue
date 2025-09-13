@@ -53,7 +53,7 @@ const onKeydown = () => {
       <div>
         <div
           class="flex items-center justify-end gap-x-2"
-          v-if="user?.id === comment.user.id"
+          v-if="user.id === comment.user.id"
         >
           <Icons-Pen
             class="w-5 text-blue-500 hover:text-blue-600 duration-150 cursor-pointer"
