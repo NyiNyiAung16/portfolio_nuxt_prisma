@@ -32,7 +32,8 @@ model Project {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
-  youtube_link String
+  github_link String
+  demo_link String
   tags        String[]
   images_path String[]
   user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: Cascade)

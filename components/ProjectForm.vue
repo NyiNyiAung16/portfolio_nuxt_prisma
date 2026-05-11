@@ -25,7 +25,8 @@ const hasProject = computed(() => {
 const title = ref("");
 const description = ref("");
 const tags = ref([]);
-const youtubeLink = ref("");
+const githubLink = ref("");
+const demoLink = ref("");
 const images_path = ref([]);
 const tag = ref("");
 
@@ -45,7 +46,8 @@ const onSubmit = async () => {
     const data = {
       title: title.value,
       description: description.value,
-      youtube_link: youtubeLink.value,
+      github_link: githubLink.value,
+      demo_link: demoLink.value,
       tags: tags.value,
       images_path: images_path.value,
     };
@@ -73,7 +75,8 @@ const onSubmit = async () => {
 const resetForm = () => {
   title.value = "";
   description.value = "";
-  youtubeLink.value = "";
+  githubLink.value = "";
+  demoLink.value = "";
   tags.value = [];
   images_path.value = [];
 };
@@ -84,7 +87,8 @@ watch(
     if (Object.keys(localProject.value).length > 0) {
       title.value = localProject.value.title;
       description.value = localProject.value.description;
-      youtubeLink.value = localProject.value.youtube_link;
+      githubLink.value = localProject.value.github_link;
+      demoLink.value = localProject.value.demo_link;
       tags.value = [...localProject.value.tags];
       images_path.value = [...localProject.value.images_path];
     }
@@ -112,9 +116,13 @@ watch(
       <BaseError v-if="error?.title">{{ error?.title }}</BaseError>
       <BaseTextarea placeholder="Description" class="description" v-model="description" />
       <BaseError v-if="error?.description">{{ error?.description }}</BaseError>
-      <BaseInput type="text" placeholder="Youtube Link" v-model="youtubeLink" />
-      <BaseError v-if="error?.youtube_link"
-        >{{ error?.youtube_link }}
+      <BaseInput type="text" placeholder="Github Link" v-model="githubLink" />
+      <BaseError v-if="error?.github_link"
+        >{{ error?.github_link }}
+      </BaseError>
+      <BaseInput type="text" placeholder="Demo Link" v-model="demoLink" />
+      <BaseError v-if="error?.demo_link"
+        >{{ error?.demo_link }}
       </BaseError>
       <div class="flex gap-x-3">
         <BaseInput type="text" placeholder="Tag" v-model="tag" />
