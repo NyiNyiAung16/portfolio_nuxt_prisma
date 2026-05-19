@@ -131,7 +131,7 @@ watch(
       </div>
       <div v-if="localProjects && localProjects.length === 0 && !loading.value">
         <p class="text-sm font-medium text-zinc-500 dark:text-gray-400">
-          There is not any project!
+          There is no any project!
         </p>
       </div>
     </div>

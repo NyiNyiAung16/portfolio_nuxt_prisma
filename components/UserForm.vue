@@ -59,7 +59,7 @@ const resetForm = () => {
       <BaseError v-if="error?.password">{{ error?.password }}</BaseError>
       <Button type="submit" :disabled="loading.value">
         <span v-if="loading.type !== 'update' && !loading.value">Save Changes</span>
-        <Loading v-if="loading.type === 'update'  && loading.value" />
+        <LoadingDots v-if="loading.type === 'update'  && loading.value" />
       </Button>
     </form>
   </div>

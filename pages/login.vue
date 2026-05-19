@@ -95,8 +95,8 @@ const onSubmit = async () => {
             class="text-xs sm:text-sm text-red-500 dark:text-red-300"
             >{{ error?.password }}</BaseError
           >
-          <Button type="submit" class="w-full" :disabled="loading">
-            <span v-if="!loading">Login</span>
+          <Button type="submit" class="w-full" :disabled="loading.value">
+            <span v-if="!loading.value">Login</span>
             <LoadingDots v-else/>
           </Button>
         </form>

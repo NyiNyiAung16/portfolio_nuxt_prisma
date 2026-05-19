@@ -3,6 +3,7 @@ import { setToast } from "~/componsables/toastHelper";
 import projectSchema from "~/validations/projectValidation";
 import { zodErrorsToObject } from "~/componsables/zodErrorsHelper";
 import { z } from "zod";
+import LoadingDots from "./LoadingDots.vue";
 
 const { project } = defineProps({
   project: {
@@ -155,7 +156,7 @@ watch(
         <span v-if="!loading.value">{{
           project ? "Save Changes" : "Create"
         }}</span>
-        <Loading v-if="loading.value" />
+        <LoadingDots v-if="loading.value" />
       </Button>
     </form>
   </div>

@@ -10,8 +10,6 @@ definePageMeta({ layout: "admin-layout", middleware: "admin" });
 const route = useRoute();
 const page = ref(route.query.page || 1);
 
-const { start, finish } = useLoadingIndicator();
-
 const usersStore = useUsersStore();
 const { users, pagination, loading } = storeToRefs(usersStore);
 
@@ -130,7 +128,7 @@ watch(
         </div>
         <div v-if="localUsers && localUsers.length === 0 && !loading.value">
           <p class="text-sm font-medium text-zinc-500 dark:text-gray-400">
-            There is not any user!
+            There is no any user!
           </p>
         </div>
       </div>

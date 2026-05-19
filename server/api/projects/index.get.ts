@@ -12,13 +12,14 @@ export default defineEventHandler(async (event) => {
             },
             take: limit,
             skip,
-            select: {
-                id: true,
-                title: true,
-                description: true,
-                images_path: true,
-                createdAt: true
-            }
+            // I need to fix this later, Admin need all data but for user I need to select only some data
+            // select: {
+            //     id: true,
+            //     title: true,
+            //     description: true,
+            //     images_path: true,
+            //     createdAt: true
+            // }
         });
 
         const count = projects.length;

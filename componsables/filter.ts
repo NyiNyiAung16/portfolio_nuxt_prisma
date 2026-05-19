@@ -1,6 +1,8 @@
 const onSearch = (data: any[], search: string, name: string) => {
   const searchTerm = search.toLocaleLowerCase();
-  return data.filter((item) => item[name].toLocaleLowerCase().includes(searchTerm));
+  return data.filter((item) =>
+    item[name].toLocaleLowerCase().includes(searchTerm),
+  );
 };
 
 const onSort = (data: any[], { name, type }: { name: string; type: string }) =>
@@ -13,6 +15,7 @@ const onSort = (data: any[], { name, type }: { name: string; type: string }) =>
     }
 
     return aValue > bValue ? -1 : 1;
-  });
+});
+
 
 export { onSearch, onSort };

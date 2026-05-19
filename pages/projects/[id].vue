@@ -6,6 +6,9 @@ const { id } = useRoute().params;
 const projectsStore = useProjectsStore();
 const { project, loading } = storeToRefs(projectsStore);
 
+
+//read more logic
+// Need to separte to another composable file.
 const readMore = ref(false);
 const isLongDescription = computed(() => project.value?.description?.length > 150);
 const descriptionText = computed(() => {
@@ -24,6 +27,8 @@ const descriptionSizeClass = computed(() =>
 function toggleReadMore() {
   readMore.value = !readMore.value;
 }
+
+//end logic
 
 onMounted(async () => {
   await projectsStore.show(id);
