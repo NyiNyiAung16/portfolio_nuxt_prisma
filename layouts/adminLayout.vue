@@ -30,6 +30,10 @@
               <span class="ml-2">Create Project</span>
             </NuxtLink>
           </div>
+          <!-- //need to fix more responsive design for the sidebar and add a toggle button for mobile view -->
+          <div class="absolute bottom-0 left-0 w-full py-4 px-4">
+            <DarkMode/>
+          </div>
         </div>
         <div
           class="h-full col-span-3 md:col-span-3 py-4 px-4 bg-white darkMode"

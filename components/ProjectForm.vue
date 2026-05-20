@@ -54,22 +54,23 @@ const onSubmit = async () => {
     };
 
     const result = projectSchema.parse(data);
-    
-    const response = Object.keys(localProject.value).length > 0
-      ? await projectsStore.update(localProject.value.id, result)
-      : await projectsStore.create(result);
 
-    if ( response && response.status === 200) {
+    const response =
+      Object.keys(localProject.value).length > 0
+        ? await projectsStore.update(localProject.value.id, result)
+        : await projectsStore.create(result);
+
+    if (response && response.status === 200) {
       resetForm();
       emits("close");
     }
   } catch (e) {
-    if(e instanceof z.ZodError) {
+    if (e instanceof z.ZodError) {
       error.value = zodErrorsToObject(e.errors);
-      setTimeout(() => error.value = null, 2000);
-    } else if(e instanceof Error) {
+      setTimeout(() => (error.value = null), 2000);
+    } else if (e instanceof Error) {
       setToast({ title: e.response.data.message });
-    } 
+    }
   }
 };
 
@@ -94,9 +95,8 @@ watch(
       images_path.value = [...localProject.value.images_path];
     }
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 );
-
 </script>
 
 <template>
@@ -112,45 +112,52 @@ watch(
     >
       <span>Create Project</span>
     </h1>
-    <form class="space-y-3" @submit.prevent.self="onSubmit">
+    <form class="space-y-3" @submit.prevent="onSubmit">
       <BaseInput type="text" placeholder="Title" v-model="title" />
       <BaseError v-if="error?.title">{{ error?.title }}</BaseError>
-      <BaseTextarea placeholder="Description" class="description" v-model="description" />
+      <BaseTextarea
+        placeholder="Description"
+        class="description"
+        v-model="description"
+      />
       <BaseError v-if="error?.description">{{ error?.description }}</BaseError>
       <BaseInput type="text" placeholder="Github Link" v-model="githubLink" />
-      <BaseError v-if="error?.github_link"
-        >{{ error?.github_link }}
-      </BaseError>
+      <BaseError v-if="error?.github_link">{{ error?.github_link }} </BaseError>
       <BaseInput type="text" placeholder="Demo Link" v-model="demoLink" />
-      <BaseError v-if="error?.demo_link"
-        >{{ error?.demo_link }}
-      </BaseError>
-      <div class="flex gap-x-3">
-        <BaseInput type="text" placeholder="Tag" v-model="tag" />
-        <div
-          @click="addTag(tag)"
-          class="flex items-center px-3 py-2 rounded-md bg-[#eaeaea] dark:bg-gray-700 text-sm cursor-pointer hover:bg-[#dcdcdc] dark:hover:bg-gray-600 duration-150"
-        >
-          Add
-        </div>
+      <BaseError v-if="error?.demo_link">{{ error?.demo_link }} </BaseError>
+      <div>
+        <BaseInput
+          type="text"
+          @keydown.enter.prevent="addTag(tag)"
+          placeholder="Tag"
+          v-model="tag"
+        />
+        <BaseError v-if="error?.tags">{{ error?.tags }}</BaseError>
       </div>
-      <BaseError v-if="error?.tags">{{ error?.tags }}</BaseError>
       <div v-show="tags.length > 0" class="flex flex-wrap items-center gap-2">
         <div
           v-for="tag in tags"
           :key="tag"
-          class="relative px-4 py-2 rounded-lg bg-[#eaeaea] dark:bg-gray-700"
+          class="group relative flex items-center justify-center px-4 py-2 rounded-lg bg-[#eaeaea] text-sm font-medium text-gray-700 shadow-sm transition-colors duration-150 hover:bg-slate-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
         >
           <span>{{ tag }}</span>
-          <Icons-XMark
-            class="w-4 absolute top-0 right-0 cursor-pointer hover:text-red-500 duration-150"
+
+          <!-- Overlay Delete Icon -->
+          <div
             @click="onDeleteTag(tag)"
-          />
+            class="absolute inset-0 flex items-center justify-center rounded-lg cursor-pointer bg-slate-300/80 dark:bg-gray-600/90 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+          >
+            <Icons-XMark
+              class="h-7 w-7 text-gray-700 hover:text-red-600 dark:text-gray-100 dark:hover:text-red-400  transition-colors"
+            />
+          </div>
         </div>
       </div>
       <div>
-        <FilesUpload v-model="images_path"/>
-        <BaseError v-if="error?.images_path">{{ error?.images_path }}</BaseError>
+        <FilesUpload v-model="images_path" />
+        <BaseError v-if="error?.images_path">{{
+          error?.images_path
+        }}</BaseError>
       </div>
       <Button type="submit" :disabled="loading.value">
         <span v-if="!loading.value">{{
@@ -170,7 +177,7 @@ watch(
 }
 
 .description::-webkit-scrollbar {
-  width: var(--sb-size)
+  width: var(--sb-size);
 }
 
 .description::-webkit-scrollbar-track {
@@ -186,8 +193,7 @@ watch(
 
 @supports not selector(::-webkit-scrollbar) {
   .description {
-    scrollbar-color: var(--sb-thumb-color)
-                     var(--sb-track-color);
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }
 </style>
