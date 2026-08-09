@@ -8,7 +8,7 @@ type Project = {
   id: number;
   title: string;
   description: string;
-  images_path: string[];
+  images_path: { public_id: string; secure_url: string }[];
   github_link: string;
   demo_link: string;
   tags: string[];

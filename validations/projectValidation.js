@@ -20,8 +20,8 @@ const projectSchema = z.object({
     .array(z.string().trim())
     .min(1, { message: "Tag must contain at least one value" }),
   images_path: z
-    .array(z.string().trim())
-    .min(1, { message: "File must contain at least one value" }),
+  .array(z.unknown())
+  .min(1, { message: "File must contain at least one value" }),
 });
 
 export default projectSchema;

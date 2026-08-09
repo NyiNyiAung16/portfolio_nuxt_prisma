@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
             api_secret: environment.cloudSecret
         });
 
-        await cloudinary.v2.api.delete_resources(images_path);
+       await cloudinary.v2.api.delete_resources(images_path);
         return { success: true };
     } catch (error: any) {
         throwError(error);

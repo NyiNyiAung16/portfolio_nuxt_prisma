@@ -1,4 +1,4 @@
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { setErrorToast, setToast } from "./toastHelper";
 import { resetLoading, setLoading } from "./loadingHelper";
 
@@ -43,6 +43,46 @@ async function useApiWrapper(
   }
 }
 
+type images = {
+  id: string,
+  type: string,
+  url: string,
+  file: File
+}
+const useUploadImages = async (images: images[]) => {
+  try {
+    const formData = new FormData();
+    const oldImages = images.filter((img) => !img.file);
+    
+    images.forEach((img) => {
+      if (!img.file) return;
+      formData.append('files', img.file);
+    });
+  
+    const { data } = await axios.post("/api/files", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return [...oldImages, ...data];
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+const destroyImages = async (images: any[]) => {
+  try {
+    const imagesPath = images.map((image) => image.public_id);
+    await axios.delete('/api/files', { data: { images_path: imagesPath }});
+  } catch (error) {
+    throw error;
+  }
+}
+
+const isFileExist = (images: any[]) => {
+  return images.some((img) => img.file);
+}
 
 const useMap = (newData: any, base: any, key: string) => {
   if (!newData) return ;
@@ -73,4 +113,4 @@ const useAdd = (newData: any, base: any) => {
 }
 
 
-export { useApiWrapper, useMap, useFilter, useAdd };
+export { useApiWrapper, useUploadImages, useMap, useFilter, useAdd, isFileExist, destroyImages };

@@ -76,7 +76,8 @@ export const useProjectsStore = defineStore("projects", () => {
     const response = await useApiWrapper(
       async () => {
         // I need to refactor deleting photo first. Because if the project fails, the photo will be already deleted.
-        await axios.delete('/api/files', { data: { images_path: project.images_path }});
+       const imagesPath = project.images_path.map((image) => image.public_id);
+       await axios.delete('/api/files', { data: { images_path: imagesPath }});
         return await axios.delete(`/api/projects/${project.id}`);
       },
       error,

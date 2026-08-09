@@ -46,9 +46,19 @@ const projectSchema = Joi.object({
     "array.includesRequiredUnknowns": "Tag must contain at least one value",
     "array.base": "Tags should be an array of strings",
   }),
-  images_path: Joi.array().items(Joi.string().required()).required().messages({
+  images_path: Joi.array().items(
+    Joi.object({
+      secure_url: Joi.string().uri().required().messages({
+        "string.empty": "Secure URL is required.",
+        "string.uri": "Secure URL must be a valid URL.",
+      }),
+      public_id: Joi.string().required().messages({
+        "string.empty": "Public ID is required.",
+      }),
+    })
+  ).required().messages({
     "array.includesRequiredUnknowns": "Files must contain at least one value",
-    "array.base": "Files should be an array of strings",
+    "array.base": "Files should be an array of objects",
   }),
 });
 

@@ -35,7 +35,7 @@ model Project {
   github_link String
   demo_link String
   tags        String[]
-  images_path String[]
+  images_path Json
   user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   userId      String?    @db.ObjectId
   comments    Comment[]

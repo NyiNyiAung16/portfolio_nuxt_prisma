@@ -4,6 +4,7 @@ import projectSchema from "~/validations/projectValidation";
 import { zodErrorsToObject } from "~/componsables/zodErrorsHelper";
 import { z } from "zod";
 import LoadingDots from "./LoadingDots.vue";
+import { useUploadImages, isFileExist, destroyImages } from "~/componsables/apiUtils";
 
 const { project } = defineProps({
   project: {
@@ -29,7 +30,9 @@ const tags = ref([]);
 const githubLink = ref("");
 const demoLink = ref("");
 const images_path = ref([]);
+
 const tag = ref("");
+const images = ref([]);
 
 const addTag = (val) => {
   if (!val.trim() || tags.value.includes(val)) return;
@@ -44,16 +47,25 @@ const onDeleteTag = (val) => {
 
 const onSubmit = async () => {
   try {
+    loading.value.value = true;
     const data = {
       title: title.value,
       description: description.value,
       github_link: githubLink.value,
       demo_link: demoLink.value,
       tags: tags.value,
-      images_path: images_path.value,
+      images_path: images.value,
     };
-
     const result = projectSchema.parse(data);
+
+    if(isFileExist(images.value)) {
+      const uploadedImages = await useUploadImages(images.value);
+      result.images_path = uploadedImages;
+    }
+
+    const deletedImages = images_path.value.filter((img) => !result.images_path.some((newImg) => newImg.public_id === img.public_id));
+    await destroyImages(deletedImages);
+
 
     const response =
       Object.keys(localProject.value).length > 0
@@ -69,8 +81,10 @@ const onSubmit = async () => {
       error.value = zodErrorsToObject(e.errors);
       setTimeout(() => (error.value = null), 2000);
     } else if (e instanceof Error) {
-      setToast({ title: e.response.data.message });
+      setToast({ title: e });
     }
+  } finally {
+    loading.value.value = false;
   }
 };
 
@@ -81,6 +95,7 @@ const resetForm = () => {
   demoLink.value = "";
   tags.value = [];
   images_path.value = [];
+  images.value = [];
 };
 
 watch(
@@ -93,6 +108,7 @@ watch(
       demoLink.value = localProject.value.demo_link;
       tags.value = [...localProject.value.tags];
       images_path.value = [...localProject.value.images_path];
+      images.value = [...localProject.value.images_path];
     }
   },
   { deep: true, immediate: true },
@@ -112,7 +128,7 @@ watch(
     >
       <span>Create Project</span>
     </h1>
-    <form class="space-y-3" @submit.prevent="onSubmit">
+    <form class="space-y-3" @submit.prevent.self="onSubmit">
       <BaseInput type="text" placeholder="Title" v-model="title" />
       <BaseError v-if="error?.title">{{ error?.title }}</BaseError>
       <BaseTextarea
@@ -154,7 +170,7 @@ watch(
         </div>
       </div>
       <div>
-        <FilesUpload v-model="images_path" />
+        <FilesUpload  v-model:images="images" />
         <BaseError v-if="error?.images_path">{{
           error?.images_path
         }}</BaseError>
