@@ -48,8 +48,7 @@ const projectSchema = Joi.object({
   }),
   images_path: Joi.array().items(
     Joi.object({
-      secure_url: Joi.string().uri().required().messages({
-        "string.empty": "Secure URL is required.",
+      secure_url: Joi.string().uri().optional().messages({
         "string.uri": "Secure URL must be a valid URL.",
       }),
       public_id: Joi.string().required().messages({

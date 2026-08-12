@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
             // }
         });
 
-        const count = projects.length;
+        const count = await prisma.project.count();
 
         const totalPages = Math.ceil(count / limit);
         const pages = Array.from({ length: totalPages }, (_, i) => i + 1);

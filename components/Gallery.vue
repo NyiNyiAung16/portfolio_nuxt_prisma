@@ -60,10 +60,10 @@ onMounted(() => {
   >
     <swiper-slide v-for="image in images" :key="image">
       <CldImage
-        :src="image"
+        :src="image.public_id"
         width="700"
         height="400"
-        :alt="`Image - ${image}`"
+        :alt="`Image - ${image.public_id}`"
         lazy="true"
       />
     </swiper-slide>
