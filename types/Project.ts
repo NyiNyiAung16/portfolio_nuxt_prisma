@@ -8,8 +8,9 @@ type Project = {
   id: number;
   title: string;
   description: string;
-  images_path: string[];
-  youtube_link: string;
+  images_path: { public_id: string; secure_url: string }[];
+  github_link: string;
+  demo_link: string;
   tags: string[];
   userId?: string;
   createdAt: Date;
@@ -20,15 +21,17 @@ type FormData = {
   title: string;
   description: string;
   images_path: string[];
-  youtube_link: string;
+  github_link: string;
+  demo_link: string;
   tags: string[];
 }
-
+  
 type ErrorData = {
   title: string;
   description: string;
   images_path: string;
-  youtube_link: string;
+  github_link: string;
+  demo_link: string;
   tags: string;
 }
 

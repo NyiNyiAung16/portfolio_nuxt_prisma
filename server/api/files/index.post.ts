@@ -27,9 +27,11 @@ export default defineEventHandler(async (event) => {
     );
 
     const uploadResults: any = await Promise.all(promises);
-    images_path = uploadResults.map((result: { public_id: any; }) => result.public_id);
+    images_path = uploadResults.map((result: { secure_url: string; public_id: string }) => (
+      { secure_url: result.secure_url, public_id: result.public_id }
+    ));
 
-    return { images_path };
+    return [...images_path];
   } catch (error: any) {
     throwError(error);
   }

@@ -16,9 +16,6 @@ export default defineEventHandler(async (event) => {
         id,
       },
       data: {...cleanData},
-      select: {
-        password: false
-      }
     });
 
     return user;

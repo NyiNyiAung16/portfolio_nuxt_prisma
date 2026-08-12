@@ -1,5 +1,6 @@
-import axios, { AxiosError } from "axios";
-import { setErrorToast, setToast } from "~/componsables/toastHelper.js";
+import axios from "axios";
+import { setToast } from "~/componsables/toastHelper";
+import {useApiWrapper} from "~/componsables/apiUtils";
 
 export const useAuth = defineStore("auth", () => {
   const {
@@ -11,42 +12,32 @@ export const useAuth = defineStore("auth", () => {
   } = useUserSession();
 
   const error = ref<any>(null);
-  const loading = ref(false);
+  const loading = ref({ type: "", value: false });
 
-  async function login({
+  const login = async ({
     email,
     password,
   }: {
     email: string;
     password: string;
-  }) {
-    try {
-      error.value = null;
-      loading.value = true;
-
-      const response = await axios.post("/login", { email, password });
-      await refreshSession();
-
-      setToast({ title: `Welcome Back ${(user.value as any).username}🥰🥰` });
-      return response;
-    } catch (e: any) {
-      if (e instanceof AxiosError) {
-        error.value = e.response?.data?.data;
-
-        setErrorToast(e);
-
-        setTimeout(() => {
-          error.value = null;
-        }, 3000);
-      } else if (e instanceof Error) {
-        setToast({ title: e.message, description: "Something went wrong" });
-      }
-    } finally {
-      loading.value = false;
+  }) => {
+    const response = await useApiWrapper(
+      () => axios.post("/login", { email, password }),
+      error,
+      loading,
+      "login",
+      false,
+    );
+    await refreshSession();
+    if(!!response){
+      setToast({
+        title: `Welcome Back ${(user.value as any)?.username || "User"}🥰🥰`,
+      });
     }
-  }
+    return response;
+  };
 
-  async function register({
+  const register = async ({
     username,
     email,
     password,
@@ -54,39 +45,24 @@ export const useAuth = defineStore("auth", () => {
     username: string;
     email: string;
     password: string;
-  }) {
-    try {
-      error.value = null;
-      loading.value = true;
-
-      const response = await axios.post("/register", {
-        username,
-        email,
-        password,
-      });
-      await refreshSession();
-
+  }) => {
+    const response = await useApiWrapper(
+      () => axios.post("/register", { username, email, password }),
+      error,
+      loading,
+      "register",
+      false,
+    );
+    await refreshSession();
+    if(!!response) {
       setToast({
-        title: "Account Created",
-        description: `Welcome to ${(user.value as any).username}👋👋😍`,
-        duration: 3000,
+        title: "Your account is ready!",
+        description: `Welcome ${(user.value as any)?.username || username}👋👋😍 to my portfolio!`,
       });
-      return response;
-    } catch (e: any) {
-      if(e instanceof AxiosError) {
-      error.value = e.response?.data?.data;
-      setErrorToast(e);
-      setTimeout(() => {
-        error.value = null;
-      }, 3000);
-      }
-      else if (e instanceof Error) {
-        setToast({ title: e.message, description: "Something went wrong" });
-      }
-    } finally {
-      loading.value = false;
     }
-  }
+    return response;
+  };
+
   return {
     user,
     session,
@@ -95,7 +71,7 @@ export const useAuth = defineStore("auth", () => {
     loading,
     login,
     register,
-    fetch,
+    refreshSession,
     clear,
   };
 });

@@ -1,8 +1,34 @@
 <script setup>
+import Github from '~/components/Icons/Github.vue';
+
 const { id } = useRoute().params;
 
 const projectsStore = useProjectsStore();
 const { project, loading } = storeToRefs(projectsStore);
+
+
+//read more logic
+// Need to separte to another composable file.
+const readMore = ref(false);
+const isLongDescription = computed(() => project.value?.description?.length > 150);
+const descriptionText = computed(() => {
+  const description = project.value?.description || '';
+  if (!isLongDescription.value || readMore.value) {
+    return description;
+  }
+  return `${description.substring(0, 150)}...`;
+});
+const descriptionSizeClass = computed(() =>
+    !isLongDescription.value
+    ? 'text-md sm:text-lg md:text-xl'
+    : 'text-sm sm:text-base md:text-lg'
+);
+
+function toggleReadMore() {
+  readMore.value = !readMore.value;
+}
+
+//end logic
 
 onMounted(async () => {
   await projectsStore.show(id);
@@ -27,24 +53,47 @@ onMounted(async () => {
           <div class="mt-7 px-6 dark:text-white">
             <div class="space-y-1 mt-3">
               <h2 class="font-bold text-2xl">{{ project.title }}</h2>
-              <p
-                class="font-light leading-relaxed"
-                :class="{
-                  'text-md sm:text-lg md:text-xl': project.description.length < 150,
-                  'text-sm sm:text-base md:text-lg': project.description.length >= 150,
-                }"
-              >
-                {{ project.description }}
+              <p class="font-light leading-relaxed" :class="descriptionSizeClass">
+                <span
+                  class="block md:hidden overflow-hidden transition-all duration-150 ease-in-out"
+                  :class="readMore ? 'max-h-96' : 'max-h-20'"
+                >
+                  {{ descriptionText }}
+                </span>
+                <span class="hidden md:block">{{ project?.description }}</span>
               </p>
+              <Button
+                v-if="isLongDescription"
+                class="block md:hidden w-full"
+                @click="toggleReadMore"
+              >
+                {{ readMore ? 'Read Less' : 'Read More' }}
+              </Button>
             </div>
+            <!-- github link -->
             <div class="mt-3">
-              <span class="font-medium">Youtube Link</span> -
+              <span class="font-medium">
+                <Github class="w-8 inline"/>
+              </span> -
               <NuxtLink
-                :href="project.youtube_link"
+                :href="project.github_link"
                 :external="true"
                 target="_blank"
                 class="underline dark:text-blue-500"
-                >{{ project.youtube_link }}</NuxtLink
+                >{{ project.github_link }}</NuxtLink
+              >
+            </div>
+            <!-- Demo Link -->
+             <div class="mt-3">
+              <span class="font-medium">
+                <img src="/photos/demo.png" alt="demo" class="w-8 inline"/>
+              </span> -
+              <NuxtLink
+                :href="project.demo_link"
+                :external="true"
+                target="_blank"
+                class="underline dark:text-blue-500"
+                >{{project.demo_link}}</NuxtLink
               >
             </div>
             <div
@@ -53,7 +102,7 @@ onMounted(async () => {
               <div
                 v-for="tag in project.tags"
                 :key="tag"
-                class="inline-block px-3 py-2 rounded-md bg-[#fff] select-none darkMode"
+                class="inline-block px-3 py-2 rounded-md bg-[#fff] select-none darkMode hover:bg-gray-600 transition-colors duration-300"
               >
                 {{ tag }}
               </div>

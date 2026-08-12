@@ -1,96 +1,75 @@
 import axios from "axios";
-import { resetLoading, setLoading } from "~/componsables/loadingHelper";
-import { setErrorToast, setToast } from "~/componsables/toastHelper";
+import { useApiWrapper } from "~/componsables/apiUtils";
 import type { Pagination } from "~/types/Project";
 import type { FormData, User } from "~/types/User";
-
 
 export const useUsersStore = defineStore("users", () => {
   const pagination = ref<Pagination | null>(null);
   const user = ref<User | null>(null);
   const users = ref<User[]>([]);
-  const loading = ref({ type: '', value: false });
+  const loading = ref({ type: "", value: false });
   const error = ref(null);
 
-  
   const get = async function (page: number) {
-    try {
-      error.value = null;
-      loading.value = setLoading({ type: 'get', value: true });
-
-      const response = await axios.get(`/api/users?page=${page}`);
-      users.value = response.data.data;
-      pagination.value = response.data.pagination;
-
-      return response;
-    } catch (e) {
-      setErrorToast(e);
-    } finally {
-      loading.value = resetLoading();
-    }
+    const response = await useApiWrapper(
+      () => axios.get(`/api/users?page=${page}`),
+      error,
+      loading,
+      "get",
+      false,
+    );
+    if (!response) return;
+    users.value = response.data.data;
+    pagination.value = response.data.pagination;
+    return response;
   };
 
   const show = async (id: string) => {
-    try {
-      error.value = null;
-
-      const response = await axios.get(`/api/users/${id}`);
-
-      user.value = response.data;
-      return response;
-    } catch (e: any) {
-      setErrorToast(e);
-    }
+    const response = await useApiWrapper(
+      () => axios.get(`/api/users/${id}`),
+      error,
+      loading,
+      "show",
+      false,
+    );
+    if (!response) return;
+    user.value = response.data;
+    return response;
   };
 
   const update = async (id: string, data: FormData) => {
-    try {
-      error.value = null;
-      loading.value = setLoading({ type: 'update', value: true });
+    const response = await useApiWrapper(
+      () => axios.patch(`/api/users/${id}`, data),
+      error,
+      loading,
+      "update",
+      true,
+      "User updated successfully👏",
+    );
 
-      const response = await axios.patch(`/api/users/${id}`, data);
-      users.value = users.value.map((user) =>
-        user.id === response.data.id
-          ? {
-              ...user,
-              ...response.data
-            }
-          : user
-      );
-
-      setToast({ title: "User updated successfully👏", duration: 2000});
-      return response;
-    } catch (e: any) {
-      error.value = e.response?.data?.data;
-
-      setErrorToast(e);
-
-      setTimeout(() => {
-        error.value = null;
-      }, 3000);
-    } finally{
-      loading.value = resetLoading();
-    }
+    if (!response) return;
+    users.value = users.value.map((user) =>
+      user.id === response.data.id
+        ? {
+            ...user,
+            ...response.data,
+          }
+        : user,
+    );
+    return response;
   };
 
   const destroy = async (id: string) => {
-    try {
-      error.value = null;
-      loading.value = setLoading({ type: 'delete', value: true });
-
-      const response = await axios.delete(`/api/users/${id}`);
-
-      setToast({ title: "User deleted successfully👏"});
-      return response;
-    } catch (e) {
-      setErrorToast(e);
-    } finally {
-      loading.value = resetLoading();
-    }
+    const response = await useApiWrapper(
+      () => axios.delete(`/api/users/${id}`),
+      error,
+      loading,
+      "delete",
+      true,
+      "User deleted successfully👏",
+    );
+    return response;
   };
-
-
-
 
   return {
     users,

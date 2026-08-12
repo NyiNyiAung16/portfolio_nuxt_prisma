@@ -1,6 +1,5 @@
-import axios, { AxiosError } from "axios";
-import { resetLoading, setLoading } from "~/componsables/loadingHelper";
-import { setErrorToast, setToast } from "~/componsables/toastHelper";
+import axios from "axios";
+import {useApiWrapper} from "~/componsables/apiUtils";
 import type { ErrorData, Pagination, Project } from "~/types/Project";
 
 
@@ -12,137 +11,83 @@ export const useProjectsStore = defineStore("projects", () => {
   const error = ref<ErrorData| null>(null);
 
 
-  async function get(page: number) {
-    try {
-      error.value = null;
-      loading.value = setLoading({ type: "get", value: true });
-
-      const response = await axios.get(`/api/projects?page=${page}`);
-      projects.value = response.data.data;
-      pagination.value = response.data.pagination;
-
-      return response;
-    } catch (e: any) {
-      if(axios.isAxiosError(e)) {
-        error.value = e.response?.data?.data;
-  
-        setErrorToast(e);
-  
-        setTimeout(() => {
-          error.value = null;
-        }, 3000);
-      } else {
-        setErrorToast(e);
-      }
-    } finally {
-      loading.value = resetLoading();
-    }
+  const get = async (page: number) => {
+    const repsonse = await useApiWrapper(
+      () => axios.get(`/api/projects?page=${page}`),
+      error,
+      loading,
+      "get",
+      false
+    );
+    if(!repsonse) return;
+    projects.value = repsonse.data.data;
+    pagination.value = repsonse.data.pagination;
   }
 
-  async function show(id: number) {
-    try {
-      error.value = null;
-      loading.value = setLoading({ type: "show", value: true });
 
-      const response = await axios.get(`/api/projects/${id}`);
-      project.value = response?.data;
-
-      return response;
-    } catch (e: any) {
-      if(axios.isAxiosError(e)) {
-        error.value = e.response?.data?.data;
-  
-        setErrorToast(e);
-  
-        setTimeout(() => {
-          error.value = null;
-        }, 3000);
-      } else {
-        setErrorToast(e);
-      }
-    } finally {
-      loading.value = resetLoading();
-    }
+  const show = async (id: number) => {
+    const response = await useApiWrapper(
+      () => axios.get(`/api/projects/${id}`),
+      error,
+      loading,
+      "show",
+      false
+    );
+    if(!response) return;
+    project.value = response.data;
   }
 
-  async function create(data: FormData) {
-    try {
-      error.value = null;
-      loading.value = setLoading({ type: "create", value: true });
 
-      const response = await axios.post("/api/projects", data);
-
-      setToast({ title: "Project created successfully👏", duration: 3000 });
-
-      return response;
-    } catch (e: any) {
-      if(axios.isAxiosError(e)) {
-        error.value = e.response?.data?.data;
-  
-        setErrorToast(e);
-  
-        setTimeout(() => {
-          error.value = null;
-        }, 3000);
-      } else {
-        setErrorToast(e);
-      }
-    } finally {
-      loading.value = resetLoading();
-    }
+  const create = async (data: FormData) => {
+    const response = await useApiWrapper(
+      () => axios.post("/api/projects", data),
+      error,
+      loading,
+      "create",
+      true,
+      "Project created successfully👏"
+    );
+    return response;
   }
+
 
   const update = async (id: number, data: FormData) => {
-    try {
-      error.value = null;
-      loading.value = setLoading({ type: "update", value: true });
-
-      const response = await axios.patch(`/api/projects/${id}`, data);
-
-      projects.value = projects.value.map((project) =>
-        project.id === response.data.id
-          ? {
-              ...project,
-              ...response.data,
-            }
-          : project
-      );
-
-      setToast({ title: "Project updated successfully👏", duration: 2000 });
-      return response;
-    } catch (e: any) {
-      if(axios.isAxiosError(e)) {
-        error.value = e.response?.data?.data;
-  
-        setErrorToast(e);
-  
-        setTimeout(() => {
-          error.value = null;
-        }, 3000);
-      } else {
-        setErrorToast(e);
-      }
-    } finally {
-      loading.value = resetLoading();
-    }
-  };
+    const response = await useApiWrapper(
+      () => axios.patch(`/api/projects/${id}`, data),
+      error,
+      loading,
+      "update",
+      true,
+      "Project updated successfully👏"
+    );
+    if (!response) return;
+    projects.value = projects.value.map((project) =>
+      project.id === response.data.id
+        ? {
+            ...project,
+            ...response.data,
+          }
+        : project
+    );
+    return response;
+  }
 
   const destroy = async (project: Project) => {
-    try {
-      error.value = null;
-      loading.value = setLoading({ type: "delete", value: true });
-
-      await axios.delete('/api/files', { data: { images_path: project.images_path }});
-      let projectResponse = await axios.delete(`/api/projects/${project.id}`);
-
-      setToast({ title: "Project deleted successfully👏", duration: 2000 });
-      return projectResponse;
-    } catch (e) {
-      setErrorToast(e);
-    } finally {
-      loading.value = resetLoading();
-    }
-  };
+    const response = await useApiWrapper(
+      async () => {
+        // I need to refactor deleting photo first. Because if the project fails, the photo will be already deleted.
+       const imagesPath = project.images_path.map((image) => image.public_id);
+       await axios.delete('/api/files', { data: { images_path: imagesPath }});
+        return await axios.delete(`/api/projects/${project.id}`);
+      },
+      error,
+      loading,
+      "delete",
+      true,
+      "Project deleted successfully👏"
+    );
+    return response;
+  }
 
   return {
     projects,

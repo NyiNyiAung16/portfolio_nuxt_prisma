@@ -3,6 +3,8 @@ import { setToast } from "~/componsables/toastHelper";
 import projectSchema from "~/validations/projectValidation";
 import { zodErrorsToObject } from "~/componsables/zodErrorsHelper";
 import { z } from "zod";
+import LoadingDots from "./LoadingDots.vue";
+import { useUploadImages, isFileExist, destroyImages } from "~/componsables/apiUtils";
 
 const { project } = defineProps({
   project: {
@@ -25,9 +27,12 @@ const hasProject = computed(() => {
 const title = ref("");
 const description = ref("");
 const tags = ref([]);
-const youtubeLink = ref("");
+const githubLink = ref("");
+const demoLink = ref("");
 const images_path = ref([]);
+
 const tag = ref("");
+const images = ref([]);
 
 const addTag = (val) => {
   if (!val.trim() || tags.value.includes(val)) return;
@@ -42,40 +47,55 @@ const onDeleteTag = (val) => {
 
 const onSubmit = async () => {
   try {
+    loading.value.value = true;
     const data = {
       title: title.value,
       description: description.value,
-      youtube_link: youtubeLink.value,
+      github_link: githubLink.value,
+      demo_link: demoLink.value,
       tags: tags.value,
-      images_path: images_path.value,
+      images_path: images.value,
     };
-
     const result = projectSchema.parse(data);
-    
-    const response = Object.keys(localProject.value).length > 0
-      ? await projectsStore.update(localProject.value.id, result)
-      : await projectsStore.create(result);
 
-    if ( response && response.status === 200) {
+    if(isFileExist(images.value)) {
+      const uploadedImages = await useUploadImages(images.value);
+      result.images_path = uploadedImages;
+    }
+
+    const deletedImages = images_path.value.filter((img) => !result.images_path.some((newImg) => newImg.public_id === img.public_id));
+    await destroyImages(deletedImages);
+
+
+    const response =
+      Object.keys(localProject.value).length > 0
+        ? await projectsStore.update(localProject.value.id, result)
+        : await projectsStore.create(result);
+
+    if (response && response.status === 200) {
       resetForm();
       emits("close");
     }
   } catch (e) {
-    if(e instanceof z.ZodError) {
+    if (e instanceof z.ZodError) {
       error.value = zodErrorsToObject(e.errors);
-      setTimeout(() => error.value = null, 2000);
-    } else if(e instanceof Error) {
-      setToast({ title: e.response.data.message });
-    } 
+      setTimeout(() => (error.value = null), 2000);
+    } else if (e instanceof Error) {
+      setToast({ title: e });
+    }
+  } finally {
+    loading.value.value = false;
   }
 };
 
 const resetForm = () => {
   title.value = "";
   description.value = "";
-  youtubeLink.value = "";
+  githubLink.value = "";
+  demoLink.value = "";
   tags.value = [];
   images_path.value = [];
+  images.value = [];
 };
 
 watch(
@@ -84,14 +104,15 @@ watch(
     if (Object.keys(localProject.value).length > 0) {
       title.value = localProject.value.title;
       description.value = localProject.value.description;
-      youtubeLink.value = localProject.value.youtube_link;
+      githubLink.value = localProject.value.github_link;
+      demoLink.value = localProject.value.demo_link;
       tags.value = [...localProject.value.tags];
       images_path.value = [...localProject.value.images_path];
+      images.value = [...localProject.value.images_path];
     }
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 );
-
 </script>
 
 <template>
@@ -110,44 +131,55 @@ watch(
     <form class="space-y-3" @submit.prevent.self="onSubmit">
       <BaseInput type="text" placeholder="Title" v-model="title" />
       <BaseError v-if="error?.title">{{ error?.title }}</BaseError>
-      <BaseTextarea placeholder="Description" class="description" v-model="description" />
+      <BaseTextarea
+        placeholder="Description"
+        class="description"
+        v-model="description"
+      />
       <BaseError v-if="error?.description">{{ error?.description }}</BaseError>
-      <BaseInput type="text" placeholder="Youtube Link" v-model="youtubeLink" />
-      <BaseError v-if="error?.youtube_link"
-        >{{ error?.youtube_link }}
-      </BaseError>
-      <div class="flex gap-x-3">
-        <BaseInput type="text" placeholder="Tag" v-model="tag" />
-        <div
-          @click="addTag(tag)"
-          class="flex items-center px-3 py-2 rounded-md bg-[#eaeaea] dark:bg-gray-700 text-sm cursor-pointer hover:bg-[#dcdcdc] dark:hover:bg-gray-600 duration-150"
-        >
-          Add
-        </div>
+      <BaseInput type="text" placeholder="Github Link" v-model="githubLink" />
+      <BaseError v-if="error?.github_link">{{ error?.github_link }} </BaseError>
+      <BaseInput type="text" placeholder="Demo Link" v-model="demoLink" />
+      <BaseError v-if="error?.demo_link">{{ error?.demo_link }} </BaseError>
+      <div>
+        <BaseInput
+          type="text"
+          @keydown.enter.prevent="addTag(tag)"
+          placeholder="Tag"
+          v-model="tag"
+        />
+        <BaseError v-if="error?.tags">{{ error?.tags }}</BaseError>
       </div>
-      <BaseError v-if="error?.tags">{{ error?.tags }}</BaseError>
       <div v-show="tags.length > 0" class="flex flex-wrap items-center gap-2">
         <div
           v-for="tag in tags"
           :key="tag"
-          class="relative px-4 py-2 rounded-lg bg-[#eaeaea] dark:bg-gray-700"
+          class="group relative flex items-center justify-center px-4 py-2 rounded-lg bg-[#eaeaea] text-sm font-medium text-gray-700 shadow-sm transition-colors duration-150 hover:bg-slate-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
         >
           <span>{{ tag }}</span>
-          <Icons-XMark
-            class="w-4 absolute top-0 right-0 cursor-pointer hover:text-red-500 duration-150"
+
+          <!-- Overlay Delete Icon -->
+          <div
             @click="onDeleteTag(tag)"
-          />
+            class="absolute inset-0 flex items-center justify-center rounded-lg cursor-pointer bg-slate-300/80 dark:bg-gray-600/90 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+          >
+            <Icons-XMark
+              class="h-7 w-7 text-gray-700 hover:text-red-600 dark:text-gray-100 dark:hover:text-red-400  transition-colors"
+            />
+          </div>
         </div>
       </div>
       <div>
-        <FilesUpload v-model="images_path"/>
-        <BaseError v-if="error?.images_path">{{ error?.images_path }}</BaseError>
+        <FilesUpload  v-model:images="images" />
+        <BaseError v-if="error?.images_path">{{
+          error?.images_path
+        }}</BaseError>
       </div>
       <Button type="submit" :disabled="loading.value">
         <span v-if="!loading.value">{{
           project ? "Save Changes" : "Create"
         }}</span>
-        <Loading v-if="loading.value" />
+        <LoadingDots v-if="loading.value" />
       </Button>
     </form>
   </div>
@@ -161,7 +193,7 @@ watch(
 }
 
 .description::-webkit-scrollbar {
-  width: var(--sb-size)
+  width: var(--sb-size);
 }
 
 .description::-webkit-scrollbar-track {
@@ -177,8 +209,7 @@ watch(
 
 @supports not selector(::-webkit-scrollbar) {
   .description {
-    scrollbar-color: var(--sb-thumb-color)
-                     var(--sb-track-color);
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }
 </style>

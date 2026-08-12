@@ -52,7 +52,7 @@ const handlePage = async (newPage) => {
           >
             <NuxtLink :href="`/projects/${project.id}`">
               <CldImage
-                :src="project.images_path[0]"
+                :src="project.images_path[0].public_id"
                 :alt="project.title"
                 width="auto"
                 height="200"

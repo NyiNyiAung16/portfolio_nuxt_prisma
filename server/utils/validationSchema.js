@@ -34,16 +34,30 @@ const projectSchema = Joi.object({
   description: Joi.string().required().messages({
     "string.empty": "Description is required.",
   }),
-  youtube_link: Joi.string().required().messages({
-    "string.empty": "Youtube link is required.",
+  github_link: Joi.string().uri().required().messages({
+    "string.empty": "Github link is required.",
+    "string.uri": "Github link must be a valid URL.",
+  }),
+  demo_link: Joi.string().uri().required().messages({
+    "string.empty": "Demo link is required.",
+    "string.uri": "Demo link must be a valid URL.",
   }),
   tags: Joi.array().items(Joi.string().required()).required().messages({
     "array.includesRequiredUnknowns": "Tag must contain at least one value",
     "array.base": "Tags should be an array of strings",
   }),
-  images_path: Joi.array().items(Joi.string().required()).required().messages({
-    "array.includesRequiredUnknowns": "FIle must contain at least one value",
-    "array.base": "Files should be an array of strings",
+  images_path: Joi.array().items(
+    Joi.object({
+      secure_url: Joi.string().uri().optional().messages({
+        "string.uri": "Secure URL must be a valid URL.",
+      }),
+      public_id: Joi.string().required().messages({
+        "string.empty": "Public ID is required.",
+      }),
+    })
+  ).required().messages({
+    "array.includesRequiredUnknowns": "Files must contain at least one value",
+    "array.base": "Files should be an array of objects",
   }),
 });
 

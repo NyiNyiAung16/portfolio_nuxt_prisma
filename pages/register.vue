@@ -54,7 +54,7 @@ const onSubmit = async () => {
     </Head>
     <div class="min-h-screen flex items-center justify-center">
       <div
-        class="w-full max-w-md sm:max-w-lg md:max-w-xl mx-4 sm:mx-5 md:mx-auto bg-white rounded-lg shadow-md p-4 sm:p-6 md:p-8 dark:bg-gray-900 dark:text-white transition-colors duration-500"
+      class="w-full max-w-md sm:max-w-lg md:max-w-xl mx-4 sm:mx-5 md:mx-auto bg-white rounded-lg shadow-md p-4 sm:p-6 md:p-8 dark:bg-gray-900 dark:text-white transition-colors duration-500"
       >
         <div class="text-center">
           <h1
@@ -109,8 +109,8 @@ const onSubmit = async () => {
             class="text-sm text-red-500 dark:text-red-300"
             >{{ error?.password }}</BaseError
           >
-          <Button type="submit" class="w-full" :disabled="loading">
-            <span v-if="!loading">Register</span>
+          <Button type="submit" class="w-full" :disabled="loading.value">
+            <span v-if="!loading.value">Register</span>
             <LoadingDots v-else/>
           </Button>
         </form>
